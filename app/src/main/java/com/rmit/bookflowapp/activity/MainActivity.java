@@ -1,4 +1,4 @@
-package com.rmit.bookflowapp;
+package com.rmit.bookflowapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.databinding.ActivityMainBinding;
 
 import java.util.Objects;

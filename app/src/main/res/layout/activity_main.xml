@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/drawer_layout"
@@ -31,9 +31,12 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_gravity="bottom"
+            android:background="@color/teal_700"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
             android:visibility="invisible"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="#FFFFFF"
             app:menu="@menu/bottom_nav_menu"
             tools:visibility="visible" />
 
