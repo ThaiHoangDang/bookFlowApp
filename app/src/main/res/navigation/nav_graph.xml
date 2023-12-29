@@ -1,6 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/landing_fragment">
+    <fragment
+        android:id="@+id/landing_fragment"
+        android:name="com.rmit.bookflowapp.fragment.LandingFragment"
+        android:label="landing_fragment"
+        tools:layout="@layout/fragment_landing" />
+    <fragment
+        android:id="@+id/authentication_fragment"
+        android:name="com.rmit.bookflowapp.fragment.AuthenticationFragment"
+        android:label="authentication_fragment"
+        tools:layout="@layout/fragment_authentication" />
+    <fragment
+        android:id="@+id/home_fragment"
+        android:name="com.rmit.bookflowapp.fragment.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/fragment_home" />
 </navigation>
