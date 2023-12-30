@@ -5,6 +5,12 @@
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/nameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name: " />
+
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,21 +25,16 @@
         android:inputType="textPassword" />
 
     <TextView
-        android:id="@+id/toSignUp"
+        android:id="@+id/toAuthentication"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Do not have an account ? Sign up"
+        android:text="Already have an account ? Sign in"
         android:textColor="@color/black" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/signInButton"
+        android:id="@+id/signUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign in" />
+        android:text="Sign up" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/googleSignInButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Google" />
 </LinearLayout>

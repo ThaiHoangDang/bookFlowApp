@@ -40,15 +40,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         initNavigation();
 
-        FirebaseAuth.AuthStateListener authStateListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user != null) {
-                navController.navigate(R.id.homeFragment);
-            } else {
-                navController.navigate(R.id.authenticationFragment);
-            }
-        };
-        firebaseAuth.addAuthStateListener(authStateListener);
     }
 
     private void initNavigation() {

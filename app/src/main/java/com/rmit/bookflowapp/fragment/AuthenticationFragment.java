@@ -2,6 +2,7 @@ package com.rmit.bookflowapp.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class AuthenticationFragment extends Fragment {
                 .build();
         mAuth = FirebaseAuth.getInstance();
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
+        mGoogleSignInClient.signOut();
     }
 
     @Override
@@ -55,9 +57,51 @@ public class AuthenticationFragment extends Fragment {
         activity = (MainActivity) getActivity();
         bind = FragmentAuthenticationBinding.inflate(inflater, container, false);
         View view = bind.getRoot();
+
         activity.setBottomNavigationBarVisibility(false);
+
         bind.googleSignInButton.setOnClickListener(v -> signInWithGoogle());
+        bind.signInButton.setOnClickListener(v -> signInWithEmailPassword());
+        bind.toSignUp.setOnClickListener(v -> {
+            activity.navController.navigate(R.id.signUpFragment);
+        });
         return view;
+    }
+
+    private void signInWithEmailPassword() {
+        String email = Objects.requireNonNull(bind.emailInput.getText()).toString().trim();
+        String password = Objects.requireNonNull(bind.passwordInput.getText()).toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(requireActivity(), "Please enter your email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(requireActivity(), "Please enter your password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(requireActivity(), task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        UserRepository.getInstance().getUserById(Objects.requireNonNull(firebaseUser).getUid())
+                                .addOnCompleteListener(getUserTask -> {
+                                    User currentUser = getUserTask.getResult();
+                                    if (currentUser != null) {
+                                        activity.navController.popBackStack();
+                                        activity.navController.navigate(R.id.homeFragment);
+                                    } else {
+                                        Toast.makeText(requireActivity(), "Authentication failed.",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(requireActivity(), "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void signInWithGoogle() {
@@ -83,10 +127,10 @@ public class AuthenticationFragment extends Fragment {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
         mAuth.signInWithCredential(GoogleAuthProvider.getCredential(acct.getIdToken(), null))
                 .addOnCompleteListener(requireActivity(), task -> {
                     try {
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
                         if (task.isSuccessful()) {
                             if (firebaseUser != null) {
                                 UserRepository.getInstance().getUserById(firebaseUser.getUid())
@@ -95,10 +139,13 @@ public class AuthenticationFragment extends Fragment {
                                                 User currentUser = getUserTask.getResult();
                                                 if (currentUser == null) {
                                                     User newUser = new User();
+                                                    newUser.setId(firebaseUser.getUid());
                                                     newUser.setName(firebaseUser.getDisplayName());
                                                     newUser.setEmail(firebaseUser.getEmail());
+                                                    newUser.setRole(User.Role.USER);
                                                     UserRepository.getInstance().addUser(firebaseUser.getUid(), newUser);
                                                 }
+                                                activity.navController.popBackStack();
                                                 activity.navController.navigate(R.id.homeFragment);
                                             } else {
                                                 Exception exception = getUserTask.getException();
