@@ -55,7 +55,7 @@ public class AuthenticationFragment extends Fragment {
         activity = (MainActivity) getActivity();
         bind = FragmentAuthenticationBinding.inflate(inflater, container, false);
         View view = bind.getRoot();
-        activity.setBottomNavigationBarVisibility(false);
+//        activity.setBottomNavigationBarVisibility(false);
         bind.googleSignInButton.setOnClickListener(v -> signInWithGoogle());
         return view;
     }
