@@ -7,17 +7,14 @@ public class User implements Parcelable {
     private String id;
     private String email;
     private String name;
-
-    public enum role {ADMIN, USER}
-
-    ;
-    private String role;
+    public enum Role {ADMIN, USER};
+    private Role role;
 
     public User() {
         // empty constructor needed for firebase
     }
 
-    public User(String id, String email, String name, String role) {
+    public User(String id, String email, String name, Role role) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -48,25 +45,27 @@ public class User implements Parcelable {
         this.name = name;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
     protected User(Parcel in) {
+        id = in.readString();
         email = in.readString();
         name = in.readString();
-        role = in.readString();
+        role = (Role) in.readSerializable();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(email);
         dest.writeString(name);
-        dest.writeString(role);
+        dest.writeSerializable(role);
     }
 
     @Override
