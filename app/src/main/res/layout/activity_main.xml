@@ -22,19 +22,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/bottom_navigation"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="62dp"
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="62dp"
             android:layout_gravity="bottom"
             android:background="@color/white"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:paddingBottom="5dp"
             app:itemIconTint="?attr/colorOnSecondary"
             app:itemPaddingTop="12dp"
             android:elevation="10dp"
