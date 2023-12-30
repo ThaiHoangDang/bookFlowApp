@@ -2,4 +2,6 @@
     <string name="app_name">BookFlowApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--  For Google Sign in  -->
+    <string name="default_web_client_id">73120140335-oedk2cvtlpovrmtfm8b15teulr8iv3pt.apps.googleusercontent.com</string>
 </resources>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,5 +8,23 @@
         android:id="@+id/landingFragment"
         android:name="com.rmit.bookflowapp.fragment.LandingFragment"
         android:label="fragment_landing"
-        tools:layout="@layout/fragment_landing" />
+        tools:layout="@layout/fragment_landing" >
+        <action
+            android:id="@+id/action_landingFragment_to_authentication_fragment"
+            app:destination="@id/authenticationFragment" />
+        <action
+            android:id="@+id/action_landingFragment_to_homeFragment2"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="com.rmit.bookflowapp.fragment.AuthenticationFragment"
+        android:label="authentication_fragment"
+        tools:layout="@layout/fragment_authentication" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.rmit.bookflowapp.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+
 </navigation>

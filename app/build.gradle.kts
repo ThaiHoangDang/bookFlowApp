@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -51,6 +52,9 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.10.0")
     // Firebase Cloud Messaging (FCM)
     implementation("com.google.firebase:firebase-messaging:23.4.0")
+
+    // For Google Sign in
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // Material Design
     implementation("com.google.android.material:material:1.4.0")

@@ -8,8 +8,11 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.databinding.ActivityMainBinding;
 
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     public NavController navController;
     private BottomNavigationView bottomNavigationView;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +35,21 @@ public class MainActivity extends AppCompatActivity {
         View view = bind.getRoot();
         setContentView(view);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signOut();
+
         fragmentManager = getSupportFragmentManager();
         initNavigation();
+
+        FirebaseAuth.AuthStateListener authStateListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                navController.navigate(R.id.homeFragment);
+            } else {
+                navController.navigate(R.id.authenticationFragment);
+            }
+        };
+        firebaseAuth.addAuthStateListener(authStateListener);
     }
 
     private void initNavigation() {
@@ -41,5 +58,13 @@ public class MainActivity extends AppCompatActivity {
         navController = Objects.requireNonNull(navHostFragment).getNavController();
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+    }
+
+    public void setBottomNavigationBarVisibility(boolean visibility) {
+        if (visibility) {
+            bottomNavigationView.setVisibility(View.VISIBLE);
+        } else {
+            bottomNavigationView.setVisibility(View.GONE);
+        }
     }
 }
