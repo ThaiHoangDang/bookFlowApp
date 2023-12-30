@@ -2,7 +2,7 @@ package com.rmit.bookflowapp.Model;
 
 import java.sql.Timestamp;
 
-abstract class Post implements Comparable<Post> {
+public abstract class Post implements Comparable<Post> {
     private String content;
     private String userId;
     private Timestamp timestamp;
