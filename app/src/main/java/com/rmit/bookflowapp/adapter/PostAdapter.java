@@ -30,7 +30,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             postInfo = itemView.findViewById(R.id.postInfo);
             postContent = itemView.findViewById(R.id.postContent);
             postDate = itemView.findViewById(R.id.postDate);
-            postLikeButton = itemView.findViewById(R.id.postLikeBtn);
+//            postLikeButton = itemView.findViewById(R.id.postLikeBtn);
         }
     }
 
@@ -55,7 +55,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.postInfo.setText("Wrote a review for Truyen Kieu");
         holder.postContent.setText(post.getContent());
         holder.postDate.setText("31/12/2023");
-        holder.postLikeButton.setText("32");
+//        holder.postLikeButton.setText("32");
     }
 
     @SuppressLint("NotifyDataSetChanged")
