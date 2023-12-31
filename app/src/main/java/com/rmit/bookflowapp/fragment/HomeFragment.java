@@ -26,6 +26,8 @@ public class HomeFragment extends Fragment {
     private MainActivity activity;
     private PostAdapter postAdapter;
     private ArrayList<Post> posts = new ArrayList<>();
+    private int scrolledDistance = 0;
+    private static final int HIDE_THRESHOLD = 1;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -49,6 +51,33 @@ public class HomeFragment extends Fragment {
         bind.postsListView.setAdapter(postAdapter);
         bind.postsListView.setLayoutManager(new LinearLayoutManager(activity));
 
+        // Add scroll listener to RecyclerView
+        bind.postsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                // dy > 0 means scrolling down
+                // dy < 0 means scrolling up
+                if (dy > 0) {
+                    // Scrolling down
+                    if (scrolledDistance > HIDE_THRESHOLD) {
+                        hideLinearLayout1();
+                        scrolledDistance = 0;
+                    } else {
+                        scrolledDistance += dy;
+                    }
+                } else {
+                    // Scrolling up
+                    if (Math.abs(scrolledDistance) > HIDE_THRESHOLD) {
+                        showLinearLayout1();
+                        scrolledDistance = 0;
+                    } else {
+                        scrolledDistance += dy;
+                    }
+                }
+            }
+        });
         return bind.getRoot();
     }
 
@@ -56,6 +85,14 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         bind = null;
+    }
+
+    private void hideLinearLayout1() {
+        bind.linearlayout1.animate().translationY(-bind.linearlayout1.getHeight()).setDuration(100).start();
+    }
+
+    private void showLinearLayout1() {
+        bind.linearlayout1.animate().translationY(0).setDuration(100).start();
     }
 
     private void generateData() {
