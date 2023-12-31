@@ -1,5 +1,6 @@
 package com.rmit.bookflowapp.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.adapter.PostAdapter;
 import com.rmit.bookflowapp.databinding.FragmentHomeBinding;
+import com.rmit.bookflowapp.util.TranslateAnimationUtil;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class HomeFragment extends Fragment {
     private PostAdapter postAdapter;
     private ArrayList<Post> posts = new ArrayList<>();
     private int scrolledDistance = 0;
-    private static final int HIDE_THRESHOLD = 1;
+    private static final int HIDE_THRESHOLD = 0;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -40,6 +42,7 @@ public class HomeFragment extends Fragment {
         generateData();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
@@ -52,32 +55,7 @@ public class HomeFragment extends Fragment {
         bind.postsListView.setLayoutManager(new LinearLayoutManager(activity));
 
         // Add scroll listener to RecyclerView
-        bind.postsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                // dy > 0 means scrolling down
-                // dy < 0 means scrolling up
-                if (dy > 0) {
-                    // Scrolling down
-                    if (scrolledDistance > HIDE_THRESHOLD) {
-                        hideLinearLayout1();
-                        scrolledDistance = 0;
-                    } else {
-                        scrolledDistance += dy;
-                    }
-                } else {
-                    // Scrolling up
-                    if (Math.abs(scrolledDistance) > HIDE_THRESHOLD) {
-                        showLinearLayout1();
-                        scrolledDistance = 0;
-                    } else {
-                        scrolledDistance += dy;
-                    }
-                }
-            }
-        });
+        bind.postsListView.setOnTouchListener(new TranslateAnimationUtil(activity, bind.linearlayout1));
         return bind.getRoot();
     }
 
