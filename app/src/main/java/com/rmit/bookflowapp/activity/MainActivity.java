@@ -1,6 +1,7 @@
 package com.rmit.bookflowapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -56,5 +57,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             bottomNavigationView.setVisibility(View.GONE);
         }
+    }
+
+    public void setProgressVisibility(boolean status){
+        bind.overlay.setVisibility(status ? View.VISIBLE : View.GONE);
     }
 }

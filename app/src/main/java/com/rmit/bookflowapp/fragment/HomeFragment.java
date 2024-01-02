@@ -28,8 +28,6 @@ public class HomeFragment extends Fragment {
     private MainActivity activity;
     private PostAdapter postAdapter;
     private ArrayList<Post> posts = new ArrayList<>();
-    private int scrolledDistance = 0;
-    private static final int HIDE_THRESHOLD = 0;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -56,6 +54,7 @@ public class HomeFragment extends Fragment {
 
         // Add scroll listener to RecyclerView
         bind.postsListView.setOnTouchListener(new TranslateAnimationUtil(activity, bind.linearlayout1));
+
         return bind.getRoot();
     }
 
@@ -63,14 +62,6 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         bind = null;
-    }
-
-    private void hideLinearLayout1() {
-        bind.linearlayout1.animate().translationY(-bind.linearlayout1.getHeight()).setDuration(100).start();
-    }
-
-    private void showLinearLayout1() {
-        bind.linearlayout1.animate().translationY(0).setDuration(100).start();
     }
 
     private void generateData() {
