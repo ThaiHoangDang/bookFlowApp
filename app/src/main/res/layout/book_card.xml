@@ -2,17 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="136dp"
-    android:layout_height="230dp"
-    android:elevation="1dp">
+    android:layout_height="230dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="3dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="50dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginBottom="3dp"
-        app:cardElevation="2dp" />
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardElevation="4dp" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardBookCover"
@@ -21,23 +20,23 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="23dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="23dp"
         android:background="@color/neutral_100"
         android:backgroundTint="@color/neutral_100"
-        app:cardElevation="3dp" />
+        app:cardElevation="5dp" />
 
     <TextView
         android:id="@+id/cardBookName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/cardBookCover"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginRight="16dp"
         android:elevation="4dp"
         android:ellipsize="end"
-        android:maxLines="2"
+        android:maxLines="1"
         android:text="Book name"
         android:textAlignment="center"
         android:textSize="12sp"

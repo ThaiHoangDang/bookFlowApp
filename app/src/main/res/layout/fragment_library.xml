@@ -15,7 +15,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/dark_blue">
+            android:background="@color/dark_blue"
+            android:elevation="10dp">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -44,16 +45,207 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <include layout="@layout/book_card"/>
-            </RelativeLayout>
 
-        </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:elevation="0dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/vnbooksstore" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#6F000000"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center"
+                        android:text="BOOK FLOW"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="32sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Monday" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tuesday" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Wednesday" />
+                </com.google.android.material.tabs.TabLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/libraryTitle1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="Best Of All Time"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/libraryTitle1"
+                        android:clipToPadding="false"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/libraryTitle2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="Trending"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/libraryTitle2"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:clipToPadding="false"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                            <include layout="@layout/book_card" />
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/libraryTitle3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="Genres list"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/libraryTitle3"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:clipToPadding="false"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <include layout="@layout/genre_card" />
+
+                            <include layout="@layout/genre_card" />
+
+                            <include layout="@layout/genre_card" />
+
+                            <include layout="@layout/genre_card" />
+
+                            <include layout="@layout/genre_card" />
+
+                            <include layout="@layout/genre_card" />
+
+                            <include layout="@layout/genre_card" />
+
+                            <include layout="@layout/genre_card" />
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
 
     </LinearLayout>
