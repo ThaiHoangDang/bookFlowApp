@@ -1,0 +1,25 @@
+<!-- res/layout/custom_info_window.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Other details about the marker -->
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Marker Title"
+        android:textStyle="bold" />
+
+    <!-- View more detail button -->
+    <Button
+        android:id="@+id/btnViewDetail"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onViewDetailClick"
+        android:text="View more detail" />
+</LinearLayout>

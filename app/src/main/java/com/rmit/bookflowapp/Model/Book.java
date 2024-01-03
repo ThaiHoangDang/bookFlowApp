@@ -3,10 +3,13 @@ package com.rmit.bookflowapp.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Book implements Parcelable {
+import java.io.Serializable;
+import java.util.List;
+
+public class Book implements Serializable {
     private String title;
-    private Author[] authors;
-    private Genre[] genres;
+    private List<Author> authors;
+    private List<Genre> genres;
     private String description;
     private String imageId;
 
@@ -14,7 +17,7 @@ public class Book implements Parcelable {
         // empty constructor needed for firebase
     }
 
-    public Book(String title, Author[] authors, Genre[] genres, String description, String imageId) {
+    public Book(String title, List<Author> authors, List<Genre> genres, String description, String imageId) {
         this.title = title;
         this.authors = authors;
         this.genres = genres;
@@ -30,19 +33,19 @@ public class Book implements Parcelable {
         this.title = title;
     }
 
-    public Author[] getAuthors() {
+    public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Author[] authors) {
+    public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
 
-    public Genre[] getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(Genre[] genres) {
+    public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
 
@@ -61,38 +64,4 @@ public class Book implements Parcelable {
     public void setImageId(String imageId) {
         this.imageId = imageId;
     }
-
-    protected Book(Parcel in) {
-        title = in.readString();
-        authors = in.createTypedArray(Author.CREATOR);
-        genres = in.createTypedArray(Genre.CREATOR);
-        description = in.readString();
-        imageId = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeTypedArray(authors, flags);
-        dest.writeTypedArray(genres, flags);
-        dest.writeString(description);
-        dest.writeString(imageId);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Book> CREATOR = new Creator<Book>() {
-        @Override
-        public Book createFromParcel(Parcel in) {
-            return new Book(in);
-        }
-
-        @Override
-        public Book[] newArray(int size) {
-            return new Book[size];
-        }
-    };
 }
