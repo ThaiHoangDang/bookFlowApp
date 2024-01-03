@@ -1,12 +1,13 @@
 package com.rmit.bookflowapp.Model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Book implements Serializable {
     private String id;
     private String title;
-    private Author[] authors;
-    private Genre[] genres;
+    private List<String> author;
+    private List<String> genre;
     private String description;
     private String imageId;
 
@@ -14,11 +15,11 @@ public class Book implements Serializable {
         // empty constructor needed for firebase
     }
 
-    public Book(String id, String title, Author[] authors, Genre[] genres, String description, String imageId) {
+    public Book(String id, String title, List<String> author, List<String> genre, String description, String imageId) {
         this.id = id;
         this.title = title;
-        this.authors = authors;
-        this.genres = genres;
+        this.author = author;
+        this.genre = genre;
         this.description = description;
         this.imageId = imageId;
     }
@@ -39,20 +40,20 @@ public class Book implements Serializable {
         this.title = title;
     }
 
-    public Author[] getAuthors() {
-        return authors;
+    public List<String> getAuthor() {
+        return author;
     }
 
-    public void setAuthors(Author[] authors) {
-        this.authors = authors;
+    public void setAuthor(List<String> author) {
+        this.author = author;
     }
 
-    public Genre[] getGenres() {
-        return genres;
+    public List<String> getGenre() {
+        return genre;
     }
 
-    public void setGenres(Genre[] genres) {
-        this.genres = genres;
+    public void setGenre(List<String> genre) {
+        this.genre = genre;
     }
 
     public String getDescription() {
