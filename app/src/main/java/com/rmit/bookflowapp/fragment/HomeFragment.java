@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +56,8 @@ public class HomeFragment extends Fragment {
 
         // Add scroll listener to RecyclerView
         bind.postsListView.setOnTouchListener(new TranslateAnimationUtil(activity, bind.linearlayout1));
+
+        bind.createPostBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment));
 
         return bind.getRoot();
     }

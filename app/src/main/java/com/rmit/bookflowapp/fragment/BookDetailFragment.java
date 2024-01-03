@@ -34,6 +34,13 @@ public class BookDetailFragment extends Fragment {
         bind = FragmentBookDetailBinding.inflate(inflater, container, false);
         activity.setBottomNavigationBarVisibility(true);
 
+        bind.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().popBackStack();  // Navigate back to the previous fragment
+            }
+        });
+
         return bind.getRoot();
     }
 
