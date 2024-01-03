@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 
-abstract class Post implements Comparable<Post>, Serializable {
+public abstract class Post implements Comparable<Post>, Serializable {
     private String id;
     private String title;
     private String content;

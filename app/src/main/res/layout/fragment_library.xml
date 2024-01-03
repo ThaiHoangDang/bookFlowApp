@@ -158,6 +158,7 @@
                         android:scrollbars="none">
 
                         <LinearLayout
+                            android:id="@+id/bestOfAllTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
@@ -206,6 +207,7 @@
                         android:scrollbars="none">
 
                         <LinearLayout
+                            android:id="@+id/trending"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 

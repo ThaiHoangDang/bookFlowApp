@@ -24,6 +24,21 @@ public class BookRepository {
         return instance;
     }
 
+    public Task<List<Book>> getBookForLibraryFragment() {
+        Query query = bookCollection.limit(10);
+
+        return query.get()
+                .continueWith(task -> {
+                    if (task.isSuccessful()) {
+                        List<Book> books = task.getResult().toObjects(Book.class);
+                        return books;
+                    } else {
+                        Exception exception = task.getException();
+                        return null;
+                    }
+                });
+    }
+
 //    public Task<List<Book>> getBookByQuery(String query) {
 //        Query searchQuery = bookCollection.
 //    }

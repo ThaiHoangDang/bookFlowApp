@@ -80,7 +80,7 @@ public class SignUpFragment extends Fragment {
                                 newUser.setId(userId);
                                 newUser.setName(name);
                                 newUser.setEmail(email);
-                                newUser.setRole(User.Role.USER);
+                                newUser.setRole("USER");
 
                                 UserRepository.getInstance().addUser(userId, newUser)
                                         .addOnCompleteListener(createUserTask -> {

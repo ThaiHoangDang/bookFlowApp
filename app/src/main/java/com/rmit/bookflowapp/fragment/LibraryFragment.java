@@ -1,28 +1,23 @@
 package com.rmit.bookflowapp.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.rmit.bookflowapp.Model.Book;
-import com.rmit.bookflowapp.Model.Post;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
-import com.rmit.bookflowapp.adapter.PostAdapter;
 import com.rmit.bookflowapp.adapter.SearchBookAdapter;
-import com.rmit.bookflowapp.databinding.FragmentHomeBinding;
 import com.rmit.bookflowapp.databinding.FragmentLibraryBinding;
+import com.rmit.bookflowapp.repository.BookRepository;
 import com.rmit.bookflowapp.util.TranslateAnimationUtil;
 
 import java.util.ArrayList;
@@ -95,6 +90,21 @@ public class LibraryFragment extends Fragment {
                 debounceHandler.removeCallbacks(debounceRunnable);
                 debounceHandler.postDelayed(debounceRunnable, 1000);
                 return true;
+            }
+        });
+
+//        Generate data for library fragment
+        BookRepository.getInstance().getBookForLibraryFragment().addOnCompleteListener(getBooksTask -> {
+            if (getBooksTask.isSuccessful()) {
+                List<Book> bookList = getBooksTask.getResult();
+                if (bookList != null) {
+                    for (int i = 0; i < bookList.size() / 2; i++) {
+                        Book currentBook = bookList.get(i);
+                        View bookLayout = LayoutInflater.from(requireContext()).inflate(R.layout.book_card, null);
+                        ((TextView) bookLayout.findViewById(R.id.cardBookName)).setText(currentBook.getTitle());
+                        bind.bestOfAllTime.addView(bookLayout);
+                    }
+                }
             }
         });
 
