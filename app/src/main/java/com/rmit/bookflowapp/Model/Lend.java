@@ -1,13 +1,11 @@
 package com.rmit.bookflowapp.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.Timestamp;
 
-import java.sql.Timestamp;
+import java.io.Serializable;
 
-public class Lend extends Post implements Parcelable {
+public class Lend extends Post implements Serializable {
     private LatLng location;
 
     public Lend() {
@@ -18,8 +16,8 @@ public class Lend extends Post implements Parcelable {
         this.location = location;
     }
 
-    public Lend(String content, String userId, Timestamp timestamp, LatLng location) {
-        super(content, userId, timestamp);
+    public Lend(String id, String title, String content, String userId, String bookId, Timestamp timestamp, LatLng location) {
+        super(id, title, content, userId, bookId, timestamp);
         this.location = location;
     }
 
@@ -30,30 +28,4 @@ public class Lend extends Post implements Parcelable {
     public void setLocation(LatLng location) {
         this.location = location;
     }
-
-    protected Lend(Parcel in) {
-        location = in.readParcelable(LatLng.class.getClassLoader());
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(location, flags);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Lend> CREATOR = new Creator<Lend>() {
-        @Override
-        public Lend createFromParcel(Parcel in) {
-            return new Lend(in);
-        }
-
-        @Override
-        public Lend[] newArray(int size) {
-            return new Lend[size];
-        }
-    };
 }

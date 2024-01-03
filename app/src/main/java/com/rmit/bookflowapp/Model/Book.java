@@ -1,9 +1,9 @@
 package com.rmit.bookflowapp.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class Book implements Parcelable {
+public class Book implements Serializable {
+    private String id;
     private String title;
     private Author[] authors;
     private Genre[] genres;
@@ -14,12 +14,21 @@ public class Book implements Parcelable {
         // empty constructor needed for firebase
     }
 
-    public Book(String title, Author[] authors, Genre[] genres, String description, String imageId) {
+    public Book(String id, String title, Author[] authors, Genre[] genres, String description, String imageId) {
+        this.id = id;
         this.title = title;
         this.authors = authors;
         this.genres = genres;
         this.description = description;
         this.imageId = imageId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -61,38 +70,4 @@ public class Book implements Parcelable {
     public void setImageId(String imageId) {
         this.imageId = imageId;
     }
-
-    protected Book(Parcel in) {
-        title = in.readString();
-        authors = in.createTypedArray(Author.CREATOR);
-        genres = in.createTypedArray(Genre.CREATOR);
-        description = in.readString();
-        imageId = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeTypedArray(authors, flags);
-        dest.writeTypedArray(genres, flags);
-        dest.writeString(description);
-        dest.writeString(imageId);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Book> CREATOR = new Creator<Book>() {
-        @Override
-        public Book createFromParcel(Parcel in) {
-            return new Book(in);
-        }
-
-        @Override
-        public Book[] newArray(int size) {
-            return new Book[size];
-        }
-    };
 }

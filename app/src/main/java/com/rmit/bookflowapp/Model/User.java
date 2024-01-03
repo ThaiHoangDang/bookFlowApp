@@ -1,22 +1,32 @@
 package com.rmit.bookflowapp.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class User implements Parcelable {
+public class User implements Serializable {
+    private String id;
     private String email;
     private String name;
-    public enum role {ADMIN, USER};
-    private String role;
+    private String role; // ADMIN or USER
+    private String imageUrl;
 
     public User() {
         // empty constructor needed for firebase
     }
 
-    public User(String email, String name, String role) {
+    public User(String id, String email, String name, String role, String imageUrl) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.role = role;
+        this.imageUrl = imageUrl;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -43,33 +53,11 @@ public class User implements Parcelable {
         this.role = role;
     }
 
-    protected User(Parcel in) {
-        email = in.readString();
-        name = in.readString();
-        role = in.readString();
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(email);
-        dest.writeString(name);
-        dest.writeString(role);
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 }
