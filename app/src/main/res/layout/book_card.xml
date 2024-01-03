@@ -44,7 +44,7 @@
         android:elevation="4dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Book name"
+        android:text="Book name Book name"
         android:textAlignment="center"
         android:textSize="12sp"
         android:textStyle="bold" />

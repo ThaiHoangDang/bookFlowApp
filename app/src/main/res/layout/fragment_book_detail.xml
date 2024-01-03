@@ -14,8 +14,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            
+
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bookDetailIntroSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -32,13 +33,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/demenphieuluuky"/>
+                        android:src="@drawable/demenphieuluuky" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.9"
-                        android:background="@color/dark_blue"/>
+                        android:background="@color/dark_blue" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -58,7 +59,7 @@
                                 android:src="@drawable/baseline_arrow_back_ios_24"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"/>
+                                app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.cardview.widget.CardView
@@ -67,9 +68,9 @@
                             android:layout_height="270dp"
                             android:layout_below="@id/bookDetailNavbar"
                             android:layout_centerHorizontal="true"
+                            android:layout_marginTop="32dp"
                             app:cardCornerRadius="8dp"
-                            app:cardElevation="16dp"
-                            android:layout_marginTop="32dp">
+                            app:cardElevation="16dp">
 
                             <ImageView
                                 android:id="@+id/imageView6"
@@ -145,7 +146,7 @@
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
-                                android:background="#FFFFFF"/>
+                                android:background="#FFFFFF" />
 
                             <LinearLayout
                                 android:layout_width="fill_parent"
@@ -176,7 +177,7 @@
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
-                                android:background="#FFFFFF"/>
+                                android:background="#FFFFFF" />
 
                             <LinearLayout
                                 android:layout_width="fill_parent"
@@ -208,7 +209,14 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
