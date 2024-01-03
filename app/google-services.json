@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "73120140335",
+    "project_id": "striking-water-408603",
+    "storage_bucket": "striking-water-408603.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73120140335:android:55a6cfb9c999bb11d38ada",
+        "android_client_info": {
+          "package_name": "com.rmit.bookflowapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73120140335-gnlfqrfef8aut8ndp9v7pgc3493l26bk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rmit.bookflowapp",
+            "certificate_hash": "70d2cc4fc40e6e760e5a312b26d1ff0f48a694ce"
+          }
+        },
+        {
+          "client_id": "73120140335-9p53ldem8sjr4imfvtsv72ofbkk8mjmi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMO5dogX8hQebtTl4fhJ5YCwz0YSUhpP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73120140335-9p53ldem8sjr4imfvtsv72ofbkk8mjmi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
