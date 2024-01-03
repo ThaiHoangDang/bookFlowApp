@@ -1,9 +1,9 @@
 package com.rmit.bookflowapp.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class Genre implements Parcelable {
+public class Genre implements Serializable {
+    private String id;
     private String name;
     private String description;
     private String imageId;
@@ -12,10 +12,19 @@ public class Genre implements Parcelable {
         // empty constructor needed for firebase
     }
 
-    public Genre(String name, String description, String imageId) {
+    public Genre(String id, String name, String description, String imageId) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.imageId = imageId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -41,34 +50,4 @@ public class Genre implements Parcelable {
     public void setImageId(String imageId) {
         this.imageId = imageId;
     }
-
-    protected Genre(Parcel in) {
-        name = in.readString();
-        description = in.readString();
-        imageId = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(description);
-        dest.writeString(imageId);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Genre> CREATOR = new Creator<Genre>() {
-        @Override
-        public Genre createFromParcel(Parcel in) {
-            return new Genre(in);
-        }
-
-        @Override
-        public Genre[] newArray(int size) {
-            return new Genre[size];
-        }
-    };
 }
