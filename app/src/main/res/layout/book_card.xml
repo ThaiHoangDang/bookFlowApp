@@ -28,6 +28,7 @@
         app:cardElevation="6dp"
         app:cardCornerRadius="4dp">
         <ImageView
+            android:id="@+id/cardBookImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"

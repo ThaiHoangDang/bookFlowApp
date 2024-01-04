@@ -2,9 +2,11 @@ package com.rmit.bookflowapp.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import com.rmit.bookflowapp.adapter.SearchBookAdapter;
 import com.rmit.bookflowapp.databinding.FragmentLibraryBinding;
 import com.rmit.bookflowapp.repository.BookRepository;
 import com.rmit.bookflowapp.util.TranslateAnimationUtil;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +105,23 @@ public class LibraryFragment extends Fragment {
                         Book currentBook = bookList.get(i);
                         View bookLayout = LayoutInflater.from(requireContext()).inflate(R.layout.book_card, null);
                         ((TextView) bookLayout.findViewById(R.id.cardBookName)).setText(currentBook.getTitle());
+                        ((TextView) bookLayout.findViewById(R.id.cardBookAuthor)).setText(currentBook.getAuthorString());
+                        ImageView bookImage = bookLayout.findViewById(R.id.cardBookImage);
+                        String imageUrl = currentBook.getImageUrl();
+                        Picasso.get().load(imageUrl).into(bookImage);
                         bind.bestOfAllTime.addView(bookLayout);
+                    }
+
+                    for (int i = bookList.size() / 2; i < bookList.size(); i++) {
+                        Book currentBook = bookList.get(i);
+                        View bookLayout = LayoutInflater.from(requireContext()).inflate(R.layout.book_card, null);
+                        ((TextView) bookLayout.findViewById(R.id.cardBookName)).setText(currentBook.getTitle());
+                        ((TextView) bookLayout.findViewById(R.id.cardBookAuthor)).setText(currentBook.getAuthorString());
+                        ImageView bookImage = bookLayout.findViewById(R.id.cardBookImage);
+                        String imageUrl = currentBook.getImageUrl();
+                        Picasso.get().load(imageUrl).into(bookImage);
+                        Log.d("IMAGE", imageUrl);
+                        bind.trending.addView(bookLayout);
                     }
                 }
             }

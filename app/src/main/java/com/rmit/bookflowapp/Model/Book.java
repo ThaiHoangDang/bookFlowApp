@@ -71,4 +71,19 @@ public class Book implements Serializable {
     public void setImageId(String imageId) {
         this.imageId = imageId;
     }
+
+    public String getImageUrl() {
+        return "https://firebasestorage.googleapis.com/v0/b/striking-water-408603.appspot.com/o/" + getImageId() + "?alt=media";
+    }
+
+    public String getAuthorString() {
+        StringBuilder authorStringBuilder = new StringBuilder();
+        for (int i = 0; i < author.size(); i++) {
+            authorStringBuilder.append(author.get(i));
+            if (i < author.size() - 1) {
+                authorStringBuilder.append(", ");
+            }
+        }
+        return authorStringBuilder.toString();
+    }
 }
