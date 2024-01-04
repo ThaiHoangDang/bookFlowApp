@@ -4,24 +4,22 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 
-abstract class Post implements Comparable<Post>, Serializable {
+public class Comment implements Comparable<Comment>, Serializable {
     private String id;
-    private String title;
-    private String content;
     private String userId;
-    private String bookId;
+    private String postId;
+    private String content;
     private Timestamp timestamp;
 
-    public Post() {
+    public Comment() {
         // empty constructor needed for firebase
     }
 
-    public Post(String id, String title, String content, String userId, String bookId, Timestamp timestamp) {
+    public Comment(String id, String userId, String postId, String content, Timestamp timestamp) {
         this.id = id;
-        this.title = title;
-        this.content = content;
         this.userId = userId;
-        this.bookId = bookId;
+        this.postId = postId;
+        this.content = content;
         this.timestamp = timestamp;
     }
 
@@ -33,22 +31,6 @@ abstract class Post implements Comparable<Post>, Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -57,12 +39,20 @@ abstract class Post implements Comparable<Post>, Serializable {
         this.userId = userId;
     }
 
-    public String getBookId() {
-        return bookId;
+    public String getPostId() {
+        return postId;
     }
 
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Timestamp getTimestamp() {
@@ -74,17 +64,17 @@ abstract class Post implements Comparable<Post>, Serializable {
     }
 
     @Override
-    public int compareTo(Post post) {
+    public int compareTo(Comment comment) {
         // compare using timestamps
         // if the string are not equal
-        if (this.timestamp.compareTo(post.timestamp) != 0) {
+        if (this.timestamp.compareTo(comment.timestamp) != 0) {
             // we compare string values
-            return this.timestamp.compareTo(post.timestamp);
+            return this.timestamp.compareTo(comment.timestamp);
         }
         else {
             // we compare int values
             // if the strings are equal
-            return this.content.compareTo(post.content);
+            return this.content.compareTo(comment.content);
         }
     }
 }

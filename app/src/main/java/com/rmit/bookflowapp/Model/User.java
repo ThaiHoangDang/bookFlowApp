@@ -1,24 +1,24 @@
 package com.rmit.bookflowapp.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class User implements Parcelable {
+public class User implements Serializable {
     private String id;
     private String email;
     private String name;
-    public enum Role {ADMIN, USER};
-    private Role role;
+    private String role; // ADMIN or USER
+    private String imageUrl;
 
     public User() {
         // empty constructor needed for firebase
     }
 
-    public User(String id, String email, String name, Role role) {
+    public User(String id, String email, String name, String role, String imageUrl) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.role = role;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {
@@ -45,43 +45,19 @@ public class User implements Parcelable {
         this.name = name;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
-    protected User(Parcel in) {
-        id = in.readString();
-        email = in.readString();
-        name = in.readString();
-        role = (Role) in.readSerializable();
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(email);
-        dest.writeString(name);
-        dest.writeSerializable(role);
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 }
