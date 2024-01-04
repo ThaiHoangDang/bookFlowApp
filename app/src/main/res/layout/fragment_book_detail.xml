@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".fragment.BookDetailFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="60dp">
+            android:paddingBottom="30dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/bookDetailIntroSection"
@@ -494,5 +494,5 @@
             </RelativeLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>
