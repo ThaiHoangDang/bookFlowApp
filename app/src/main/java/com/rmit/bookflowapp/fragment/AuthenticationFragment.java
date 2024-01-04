@@ -142,7 +142,7 @@ public class AuthenticationFragment extends Fragment {
                                                     newUser.setId(firebaseUser.getUid());
                                                     newUser.setName(firebaseUser.getDisplayName());
                                                     newUser.setEmail(firebaseUser.getEmail());
-                                                    newUser.setRole(User.Role.USER);
+                                                    newUser.setRole("USER");
                                                     UserRepository.getInstance().addUser(firebaseUser.getUid(), newUser);
                                                 }
                                                 activity.navController.popBackStack();
