@@ -35,7 +35,7 @@
                     android:id="@+id/postAvatarImage"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/neutral_100" />
+                    android:src="@drawable/defaultprofileavatar" />
 
             </androidx.cardview.widget.CardView>
 
@@ -50,6 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Username"
+                    android:maxLines="1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -58,7 +59,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/postOwner"
-                    android:text="Wrote a review for De Men Phieu Luu Ky"
+                    android:maxLines="1"
+                    android:text="Rated 5 star for De Men Phieu Luu Ky"
                     android:textSize="12sp" />
             </RelativeLayout>
 
@@ -75,13 +77,39 @@
             android:paddingRight="16dp"
             android:paddingBottom="10dp">
 
-            <TextView
-                android:id="@+id/postContent"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="72dp"
+                android:layout_height="108dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/demenphieuluuky" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa. Tortor aliquam nulla facilisi cras fermentum. Morbi tempus iaculis urna id volutpat lacus laoreet non."
-                android:textColor="#656565"
-                android:textSize="12sp" />
+                android:layout_toRightOf="@id/imageView4">
+
+                <TextView
+                    android:id="@+id/cardPostTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="Best book I have read so far!"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/postContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cardPostTitle"
+                    android:ellipsize="end"
+                    android:maxLines="5"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pulvinar mattis nunc sed blandit libero. Id porta nibh venenatis cras sed felis eget velit. Augue lacus viverra vitae congue eu."
+                    android:textColor="#656565"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -93,6 +121,43 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:drawablePadding="4dp"
+                    android:text="Like"
+                    android:textColor="#8C8C8C"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#8C8C8C"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView15"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="42"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/view2"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/postDate"

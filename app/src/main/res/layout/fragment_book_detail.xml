@@ -469,13 +469,21 @@
                 </RelativeLayout>
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/writeReviewBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/BookDetailRatingSummary"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="16dp"
                     android:backgroundTint="@color/blue"
                     android:text="Write A Review" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/writeReviewBtn">
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
