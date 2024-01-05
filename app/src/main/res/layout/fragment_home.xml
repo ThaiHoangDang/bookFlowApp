@@ -65,19 +65,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.515" />
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:src="@drawable/baseline_refresh_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/createPostBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:backgroundTint="@color/dark_blue"
@@ -90,14 +79,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:paddingTop="60dp"
-            android:clipToPadding="false"
-            android:id="@+id/postsListView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/homepageHeader" />
-
+            android:layout_below="@id/homepageHeader">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/postsListView"
+                android:paddingTop="60dp"
+                android:clipToPadding="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
 </FrameLayout>

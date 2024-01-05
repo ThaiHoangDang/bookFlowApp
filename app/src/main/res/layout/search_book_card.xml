@@ -27,7 +27,8 @@
                 android:id="@+id/searchBookCover"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                tools:srcCompat="@color/neutral_100" />
+                android:scaleType="centerCrop"
+                tools:src="@drawable/demenphieuluuky" />
         </androidx.cardview.widget.CardView>
 
         <RelativeLayout

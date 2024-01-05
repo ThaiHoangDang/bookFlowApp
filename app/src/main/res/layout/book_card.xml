@@ -24,7 +24,14 @@
         android:layout_marginRight="23dp"
         android:background="@color/neutral_100"
         android:backgroundTint="@color/neutral_100"
-        app:cardElevation="5dp" />
+        app:cardElevation="5dp"
+
+        app:cardCornerRadius="4dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/demenphieuluuky"/>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/cardBookName"
@@ -37,7 +44,7 @@
         android:elevation="4dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Book name"
+        android:text="Book name Book name"
         android:textAlignment="center"
         android:textSize="12sp"
         android:textStyle="bold" />

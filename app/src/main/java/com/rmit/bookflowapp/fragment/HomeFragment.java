@@ -4,12 +4,16 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.rmit.bookflowapp.Model.Post;
 import com.rmit.bookflowapp.Model.Review;
@@ -21,6 +25,7 @@ import com.rmit.bookflowapp.util.TranslateAnimationUtil;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
@@ -55,6 +60,19 @@ public class HomeFragment extends Fragment {
         // Add scroll listener to RecyclerView
         bind.postsListView.setOnTouchListener(new TranslateAnimationUtil(activity, bind.linearlayout1));
 
+        bind.pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                // add data reloading here :D
+
+                Toast.makeText(activity, "Refreshing", Toast.LENGTH_SHORT).show();
+                bind.pullToRefresh.setRefreshing(false);
+            }
+        });
+
+        bind.createPostBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment));
+
         return bind.getRoot();
     }
 
@@ -65,12 +83,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void generateData() {
-        posts.add(new Review("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa. Tortor aliquam nulla facilisi cras fermentum. Morbi tempus iaculis urna id volutpat lacus laoreet non.", "Hoang Dang", new Timestamp(System.currentTimeMillis()), "De Men", 5));
-        posts.add(new Review("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa. Tortor aliquam nulla facilisi cras fermentum. Morbi tempus iaculis urna id volutpat lacus laoreet non.", "Hoang Dang", new Timestamp(System.currentTimeMillis()), "De Men", 5));
-        posts.add(new Review("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa. Tortor aliquam nulla facilisi cras fermentum. Morbi tempus iaculis urna id volutpat lacus laoreet non.", "Hoang Dang", new Timestamp(System.currentTimeMillis()), "De Men", 5));
-        posts.add(new Review("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa. Tortor aliquam nulla facilisi cras fermentum. Morbi tempus iaculis urna id volutpat lacus laoreet non.", "Hoang Dang", new Timestamp(System.currentTimeMillis()), "De Men", 5));
-        posts.add(new Review("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa. Tortor aliquam nulla facilisi cras fermentum. Morbi tempus iaculis urna id volutpat lacus laoreet non.", "Hoang Dang", new Timestamp(System.currentTimeMillis()), "De Men", 5));
-        posts.add(new Review("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa. Tortor aliquam nulla facilisi cras fermentum. Morbi tempus iaculis urna id volutpat lacus laoreet non.", "Hoang Dang", new Timestamp(System.currentTimeMillis()), "De Men", 5));
-        posts.add(new Review("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa. Tortor aliquam nulla facilisi cras fermentum. Morbi tempus iaculis urna id volutpat lacus laoreet non.", "Hoang Dang", new Timestamp(System.currentTimeMillis()), "De Men", 5));
+        posts.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
+        posts.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
+        posts.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
+        posts.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
+        posts.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
     }
 }
