@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.LibraryFragment">
+
     <RelativeLayout
         android:id="@+id/librarySearch"
         android:layout_width="match_parent"
@@ -51,10 +52,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchBody"
-            android:layout_below="@id/searchHeader"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_below="@id/searchHeader" />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/libraryMain"
         android:layout_width="match_parent"
@@ -107,8 +109,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:elevation="0dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:elevation="0dp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -187,16 +189,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/libraryTitle2"
+                        android:clipToPadding="false"
                         android:paddingStart="9dp"
                         android:paddingEnd="9dp"
-                        android:clipToPadding="false"
                         android:scrollbars="none">
 
                         <LinearLayout
                             android:id="@+id/trending"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                        </LinearLayout>
+                            android:layout_height="wrap_content"></LinearLayout>
                     </HorizontalScrollView>
                 </RelativeLayout>
 
@@ -221,37 +222,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/libraryTitle3"
+                        android:clipToPadding="false"
                         android:paddingStart="9dp"
                         android:paddingEnd="9dp"
-                        android:clipToPadding="false"
                         android:scrollbars="none">
 
                         <LinearLayout
+                            android:id="@+id/genre"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
-                            <include layout="@layout/genre_card" />
-
-                            <include layout="@layout/genre_card" />
-
-                            <include layout="@layout/genre_card" />
-
-                            <include layout="@layout/genre_card" />
-
-                            <include layout="@layout/genre_card" />
-
-                            <include layout="@layout/genre_card" />
-
-                            <include layout="@layout/genre_card" />
-
-                            <include layout="@layout/genre_card" />
 
                         </LinearLayout>
                     </HorizontalScrollView>
                 </RelativeLayout>
 
-                <include layout="@layout/quote_card"
-                    android:layout_marginTop="16dp"/>
+                <include
+                    layout="@layout/quote_card"
+                    android:layout_marginTop="16dp" />
 
             </LinearLayout>
 

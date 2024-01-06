@@ -50,6 +50,7 @@ public class SearchBookAdapter extends RecyclerView.Adapter<SearchBookAdapter.Vi
     public void onBindViewHolder(@NonNull SearchBookAdapter.ViewHolder holder, int position) {
         Book book = books.get(position);
         holder.searchTitleName.setText(book.getTitle());
+        holder.searchAuthorName.setText(book.getAuthorString());
     }
 
     @Override

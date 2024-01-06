@@ -11,11 +11,18 @@ import java.util.Map;
 
 public class AuthorRepository {
     private static final String COLLECTION_NAME = "author";
-    private final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private final CollectionReference collection = firestore.collection(COLLECTION_NAME);
+    private static AuthorRepository instance;
+    private final CollectionReference collection;
 
-    public AuthorRepository() {
-        // Constructor
+    private AuthorRepository() {
+        collection = FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
+    }
+
+    public static AuthorRepository getInstance() {
+        if (instance == null) {
+            instance = new AuthorRepository();
+        }
+        return instance;
     }
 
     public Task<DocumentReference> addAuthor(Author author) {
@@ -39,6 +46,7 @@ public class AuthorRepository {
             }
         });
     }
+
     public Task<QuerySnapshot> getAllAuthors() {
         return collection.get();
     }

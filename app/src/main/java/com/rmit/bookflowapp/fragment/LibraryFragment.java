@@ -15,11 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.rmit.bookflowapp.Model.Book;
+import com.rmit.bookflowapp.Model.Genre;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.adapter.SearchBookAdapter;
 import com.rmit.bookflowapp.databinding.FragmentLibraryBinding;
 import com.rmit.bookflowapp.repository.BookRepository;
+import com.rmit.bookflowapp.repository.GenreRepository;
 import com.rmit.bookflowapp.util.TranslateAnimationUtil;
 import com.squareup.picasso.Picasso;
 
@@ -44,6 +46,9 @@ public class LibraryFragment extends Fragment {
                 String query = bind.searchView.getQuery().toString().trim();
                 if (!query.isEmpty()) {
                     performSearch(query);
+                } else {
+                    books.clear();
+                    searchBookAdapter.notifyDataSetChanged();
                 }
             }
         }
@@ -76,6 +81,9 @@ public class LibraryFragment extends Fragment {
 
         bind.cancelButton.setOnClickListener(v -> {
             TranslateAnimationUtil.fadeOutViewStatic(bind.librarySearch);
+            bind.searchView.setQuery("", false);
+            books.clear();
+            searchBookAdapter.notifyDataSetChanged();
             TranslateAnimationUtil.fadeInViewStatic(bind.libraryMain);
         });
 
@@ -120,9 +128,22 @@ public class LibraryFragment extends Fragment {
                         ImageView bookImage = bookLayout.findViewById(R.id.cardBookImage);
                         String imageUrl = currentBook.getImageUrl();
                         Picasso.get().load(imageUrl).into(bookImage);
-                        Log.d("IMAGE", imageUrl);
                         bind.trending.addView(bookLayout);
                     }
+                }
+            }
+        });
+
+        GenreRepository.getInstance().getGenreForLibraryFragment().addOnCompleteListener(getGenresTask -> {
+            if (getGenresTask.isSuccessful()) {
+                List<Genre> genreList = getGenresTask.getResult();
+                for (int i = 0; i < genreList.size(); i++) {
+                    Genre currentGenre = genreList.get(i);
+                    View genreCardLayout = LayoutInflater.from(requireContext()).inflate(R.layout.genre_card, null);
+                    ((TextView) genreCardLayout.findViewById(R.id.textView3)).setText(currentGenre.getName());
+                    ImageView genreImage = genreCardLayout.findViewById(R.id.imageView3);
+                    Picasso.get().load(currentGenre.getImageUrl()).into(genreImage);
+                    bind.genre.addView(genreCardLayout);
                 }
             }
         });
@@ -137,6 +158,17 @@ public class LibraryFragment extends Fragment {
     }
 
     private void performSearch(String query) {
-        Toast.makeText(requireActivity(), query, Toast.LENGTH_SHORT).show();
+        books.clear();
+        BookRepository.getInstance().getBookByQuery(query).addOnCompleteListener(
+                task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult() != null) {
+                            books.clear();
+                            books.addAll(task.getResult());
+                            searchBookAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+        );
     }
 }

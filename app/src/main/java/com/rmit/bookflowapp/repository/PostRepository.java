@@ -11,11 +11,19 @@ import java.util.Map;
 
 public class PostRepository {
     private static final String COLLECTION_NAME = "post";
-    private final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private final CollectionReference collection = firestore.collection(COLLECTION_NAME);
 
-    public PostRepository() {
-        // Constructor
+    private static PostRepository instance;
+    private final CollectionReference collection;
+
+    private PostRepository() {
+        collection = FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
+    }
+
+    public static PostRepository getInstance() {
+        if (instance == null) {
+            instance = new PostRepository();
+        }
+        return instance;
     }
 
     public Task<DocumentReference> addPost(Post post) {
@@ -39,6 +47,7 @@ public class PostRepository {
             }
         });
     }
+
     public Task<QuerySnapshot> getAllPosts() {
         return collection.get();
     }

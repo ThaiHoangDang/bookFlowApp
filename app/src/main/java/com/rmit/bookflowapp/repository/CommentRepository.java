@@ -7,15 +7,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.rmit.bookflowapp.Model.Comment;
 
+import org.checkerframework.checker.units.qual.C;
+
 import java.util.Map;
 
 public class CommentRepository {
     private static final String COLLECTION_NAME = "comment";
-    private final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private final CollectionReference collection = firestore.collection(COLLECTION_NAME);
+    private static CommentRepository instance;
+    private final CollectionReference collection;
 
-    public CommentRepository() {
-        // Constructor
+    private CommentRepository() {
+        collection = FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
+    }
+
+    public static CommentRepository getInstance() {
+        if (instance == null) {
+            instance = new CommentRepository();
+        }
+        return instance;
     }
 
     public Task<DocumentReference> addComment(Comment comment) {
@@ -39,6 +48,7 @@ public class CommentRepository {
             }
         });
     }
+
     public Task<QuerySnapshot> getAllComments() {
         return collection.get();
     }
