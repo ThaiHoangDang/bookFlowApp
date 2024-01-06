@@ -16,6 +16,8 @@ import com.rmit.bookflowapp.R;
 
 import java.util.List;
 
+import com.squareup.picasso.Picasso;
+
 public class SearchBookAdapter extends RecyclerView.Adapter<SearchBookAdapter.ViewHolder> {
     private Context context;
     private List<Book> books;
@@ -51,6 +53,7 @@ public class SearchBookAdapter extends RecyclerView.Adapter<SearchBookAdapter.Vi
         Book book = books.get(position);
         holder.searchTitleName.setText(book.getTitle());
         holder.searchAuthorName.setText(book.getAuthorString());
+        Picasso.get().load(book.getImageUrl()).into(holder.searchBookCover);
     }
 
     @Override

@@ -19,13 +19,14 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/searchBookCoverHolder"
-            android:layout_width="60dp"
+            android:layout_width="54dp"
             android:layout_height="match_parent"
+            android:layout_marginVertical="4dp"
             app:cardCornerRadius="8dp">
 
             <ImageView
                 android:id="@+id/searchBookCover"
-                android:layout_width="60dp"
+                android:layout_width="54dp"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/demenphieuluuky" />
@@ -56,10 +57,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:text="De Men Phieu Luu Ky"
-                android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="18sp"
+                android:maxLines="1"
+                android:text="De Men Phieu Luu Ky"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -67,10 +68,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/searchTitleName"
-                android:text="To Hoai"
-                android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="16dp" />
+                android:maxLines="1"
+                android:text="To Hoai"
+                android:textSize="14dp" />
         </RelativeLayout>
 
     </RelativeLayout>
