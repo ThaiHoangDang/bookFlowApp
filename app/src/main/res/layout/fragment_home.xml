@@ -79,6 +79,40 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+<!--        filter form -->
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/filterForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearlayout1"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+<!--            button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterAllBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="All" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterReviewBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Review" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterLendBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Lend" />
+
+        </LinearLayout>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"

@@ -71,6 +71,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.postDate.setText(Helper.convertTime(post.getTimestamp()));
 
             // stars
+            holder.rating.setVisibility(View.VISIBLE);
+            holder.postInfo.setVisibility(View.GONE);
             holder.rating.setRating(post.getRating());
 
             // image
