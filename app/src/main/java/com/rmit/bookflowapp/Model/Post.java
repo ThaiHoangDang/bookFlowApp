@@ -4,24 +4,24 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 
-public abstract class Post implements Comparable<Post>, Serializable {
+public class Post implements Comparable<Post>, Serializable {
     private String id;
     private String title;
     private String content;
-    private String userId;
-    private String bookId;
-    private Timestamp timestamp;
+    private User user;
+    private Book book;
+    private Long timestamp;
 
     public Post() {
         // empty constructor needed for firebase
     }
 
-    public Post(String id, String title, String content, String userId, String bookId, Timestamp timestamp) {
+    public Post(String id, String title, String content, User user, Book book, Long timestamp) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.userId = userId;
-        this.bookId = bookId;
+        this.user = user;
+        this.book = book;
         this.timestamp = timestamp;
     }
 
@@ -49,27 +49,27 @@ public abstract class Post implements Comparable<Post>, Serializable {
         this.content = content;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getBookId() {
-        return bookId;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
-    public Timestamp getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 

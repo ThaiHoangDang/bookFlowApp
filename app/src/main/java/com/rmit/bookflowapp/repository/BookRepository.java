@@ -3,6 +3,7 @@ package com.rmit.bookflowapp.repository;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.rmit.bookflowapp.Model.Book;
@@ -62,6 +63,18 @@ public class BookRepository {
                         return books;
                     } else {
                         Exception exception = task.getException();
+                        return null;
+                    }
+                });
+    }
+
+    public Task<Book> getBookById(String bid) {
+        return bookCollection.document(bid).get()
+                .continueWith(task -> {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()) {
+                        return documentSnapshot.toObject(Book.class);
+                    } else {
                         return null;
                     }
                 });
