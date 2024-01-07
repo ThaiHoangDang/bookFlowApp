@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView postOwner, cardPostTitle, postInfo, postContent, postDate;
+        private RatingBar rating;
         private Button postLikeButton;
 
         public ViewHolder(@NonNull View itemView) {
@@ -34,6 +36,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             postOwner = itemView.findViewById(R.id.postOwner);
             cardPostTitle = itemView.findViewById(R.id.cardPostTitle);
             postInfo = itemView.findViewById(R.id.postInfo);
+            rating = itemView.findViewById(R.id.rating);
             postContent = itemView.findViewById(R.id.postContent);
             postDate = itemView.findViewById(R.id.postDate);
 //            postLikeButton = itemView.findViewById(R.id.postLikeBtn);
@@ -64,10 +67,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             // text
             holder.postOwner.setText(post.getUser().getName());
             holder.cardPostTitle.setText(post.getTitle());
-            holder.postInfo.setText("Wrote a review for Truyen Kieu");
             holder.postContent.setText(post.getContent());
             holder.postDate.setText(Helper.convertTime(post.getTimestamp()));
-            // holder.postLikeButton.setText("32");
+
+            // stars
+            holder.rating.setRating(post.getRating());
 
             // image
             ImageView postImage = holder.itemView.findViewById(R.id.imageView4);
@@ -78,10 +82,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             // text
             holder.postOwner.setText(post.getUser().getName());
             holder.cardPostTitle.setText(post.getTitle());
-            holder.postInfo.setText("Wrote a review for Truyen Kieu");
             holder.postContent.setText(post.getContent());
             holder.postDate.setText(Helper.convertTime(post.getTimestamp()));
-            // holder.postLikeButton.setText("32");
+
+            // location
+            holder.rating.setVisibility(View.GONE);
+            holder.postInfo.setVisibility(View.VISIBLE);
+            holder.postInfo.setText(Helper.convertLatLng(context, post.getLocation()));
 
             // image
             ImageView postImage = holder.itemView.findViewById(R.id.imageView4);

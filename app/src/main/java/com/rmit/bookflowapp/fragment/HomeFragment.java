@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
 
     public void getData() {
         // get data from Firebase and pass to adapter
-        PostRepository.getInstance().getPosts(2).addOnCompleteListener(task -> {
+        PostRepository.getInstance().getAllPosts().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
 
                 posts.clear();
@@ -116,6 +116,7 @@ public class HomeFragment extends Fragment {
                                     ((Long) task1.get("rating")).intValue()
                             );
                             posts.add(post);
+                            Log.d(TAG, "Created a new Review");
                         } else if (task1.getData().get("location") != null) {
                             Lend post = new Lend(
                                     task1.getId(),
@@ -125,8 +126,8 @@ public class HomeFragment extends Fragment {
                                     tempbook.getResult(),
                                     (Long) task1.get("timestamp"),
                                     new LatLng(
-                                            (Long) ((List<?>) task1.get("location")).get(0),
-                                            (Long) ((List<?>) task1.get("location")).get(1)
+                                            (Double) ((List<?>) task1.get("location")).get(0),
+                                            (Double) ((List<?>) task1.get("location")).get(1)
                                     ));
                             posts.add(post);
                         }
