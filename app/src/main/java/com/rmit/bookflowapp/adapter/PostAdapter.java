@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.rmit.bookflowapp.Model.Post;
 import com.rmit.bookflowapp.Model.Review;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.Ultilities.Helper;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -58,20 +60,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         // check post type is either Review or Lend and typecast to appropriate type
         if (posts.get(position) instanceof Review) {
             Review post = (Review) posts.get(position);
+
+            // text
             holder.postOwner.setText(post.getUser().getName());
             holder.cardPostTitle.setText(post.getTitle());
             holder.postInfo.setText("Wrote a review for Truyen Kieu");
             holder.postContent.setText(post.getContent());
             holder.postDate.setText(Helper.convertTime(post.getTimestamp()));
-//            holder.postLikeButton.setText("32");
+            // holder.postLikeButton.setText("32");
+
+            // image
+            ImageView postImage = holder.itemView.findViewById(R.id.imageView4);
+            Picasso.get().load(post.getBook().getImageUrl()).into(postImage);
         } else if (posts.get(position) instanceof Lend) {
             Lend post = (Lend) posts.get(position);
+
+            // text
             holder.postOwner.setText(post.getUser().getName());
             holder.cardPostTitle.setText(post.getTitle());
             holder.postInfo.setText("Wrote a review for Truyen Kieu");
             holder.postContent.setText(post.getContent());
             holder.postDate.setText(Helper.convertTime(post.getTimestamp()));
-//            holder.postLikeButton.setText("32");
+            // holder.postLikeButton.setText("32");
+
+            // image
+            ImageView postImage = holder.itemView.findViewById(R.id.imageView4);
+            Picasso.get().load(post.getBook().getImageUrl()).into(postImage);
         }
     }
 

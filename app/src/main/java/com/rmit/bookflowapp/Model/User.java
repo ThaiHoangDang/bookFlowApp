@@ -7,18 +7,18 @@ public class User implements Serializable {
     private String email;
     private String name;
     private String role; // ADMIN or USER
-    private String imageUrl;
+    private String imageId;
 
     public User() {
         // empty constructor needed for firebase
     }
 
-    public User(String id, String email, String name, String role) {
+    public User(String id, String email, String name, String role, String imageId) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.role = role;
-        this.imageUrl = "default.png";
+        this.imageId = imageId;
     }
 
     public String getId() {
@@ -53,11 +53,15 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageId() {
+        return imageId;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
+
+    public String getImageUrl() {
+        return "https://firebasestorage.googleapis.com/v0/b/striking-water-408603.appspot.com/o/" + getImageId() + "?alt=media";
     }
 }
