@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.rmit.bookflowapp"
-        minSdk = 24
+        minSdk = 33
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -65,4 +65,7 @@ dependencies {
 
     // Google Location
     implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
 }
