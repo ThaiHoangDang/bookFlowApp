@@ -51,4 +51,9 @@ public class PostRepository {
     public Task<QuerySnapshot> getAllPosts() {
         return collection.get();
     }
+
+    // get posts limited by number
+    public Task<QuerySnapshot> getPosts(int limit) {
+        return collection.limit(limit).get();
+    }
 }

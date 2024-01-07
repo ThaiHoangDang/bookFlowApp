@@ -16,8 +16,8 @@ public class Review extends Post implements Serializable {
         this.rating = rating;
     }
 
-    public Review(String id, String title, String content, String userId, String bookId, Timestamp timestamp, int rating) {
-        super(id, title, content, userId, bookId, timestamp);
+    public Review(String id, String title, String content, User user, Book book, Long timestamp, int rating) {
+        super(id, title, content, user, book, timestamp);
         this.rating = rating;
     }
 

@@ -67,10 +67,6 @@ public class BookDetailFragment extends Fragment {
     }
 
     private void generateData() {
-        reviews.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
-        reviews.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
-        reviews.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
-        reviews.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
-        reviews.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
+//        reviews.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
     }
 }
