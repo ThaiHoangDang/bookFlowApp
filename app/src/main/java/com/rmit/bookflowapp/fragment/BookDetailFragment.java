@@ -3,6 +3,7 @@ package com.rmit.bookflowapp.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -56,6 +57,8 @@ public class BookDetailFragment extends Fragment {
                 getParentFragmentManager().popBackStack();  // Navigate back to the previous fragment
             }
         });
+
+        bind.writeReviewBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.newReviewFragment));
 
         return bind.getRoot();
     }
