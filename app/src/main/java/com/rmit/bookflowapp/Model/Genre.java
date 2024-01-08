@@ -50,4 +50,8 @@ public class Genre implements Serializable {
     public void setImageId(String imageId) {
         this.imageId = imageId;
     }
+
+    public String getImageUrl() {
+        return "https://firebasestorage.googleapis.com/v0/b/striking-water-408603.appspot.com/o/" + getImageId() + "?alt=media";
+    }
 }

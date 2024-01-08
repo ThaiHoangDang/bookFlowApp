@@ -18,6 +18,7 @@ import com.rmit.bookflowapp.adapter.PostAdapter;
 import com.rmit.bookflowapp.adapter.ReviewAdapter;
 import com.rmit.bookflowapp.databinding.FragmentBookDetailBinding;
 import com.rmit.bookflowapp.databinding.FragmentLibraryBinding;
+import com.rmit.bookflowapp.repository.CommentRepository;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -50,7 +51,6 @@ public class BookDetailFragment extends Fragment {
         reviewAdapter = new ReviewAdapter(activity, reviews);
         bind.bookDetailReviewList.setAdapter(reviewAdapter);
         bind.bookDetailReviewList.setLayoutManager(new LinearLayoutManager(activity));
-
         bind.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

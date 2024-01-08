@@ -48,6 +48,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
+    // Firebase storage image load
+    implementation ("com.squareup.picasso:picasso:2.8")
+
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth:22.3.0")
     // Firebase Cloud Firestore
