@@ -3,15 +3,19 @@ package com.rmit.bookflowapp.fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
@@ -50,6 +54,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -59,36 +70,30 @@ public class HomeFragment extends Fragment {
         bind = FragmentHomeBinding.inflate(inflater, container, false);
         activity.setBottomNavigationBarVisibility(true);
 
+        // set up action bar
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Home");
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+
         // set up posts list
         postAdapter = new PostAdapter(activity, posts);
         bind.postsListView.setAdapter(postAdapter);
         bind.postsListView.setLayoutManager(new LinearLayoutManager(activity));
 
         // Add scroll listener to RecyclerView
-        bind.postsListView.setOnTouchListener(new TranslateAnimationUtil(activity, bind.linearlayout1));
+//        bind.postsListView.setOnTouchListener(new TranslateAnimationUtil(activity, bind.linearlayout1));
 
         bind.pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Toast.makeText(activity, "Refreshed", Toast.LENGTH_SHORT).show();
                 getData(query);
                 bind.pullToRefresh.setRefreshing(false);
             }
         });
 
-        bind.createPostBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment));
+//        bind.createPostBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment));
 
-        bind.filterBtn.setOnClickListener(v -> {
-            int visible = bind.filterForm.getVisibility();
-            if (visible == View.GONE) {
-                bind.filterForm.setVisibility(View.VISIBLE);
-                TranslateAnimationUtil.fadeOutViewStatic(bind.pullToRefresh);
-                TranslateAnimationUtil.fadeInViewStatic(bind.filterForm);
-            } else {
-                bind.filterForm.setVisibility(View.GONE);
-                TranslateAnimationUtil.fadeOutViewStatic(bind.filterForm);
-                TranslateAnimationUtil.fadeInViewStatic(bind.pullToRefresh);
-            }
-        });
         bind.filterAllBtn.setOnClickListener(v1 -> {
             getData("ALL");
             query = "ALL";
@@ -117,6 +122,27 @@ public class HomeFragment extends Fragment {
 
         return bind.getRoot();
     }
+
+//    @Override
+//    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        if (savedInstanceState != null) {
+//            Toast.makeText(activity, savedInstanceState.getString("query"), Toast.LENGTH_SHORT).show();
+////            bind.searchView.setQuery(savedInstanceState.getString("query"), true);
+//            bind.postsListView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable("listState"));
+//        } else {
+//            Toast.makeText(activity, "null", Toast.LENGTH_SHORT).show();
+//        }
+//        activity.setBottomNavigationBarVisibility(true);
+//    }
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+////        save search query
+//        outState.putString("query", query);
+//        outState.putParcelable("listState", bind.postsListView.getLayoutManager().onSaveInstanceState());
+//        super.onSaveInstanceState(outState);
+//    }
 
     public void getData(String query) {
         // get data from Firebase and pass to adapter
@@ -198,6 +224,65 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+//        bind.searchView.setOnQueryTextListener(null);
         bind = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu_for_home_fragment, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+
+        searchView.setQueryHint("Search by title or content");
+
+        // add listener to search bar
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            // filter when user press enter
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            // filter in real time
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                postAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_filter) {
+
+            // refresh the recycler view
+            int visible = bind.filterForm.getVisibility();
+            if (visible == View.GONE) {
+                bind.filterForm.setVisibility(View.VISIBLE);
+                TranslateAnimationUtil.fadeOutViewStatic(bind.pullToRefresh);
+                TranslateAnimationUtil.fadeInViewStatic(bind.filterForm);
+            } else {
+                bind.filterForm.setVisibility(View.GONE);
+                TranslateAnimationUtil.fadeOutViewStatic(bind.filterForm);
+                TranslateAnimationUtil.fadeInViewStatic(bind.pullToRefresh);
+            }
+
+            return true;
+        }
+        else if (item.getItemId() == R.id.action_search) {
+
+            // copy-pasted the same code from onCreateView method
+            postAdapter = new PostAdapter(activity, posts);
+            bind.postsListView.setAdapter(postAdapter);
+            bind.postsListView.setLayoutManager(new LinearLayoutManager(activity));
+
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }

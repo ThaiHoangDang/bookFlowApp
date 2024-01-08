@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -22,9 +24,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> implements Filterable {
     private Context context;
     private ArrayList<Post> posts;
+    private ArrayList<Post> fullPosts;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView postOwner, cardPostTitle, postInfo, postContent, postDate;
@@ -46,6 +49,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public PostAdapter(Context context, ArrayList<Post> posts) {
         this.context = context;
         this.posts = posts;
+        this.fullPosts = new ArrayList<>(posts);
     }
 
     @NonNull
@@ -98,14 +102,54 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void setFilteredList(ArrayList<Post> filteredList) {
-        this.posts = filteredList;
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getItemCount() {
         return posts.size();
     }
+
+    // from implementing Filterable
+    @Override
+    public Filter getFilter() {
+        return postsFilter;
+    }
+
+    private Filter postsFilter = new Filter() {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<Post> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(fullPosts); // show all posts if no search query
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim(); // clean up search query
+
+                for (Post post : fullPosts) {
+                    if (post instanceof Review) {
+                        Review review = (Review) post;
+                        if (review.getTitle().toLowerCase().contains(filterPattern) || review.getContent().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(review); // if search query matches title or content, add to filtered list
+                        }
+                    } else if (post instanceof Lend) {
+                        Lend lend = (Lend) post;
+                        if (lend.getTitle().toLowerCase().contains(filterPattern) || lend.getContent().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(lend); // if search query matches title or content, add to filtered list
+                        }
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            posts.clear();
+            posts.addAll((ArrayList) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 }
