@@ -1,5 +1,7 @@
 package com.rmit.bookflowapp.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -29,18 +31,20 @@ public class BookDetailViewModel extends ViewModel {
     }
 
     private void fetchBookReviews() {
-        PostRepository.getInstance().getReviewsOfBook(bookId)
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Review> allBookReviews = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        Review review = document.toObject(Review.class);
+        PostRepository.getInstance().getReviewObjectsOfBook(bookId)
+                .addOnSuccessListener(allBookReviews -> {
+                    List<Review> filteredReviews = new ArrayList<>();
 
-                        if (review.getRating() < 1 || review.getRating() > 5) continue;
-
-                        review.setId(document.getId()); // Set the document ID manually
-                        allBookReviews.add(review);
+                    for (Review review : allBookReviews) {
+                        if (review.getRating() >= 1 && review.getRating() <= 5) {
+                            filteredReviews.add(review);
+                        }
                     }
-                    bookReviews.setValue(allBookReviews);
+
+                    bookReviews.setValue(filteredReviews);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to fetch book reviews", e);
                 });
     }
 }
