@@ -51,4 +51,19 @@ public class PostRepository {
     public Task<QuerySnapshot> getAllPosts() {
         return collection.get();
     }
+
+    // get only Reviews that has the field of "rating"
+    public Task<QuerySnapshot> getAllReviewPosts() {
+        return collection.orderBy("rating").get();
+    }
+
+    // get only Lends that has the field of "location"
+    public Task<QuerySnapshot> getAllLendPosts() {
+        return collection.orderBy("location").get();
+    }
+
+    // get posts limited by number
+    public Task<QuerySnapshot> getPosts(int limit) {
+        return collection.limit(limit).get();
+    }
 }

@@ -54,13 +54,27 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
+<!--                Subheader for reviewing books, showing (int) stars 1-5-->
+                <RatingBar
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/postOwner"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:theme="@style/RatingBar"
+                    android:numStars="5"
+                    android:stepSize="0.1"
+                    android:isIndicator="true" />
+
+<!--                Subheader for lending posts, showing the address-->
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/postInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/postOwner"
                     android:maxLines="1"
-                    android:text="Rated 5 star for De Men Phieu Luu Ky"
+                    android:text="Location"
                     android:textSize="12sp" />
             </RelativeLayout>
 
