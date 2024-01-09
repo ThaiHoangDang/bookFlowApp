@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.Review;
 import com.rmit.bookflowapp.R;
@@ -67,14 +68,6 @@ public class BookDetailFragment extends Fragment {
             getParentFragmentManager().popBackStack();  // Navigate back to the previous fragment
         });
 
-        bind.writeReviewBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.newReviewFragment));
-
-        bind.writeReviewBtn.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("BOOK_OBJECT", book);
-            Navigation.findNavController(getView()).navigate(R.id.newReviewFragment, bundle);
-        });
-
         return bind.getRoot();
     }
 
@@ -115,6 +108,7 @@ public class BookDetailFragment extends Fragment {
                 reviewAdapter.setItems(reviews);
 
                 updateRating(reviews);
+                updateNewReviewBtn(reviews);
             }
         });
     }
@@ -166,5 +160,30 @@ public class BookDetailFragment extends Fragment {
         bind.progressBar5.setProgress((int) Math.round(num5 * 100.0 / reviews.size()));
         bind.fiveStarPercen.setText(Math.round(num5 * 100.0 / reviews.size()) + "%");
         bind.bookDetail5StarCount.setText(Integer.toString(num5));
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateNewReviewBtn(List<Review> reviews) {
+        Review myReview = reviews.stream().filter(review -> Objects.equals(review.getUser().getId(), FirebaseAuth.getInstance().getUid())).findFirst().orElse(null);
+
+        // update review
+        if (myReview != null) {
+            bind.writeReviewBtn.setText("Edit Review");
+            bind.writeReviewBtn.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("BOOK_OBJECT", book);
+                bundle.putSerializable("MY_REVIEW", myReview);
+                Navigation.findNavController(getView()).navigate(R.id.newReviewFragment, bundle);
+            });
+
+        // create new review
+        } else {
+            bind.writeReviewBtn.setText("Write A Review");
+            bind.writeReviewBtn.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("BOOK_OBJECT", book);
+                Navigation.findNavController(getView()).navigate(R.id.newReviewFragment, bundle);
+            });
+        }
     }
 }

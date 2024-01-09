@@ -101,6 +101,9 @@ public class PostRepository {
         return collection.document(id).set(review);
     }
 
+    public Task<Void> updateReview(String id, Map<String, Object> review) {
+        return collection.document(id).set(review);
+    }
 
     public Task<QuerySnapshot> getAllPosts() {
         return collection.get();

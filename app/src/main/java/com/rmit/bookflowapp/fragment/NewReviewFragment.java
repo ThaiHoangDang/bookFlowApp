@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rmit.bookflowapp.Model.Book;
+import com.rmit.bookflowapp.Model.Review;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.databinding.FragmentNewReviewBinding;
@@ -34,6 +35,7 @@ public class NewReviewFragment extends Fragment {
     private FragmentNewReviewBinding bind;
     private MainActivity activity;
     private Book book;
+    private Review review = null;
 
     public NewReviewFragment() {
         // Required empty public constructor
@@ -48,6 +50,8 @@ public class NewReviewFragment extends Fragment {
         // end fragment if no data found
         if (arguments == null) getParentFragmentManager().popBackStack();
         book = (Book) Objects.requireNonNull(arguments).getSerializable("BOOK_OBJECT");
+
+        review = (Review) Objects.requireNonNull(arguments).getSerializable("MY_REVIEW");
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -63,6 +67,13 @@ public class NewReviewFragment extends Fragment {
         ((TextView) bookToReview.findViewById(R.id.searchAuthorName)).setText(book.getAuthorString());
         Picasso.get().load(book.getImageUrl()).into((ImageView) bookToReview.findViewById(R.id.searchBookCover));
         bind.newReviewBookHolder.addView(bookToReview);
+
+        // update form if user has written review before
+        if (review != null) {
+            bind.reviewTitleText.setText(review.getTitle());
+            bind.reviewContentText.setText(review.getContent());
+            bind.reviewRating.setRating(review.getRating());
+        }
 
         bind.reviewSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,10 +97,18 @@ public class NewReviewFragment extends Fragment {
                 reviewData.put("rating", reviewRating);
                 reviewData.put("timestamp", System.currentTimeMillis() / 1000L);
 
-                PostRepository.getInstance().addReview(reviewData).addOnSuccessListener(unused -> {
-                    Toast.makeText(activity, "New review added!", Toast.LENGTH_SHORT).show();
-                    getParentFragmentManager().popBackStack();
-                }).addOnFailureListener(e -> Toast.makeText(activity, "Upload review failed!", Toast.LENGTH_SHORT).show());
+                // push review to db
+                if (review != null) {
+                    PostRepository.getInstance().updateReview(review.getId(), reviewData).addOnSuccessListener(unused -> {
+                        Toast.makeText(activity, "New review added!", Toast.LENGTH_SHORT).show();
+                        getParentFragmentManager().popBackStack();
+                    }).addOnFailureListener(e -> Toast.makeText(activity, "Upload review failed!", Toast.LENGTH_SHORT).show());
+                } else {
+                    PostRepository.getInstance().addReview(reviewData).addOnSuccessListener(unused -> {
+                        Toast.makeText(activity, "New review added!", Toast.LENGTH_SHORT).show();
+                        getParentFragmentManager().popBackStack();
+                    }).addOnFailureListener(e -> Toast.makeText(activity, "Upload review failed!", Toast.LENGTH_SHORT).show());
+                }
             }
         });
 
