@@ -48,6 +48,13 @@ public class PostRepository {
         });
     }
 
+    public Task<QuerySnapshot> getReviewsOfBook(String bookId) {
+        return collection
+                .whereEqualTo("bookId", bookId)
+//                .orderBy("rating")
+                .get();
+    }
+
     public Task<QuerySnapshot> getAllPosts() {
         return collection.get();
     }

@@ -30,7 +30,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/imageView5"
+                        android:id="@+id/bookDetailBackgroundImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
@@ -250,15 +250,9 @@
                     android:layout_below="@id/bookDetailDescriptionSection">
 
                     <LinearLayout
+                        android:id="@+id/bookDetailGenreList"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <include layout="@layout/genre_tag" />
-
-                        <include layout="@layout/genre_tag" />
-
-                        <include layout="@layout/genre_tag" />
-                    </LinearLayout>
+                        android:layout_height="match_parent"/>
                 </ScrollView>
 
             </RelativeLayout>

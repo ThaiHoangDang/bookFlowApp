@@ -3,12 +3,15 @@ package com.rmit.bookflowapp.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.Review;
@@ -16,9 +19,12 @@ import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.adapter.ReviewAdapter;
 import com.rmit.bookflowapp.databinding.FragmentBookDetailBinding;
+import com.rmit.bookflowapp.viewmodel.BookDetailViewModel;
+import com.rmit.bookflowapp.viewmodel.factory.BookDetailViewModelFactory;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class BookDetailFragment extends Fragment {
@@ -26,8 +32,8 @@ public class BookDetailFragment extends Fragment {
     private FragmentBookDetailBinding bind;
     private MainActivity activity;
     private ReviewAdapter reviewAdapter;
+    private BookDetailViewModel viewModel;
     private Book book;
-    private ArrayList<Review> reviews = new ArrayList<>();
 
     public BookDetailFragment() {
         // Required empty public constructor
@@ -41,10 +47,11 @@ public class BookDetailFragment extends Fragment {
 
         // end fragment if no data found
         if (arguments == null) getParentFragmentManager().popBackStack();
-
         book = (Book) Objects.requireNonNull(arguments).getSerializable("BOOK_OBJECT");
 
-        generateData();
+        assert book != null;
+        BookDetailViewModelFactory factory = new BookDetailViewModelFactory(book.getId());
+        viewModel = new ViewModelProvider(this, factory).get(BookDetailViewModel.class);
     }
 
     @Override
@@ -54,10 +61,6 @@ public class BookDetailFragment extends Fragment {
         activity.setBottomNavigationBarVisibility(true);
 
         setupView(book);
-
-        reviewAdapter = new ReviewAdapter(activity, reviews);
-        bind.bookDetailReviewList.setAdapter(reviewAdapter);
-        bind.bookDetailReviewList.setLayoutManager(new LinearLayoutManager(activity));
 
         bind.back.setOnClickListener(v -> {
             getParentFragmentManager().popBackStack();  // Navigate back to the previous fragment
@@ -76,13 +79,26 @@ public class BookDetailFragment extends Fragment {
 
     private void setupView(Book book) {
         Picasso.get().load(book.getImageUrl()).into(bind.bookDetailCover);
+        Picasso.get().load(book.getImageUrl()).into(bind.bookDetailBackgroundImage);
         bind.bookDetailBookName.setText(book.getTitle());
         bind.bookDetailBookAuthor.setText(book.getAuthorString());
         bind.bookDetailBookDescription.setText(book.getDescription());
 
-    }
+        // set genres
+        for (String genre : book.getGenre()) {
+            View genreTag = LayoutInflater.from(requireContext()).inflate(R.layout.genre_tag, null);
+            ((TextView) genreTag.findViewById(R.id.genreTagText)).setText(genre);
+            bind.bookDetailGenreList.addView(genreTag);
+        }
 
-    private void generateData() {
-//        reviews.add(new Review("id", "What a book!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem sed risus ultricies tristique nulla aliquet. Eget nunc lobortis mattis aliquam faucibus purus in massa.", "This is user id", "This is book it", new com.google.firebase.Timestamp(1, 1), 5));
+        reviewAdapter = new ReviewAdapter(activity, new ArrayList<>());
+        bind.bookDetailReviewList.setAdapter(reviewAdapter);
+        bind.bookDetailReviewList.setLayoutManager(new LinearLayoutManager(activity));
+        viewModel.getBookReviews().observe(getViewLifecycleOwner(), new Observer<List<Review>>() {
+            @Override
+            public void onChanged(List<Review> reviews) {
+                reviewAdapter.setItems(reviews);
+            }
+        });
     }
 }

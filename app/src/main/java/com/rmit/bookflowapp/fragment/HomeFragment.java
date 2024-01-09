@@ -3,6 +3,7 @@ package com.rmit.bookflowapp.fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -72,7 +73,7 @@ public class HomeFragment extends Fragment {
         activity.setBottomNavigationBarVisibility(true);
 
         // set up action bar
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Home");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(Html.fromHtml("<font color='#ffffff'>Home</font>"));
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
 

@@ -15,7 +15,7 @@
     app:contentPaddingTop="8dp">
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/genreTagText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Science"

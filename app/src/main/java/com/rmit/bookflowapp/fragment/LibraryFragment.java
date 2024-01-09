@@ -1,5 +1,6 @@
 package com.rmit.bookflowapp.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -66,6 +67,7 @@ public class LibraryFragment extends Fragment implements ClickCallBack {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onResume() {
         super.onResume();

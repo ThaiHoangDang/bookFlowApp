@@ -15,6 +15,7 @@ import com.rmit.bookflowapp.Model.Review;
 import com.rmit.bookflowapp.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
         private Context context;
@@ -63,5 +64,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return reviews.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setItems(List<Review> reviews) {
+        this.reviews.clear();
+        this.reviews.addAll(reviews);
+        notifyDataSetChanged();
     }
 }
