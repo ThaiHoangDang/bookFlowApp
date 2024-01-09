@@ -128,23 +128,22 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/textView12"
+                                    android:id="@+id/bookDetailReviewCount"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="10K"
+                                    android:text="0"
                                     android:textAlignment="center"
                                     android:textColor="#FFFFFF"
                                     android:textSize="26sp"
                                     android:textStyle="bold" />
 
                                 <TextView
-                                    android:id="@+id/textView13"
+                                    android:id="@+id/textView10"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Reads"
+                                    android:text="Reviews"
                                     android:textAlignment="center"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="14sp" />
+                                    android:textColor="#FFFFFF" />
                             </LinearLayout>
 
                             <View
@@ -190,7 +189,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/bookDetailReviewCount"
+                                    android:id="@+id/bookDetail5StarCount"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0"
@@ -200,12 +199,13 @@
                                     android:textStyle="bold" />
 
                                 <TextView
-                                    android:id="@+id/textView10"
+                                    android:id="@+id/textView13"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Reviews"
+                                    android:text="5 Star"
                                     android:textAlignment="center"
-                                    android:textColor="#FFFFFF" />
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="14sp" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -230,12 +230,18 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="16dp">
 
-                    <TextView
-                        android:id="@+id/bookDetailBookDescription"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/bookDetailDescriptionTitle"
-                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Laoreet id donec ultrices tincidunt. Malesuada bibendum arcu vitae elementum curabitur vitae nunc sed velit. Eget nullam non nisi est sit amet facilisis magna. " />
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:nestedScrollingEnabled="true"
+                        android:layout_below="@id/bookDetailDescriptionTitle">
+
+                        <TextView
+                            android:id="@+id/bookDetailBookDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Laoreet id donec ultrices tincidunt. Malesuada bibendum arcu vitae elementum curabitur vitae nunc sed velit. Eget nullam non nisi est sit amet facilisis magna. " />
+                    </ScrollView>
 
                     <TextView
                         android:id="@+id/bookDetailDescriptionTitle"
@@ -263,23 +269,13 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp">
-
-                <TextView
-                    android:id="@+id/bookDetailReviewTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="Reviews"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                android:layout_marginBottom="32dp"
+                android:background="@color/base_blue">
 
                 <RelativeLayout
                     android:id="@+id/BookDetailRatingSummary"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@id/bookDetailReviewTitle"
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
                     android:layout_marginBottom="16dp">
@@ -288,9 +284,10 @@
                         android:id="@+id/bookDetailTotalScore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="_ /5.0"
+                        android:layout_marginTop="16dp"
+                        android:text="No Reviews"
                         android:textAlignment="center"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <RatingBar
@@ -301,8 +298,8 @@
                         android:layout_centerHorizontal="true"
                         android:isIndicator="true"
                         android:max="5"
-                        android:scaleX="0.6"
-                        android:scaleY="0.6" />
+                        android:scaleX="0.5"
+                        android:scaleY="0.5" />
 
                     <LinearLayout
                         android:id="@+id/fiveStarRating"

@@ -151,5 +151,6 @@ public class BookDetailFragment extends Fragment {
 
         bind.progressBar5.setProgress((int) Math.round(num5 * 100.0 / reviews.size()));
         bind.fiveStarPercen.setText(Math.round(num5 * 100.0 / reviews.size()) + "%");
+        bind.bookDetail5StarCount.setText(Integer.toString(num5));
     }
 }
