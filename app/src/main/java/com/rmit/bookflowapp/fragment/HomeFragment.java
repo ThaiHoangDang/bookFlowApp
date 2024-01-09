@@ -45,7 +45,8 @@ public class HomeFragment extends Fragment {
     private MainActivity activity;
     private PostAdapter postAdapter;
     private ArrayList<Post> posts = new ArrayList<>();
-    private String query = "ALL";
+    private String query = "ALL"; // "ALL", "REVIEW", "LEND"
+    private String sort = "ASC"; // "ASC" or "DESC"
 
     public HomeFragment() {
         // Required empty public constructor
@@ -115,10 +116,24 @@ public class HomeFragment extends Fragment {
             bind.filterReviewBtn.setBackgroundColor(getResources().getColor(R.color.orange));
             bind.filterLendBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
         });
+        bind.sortAscBtn.setOnClickListener(v1 -> {
+            sort = "ASC";
+            bind.sortAscBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
+            bind.sortDescBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+            getData(query);
+        });
+        bind.sortDescBtn.setOnClickListener(v1 -> {
+            sort = "DESC";
+            bind.sortAscBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+            bind.sortDescBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
+            getData(query);
+        });
 
         query = "ALL";
+        sort = "ASC";
         getData("ALL"); // by default, first load will query all posts, but the next pull down refresh will be based on String query
         bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
+        bind.sortAscBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
 
         return bind.getRoot();
     }
@@ -214,6 +229,12 @@ public class HomeFragment extends Fragment {
                 }
                 return null;
             }).addOnCompleteListener(task4 -> {
+                // sort posts by timestamp
+                if (sort.equals("ASC")) {
+                    posts.sort((o1, o2) -> (int) (o1.getTimestamp() - o2.getTimestamp()));
+                } else if (sort.equals("DESC")) {
+                    posts.sort((o1, o2) -> (int) (o2.getTimestamp() - o1.getTimestamp()));
+                }
                 // notify adapter when done
                 postAdapter.notifyDataSetChanged();
             });
@@ -268,6 +289,16 @@ public class HomeFragment extends Fragment {
             } else {
                 bind.filterForm.setVisibility(View.GONE);
                 TranslateAnimationUtil.fadeOutViewStatic(bind.filterForm);
+                TranslateAnimationUtil.fadeInViewStatic(bind.pullToRefresh);
+            }
+            int visible2 = bind.sortForm.getVisibility();
+            if (visible2 == View.GONE) {
+                bind.sortForm.setVisibility(View.VISIBLE);
+                TranslateAnimationUtil.fadeOutViewStatic(bind.pullToRefresh);
+                TranslateAnimationUtil.fadeInViewStatic(bind.sortForm);
+            } else {
+                bind.sortForm.setVisibility(View.GONE);
+                TranslateAnimationUtil.fadeOutViewStatic(bind.sortForm);
                 TranslateAnimationUtil.fadeInViewStatic(bind.pullToRefresh);
             }
 

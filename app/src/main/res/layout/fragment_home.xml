@@ -19,8 +19,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="horizontal"
-            android:gravity="center"
-            >
+            android:gravity="center">
 <!--            button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/filterAllBtn"
@@ -44,13 +43,38 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/sortForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_below="@id/filterForm">
+<!--            button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sortAscBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Ascending" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sortDescBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Descending" />
+
+        </LinearLayout>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/postsListView"
-                android:paddingTop="60dp"
                 android:clipToPadding="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
