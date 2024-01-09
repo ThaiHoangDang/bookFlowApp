@@ -69,7 +69,7 @@ public class Chat implements Serializable {
 
         @Override
         public int compareTo(Message o) {
-            return o.timestamp.compareTo(this.getTimestamp());
+            return this.timestamp.compareTo(o.getTimestamp());
         }
 
         @Override
@@ -112,7 +112,6 @@ public class Chat implements Serializable {
     }
 
     public List<String> getUserId() {
-        Collections.sort(userId);
         return userId;
     }
 
@@ -121,6 +120,7 @@ public class Chat implements Serializable {
     }
 
     public List<Message> getMessages() {
+        Collections.sort(messages);
         return messages;
     }
 

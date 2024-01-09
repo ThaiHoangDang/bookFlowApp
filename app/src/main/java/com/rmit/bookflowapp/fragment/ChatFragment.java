@@ -32,6 +32,7 @@ import com.rmit.bookflowapp.databinding.FragmentMessageListBinding;
 import com.rmit.bookflowapp.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ChatFragment extends Fragment {
@@ -80,6 +81,7 @@ public class ChatFragment extends Fragment {
             chat = arguments.getSerializable("CHAT_OBJECT", Chat.class);
             recipient = arguments.getSerializable("CHAT_RECIPIENT", User.class);
             messages = chat.getMessages();
+            markAsSeen();
 
             binding.title.setText(recipient.getName());
             adapter = new ChatMessageAdapter(getContext(), messages, recipient);
@@ -120,6 +122,15 @@ public class ChatFragment extends Fragment {
         }
     }
 
+    private void markAsSeen(){
+        if (!messages.isEmpty()) {
+            if (messages.get(messages.size()-1).getSender().equals(recipient.getId()) && !messages.get(messages.size()-1).isRead()) {
+                messages.get(messages.size()-1).setRead(true);
+                messagesCollection.document(chat.getChatId()).update("messages", messages);
+            }
+        }
+    }
+
     private void sendMessage(String message){
         List<Chat.Message> messages = new ArrayList<>(chat.getMessages());
         messages.add(new Chat.Message(currentUser.getUid(), message, Timestamp.now(), false));
@@ -134,8 +145,8 @@ public class ChatFragment extends Fragment {
                 if (newChat.getMessages().size()>chat.getMessages().size()) {
                     chat.setMessages(newChat.getMessages());
                     messages.add(newChat.getMessages().get(newChat.getMessages().size() - 1));
-                    binding.recyclerView.scrollToPosition(messages.size() - 1);
                     adapter.notifyDataSetChanged();
+                    binding.recyclerView.scrollToPosition(messages.size() - 1);
                 }
             }
         });

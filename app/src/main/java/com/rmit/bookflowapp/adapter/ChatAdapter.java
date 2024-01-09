@@ -51,7 +51,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.item.usernameTextView.setText(user.get().getName());
             // Display the first message in the messages list (customize as needed)
             if (chat.getMessages() != null && !chat.getMessages().isEmpty()) {
-                Chat.Message firstMessage = chat.getMessages().stream().sorted().findFirst().get();
+                Chat.Message firstMessage = chat.getMessages().get(chat.getMessages().size()-1);
                 holder.item.timestampTextView.setText(TimeFormatter.formatTimeAgo(firstMessage.getTimestamp().toDate()));
                 if (firstMessage.getSender().equals(user.get().getId())) {
                     if (!firstMessage.isRead()) {
