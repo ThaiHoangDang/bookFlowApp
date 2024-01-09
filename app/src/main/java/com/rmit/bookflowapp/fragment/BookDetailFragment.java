@@ -10,24 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rmit.bookflowapp.Model.Post;
+import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.Review;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
-import com.rmit.bookflowapp.adapter.PostAdapter;
 import com.rmit.bookflowapp.adapter.ReviewAdapter;
 import com.rmit.bookflowapp.databinding.FragmentBookDetailBinding;
-import com.rmit.bookflowapp.databinding.FragmentLibraryBinding;
-import com.rmit.bookflowapp.repository.CommentRepository;
+import com.squareup.picasso.Picasso;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BookDetailFragment extends Fragment {
     private static final String TAG = "BookDetailFragment";
     private FragmentBookDetailBinding bind;
     private MainActivity activity;
     private ReviewAdapter reviewAdapter;
+    private Book book;
     private ArrayList<Review> reviews = new ArrayList<>();
 
     public BookDetailFragment() {
@@ -38,6 +37,13 @@ public class BookDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle arguments = getArguments();
+
+        // end fragment if no data found
+        if (arguments == null) getParentFragmentManager().popBackStack();
+
+        book = (Book) Objects.requireNonNull(arguments).getSerializable("BOOK_OBJECT");
+
         generateData();
     }
 
@@ -47,15 +53,14 @@ public class BookDetailFragment extends Fragment {
         bind = FragmentBookDetailBinding.inflate(inflater, container, false);
         activity.setBottomNavigationBarVisibility(true);
 
-        // set up posts list
+        setupView(book);
+
         reviewAdapter = new ReviewAdapter(activity, reviews);
         bind.bookDetailReviewList.setAdapter(reviewAdapter);
         bind.bookDetailReviewList.setLayoutManager(new LinearLayoutManager(activity));
-        bind.back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentFragmentManager().popBackStack();  // Navigate back to the previous fragment
-            }
+
+        bind.back.setOnClickListener(v -> {
+            getParentFragmentManager().popBackStack();  // Navigate back to the previous fragment
         });
 
         bind.writeReviewBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.newReviewFragment));
@@ -67,6 +72,14 @@ public class BookDetailFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         bind = null;
+    }
+
+    private void setupView(Book book) {
+        Picasso.get().load(book.getImageUrl()).into(bind.bookDetailCover);
+        bind.bookDetailBookName.setText(book.getTitle());
+        bind.bookDetailBookAuthor.setText(book.getAuthorString());
+        bind.bookDetailBookDescription.setText(book.getDescription());
+
     }
 
     private void generateData() {
