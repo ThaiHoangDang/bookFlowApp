@@ -1,6 +1,7 @@
 package com.rmit.bookflowapp.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,11 @@ import com.rmit.bookflowapp.R;
 
 import java.util.List;
 
+import com.rmit.bookflowapp.interfaces.ClickCallBack;
 import com.squareup.picasso.Picasso;
 
 public class SearchBookAdapter extends RecyclerView.Adapter<SearchBookAdapter.ViewHolder> {
+    private ClickCallBack click;
     private Context context;
     private List<Book> books;
 
@@ -26,16 +29,29 @@ public class SearchBookAdapter extends RecyclerView.Adapter<SearchBookAdapter.Vi
         private ImageView searchBookCover;
         private RatingBar ratingBar;
         private TextView searchTitleName, searchAuthorName;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             searchBookCover = itemView.findViewById(R.id.searchBookCover);
             ratingBar = itemView.findViewById(R.id.cardBookRating);
             searchTitleName = itemView.findViewById(R.id.searchTitleName);
             searchAuthorName = itemView.findViewById(R.id.searchAuthorName);
+            itemView.setOnClickListener(v -> {
+                onClick();
+            });
         }
+
+        public void onClick() {
+            Bundle bundle = new Bundle();
+            Book book = books.get(getAdapterPosition());
+            bundle.putSerializable("BOOK_OBJECT", book);
+            click.onSiteClick(bundle);
+        }
+
     }
 
-    public SearchBookAdapter(Context context, List<Book> books) {
+    public SearchBookAdapter(ClickCallBack click, Context context, List<Book> books) {
+        this.click = click;
         this.context = context;
         this.books = books;
     }
