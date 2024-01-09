@@ -98,7 +98,13 @@ public class BookDetailFragment extends Fragment {
             @Override
             public void onChanged(List<Review> reviews) {
                 reviewAdapter.setItems(reviews);
+
+                updateRating(reviews);
             }
         });
+    }
+
+    private void updateRating(List<Review> reviews) {
+
     }
 }

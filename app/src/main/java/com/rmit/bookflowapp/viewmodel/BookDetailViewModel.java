@@ -1,10 +1,7 @@
 package com.rmit.bookflowapp.viewmodel;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rmit.bookflowapp.Model.Review;
@@ -32,13 +29,10 @@ public class BookDetailViewModel extends ViewModel {
     }
 
     private void fetchBookReviews() {
-        Log.d(TAG, "Fetch!");
         PostRepository.getInstance().getReviewsOfBook(bookId)
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    Log.d(TAG, "Success!");
                     List<Review> allBookReviews = new ArrayList<>();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        Log.d(TAG, "Review!");
                         Review review = document.toObject(Review.class);
 
                         if (review.getRating() < 1 || review.getRating() > 5) continue;
