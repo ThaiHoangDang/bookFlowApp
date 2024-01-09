@@ -66,9 +66,11 @@ public class PostRepository {
     public Task<List<Review>> getReviewObjectsOfBook(String bookId) {
         List<Task<Review>> reviewTasks = new ArrayList<>();
 
+        // get post for a particular book
         return collection.whereEqualTo("bookId", bookId).get().continueWithTask(queryDocumentSnapshots -> {
             List<Review> allBookReviews = new ArrayList<>();
 
+            // get Book and User
             for (QueryDocumentSnapshot document : queryDocumentSnapshots.getResult()) {
                 String postBookId = document.getString("bookId");
                 String postUserId = document.getString("userId");

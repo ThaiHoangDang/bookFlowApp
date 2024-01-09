@@ -137,19 +137,19 @@ public class BookDetailFragment extends Fragment {
         bind.bookDetailRating.setRating((float) sum / reviews.size());
         bind.bookDetailReviewScore.setText(String.format("%.1f", (float) sum / reviews.size()));
 
-        bind.progressBar1.setProgress(Math.round(num1 / reviews.size() * 100));
-        bind.oneStarPercen.setText(Math.round(num1 / reviews.size() * 100) + "%");
+        bind.progressBar1.setProgress((int) Math.round(num1 * 100.0 / reviews.size()));
+        bind.oneStarPercen.setText(Math.round(num1 * 100.0 / reviews.size()) + "%");
 
-        bind.progressBar2.setProgress(Math.round(num2 / reviews.size() * 100));
-        bind.twoStarPercen.setText(Math.round(num2 / reviews.size() * 100) + "%");
+        bind.progressBar2.setProgress((int) Math.round(num2 * 100.0 / reviews.size()));
+        bind.twoStarPercen.setText(Math.round(num2 * 100.0 / reviews.size()) + "%");
 
-        bind.progressBar3.setProgress(Math.round(num3 / reviews.size() * 100));
-        bind.threeStarPercen.setText(Math.round(num3 / reviews.size() * 100) + "%");
+        bind.progressBar3.setProgress((int) Math.round(num3 * 100.0 / reviews.size()));
+        bind.threeStarPercen.setText(Math.round(num3 * 100.0 / reviews.size()) + "%");
 
-        bind.progressBar4.setProgress(Math.round(num4 / reviews.size() * 100));
-        bind.fourStarPercen.setText(Math.round(num4 / reviews.size() * 100) + "%");
+        bind.progressBar4.setProgress((int) Math.round(num4 * 100.0 / reviews.size()));
+        bind.fourStarPercen.setText(Math.round(num4 * 100.0 / reviews.size()) + "%");
 
-        bind.progressBar5.setProgress(Math.round(num5 / reviews.size() * 100));
-        bind.fiveStarPercen.setText(Math.round(num5 / reviews.size() * 100) + "%");
+        bind.progressBar5.setProgress((int) Math.round(num5 * 100.0 / reviews.size()));
+        bind.fiveStarPercen.setText(Math.round(num5 * 100.0 / reviews.size()) + "%");
     }
 }
