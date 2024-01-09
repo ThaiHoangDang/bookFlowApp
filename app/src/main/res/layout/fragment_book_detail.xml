@@ -88,6 +88,8 @@
                             android:layout_marginTop="24dp"
                             android:paddingLeft="32dp"
                             android:paddingRight="32dp"
+                            android:maxLines="3"
+                            android:ellipsize="end"
                             android:text="De Men Phieu Luu Ky"
                             android:textAlignment="center"
                             android:textColor="#FFFFFF"
@@ -103,6 +105,8 @@
                             android:fontFamily="sans-serif-light"
                             android:paddingLeft="32dp"
                             android:paddingRight="32dp"
+                            android:maxLines="2"
+                            android:ellipsize="end"
                             android:text="by To Hoai"
                             android:textAlignment="center"
                             android:textColor="#FFFFFF"
@@ -155,10 +159,10 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/textView8"
+                                    android:id="@+id/bookDetailReviewScore"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="4.2"
+                                    android:text="_"
                                     android:textAlignment="center"
                                     android:textColor="@color/orange"
                                     android:textSize="26sp"
@@ -186,10 +190,10 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/textView11"
+                                    android:id="@+id/bookDetailReviewCount"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="132"
+                                    android:text="0"
                                     android:textAlignment="center"
                                     android:textColor="#FFFFFF"
                                     android:textSize="26sp"
@@ -284,7 +288,7 @@
                         android:id="@+id/bookDetailTotalScore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="4.2/5.0"
+                        android:text="_ /5.0"
                         android:textAlignment="center"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -295,8 +299,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/bookDetailTotalScore"
                         android:layout_centerHorizontal="true"
+                        android:isIndicator="true"
                         android:max="5"
-                        android:progress="4"
                         android:scaleX="0.6"
                         android:scaleY="0.6" />
 
@@ -322,15 +326,13 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="8dp"
                             android:layout_weight="1"
-                            android:max="100"
-                            android:progress="42"
-                            android:scrollbarSize="8dp" />
+                            android:max="100" />
 
                         <TextView
-                            android:id="@+id/textView17"
+                            android:id="@+id/fiveStarPercen"
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:text="42%"
+                            android:text="0%"
                             android:textAlignment="textEnd" />
                     </LinearLayout>
 
@@ -356,15 +358,13 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="8dp"
                             android:layout_weight="1"
-                            android:max="100"
-                            android:progress="28"
-                            android:scrollbarSize="8dp" />
+                            android:max="100" />
 
                         <TextView
-                            android:id="@+id/textView19"
+                            android:id="@+id/fourStarPercen"
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:text="28%"
+                            android:text="0%"
                             android:textAlignment="textEnd" />
                     </LinearLayout>
 
@@ -389,15 +389,13 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="8dp"
                             android:layout_weight="1"
-                            android:max="100"
-                            android:progress="10"
-                            android:scrollbarSize="8dp" />
+                            android:max="100" />
 
                         <TextView
-                            android:id="@+id/textView20"
+                            android:id="@+id/threeStarPercen"
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:text="10%"
+                            android:text="0%"
                             android:textAlignment="textEnd" />
                     </LinearLayout>
 
@@ -422,15 +420,13 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="8dp"
                             android:layout_weight="1"
-                            android:max="100"
-                            android:progress="18"
-                            android:scrollbarSize="8dp" />
+                            android:max="100" />
 
                         <TextView
-                            android:id="@+id/textView22"
+                            android:id="@+id/twoStarPercen"
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:text="18%"
+                            android:text="0%"
                             android:textAlignment="textEnd" />
                     </LinearLayout>
 
@@ -455,15 +451,13 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="8dp"
                             android:layout_weight="1"
-                            android:max="100"
-                            android:progress="2"
-                            android:scrollbarSize="8dp" />
+                            android:max="100" />
 
                         <TextView
-                            android:id="@+id/textView23"
+                            android:id="@+id/oneStarPercen"
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:text="2%"
+                            android:text="0%"
                             android:textAlignment="textEnd" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -475,7 +469,7 @@
                     android:layout_below="@id/BookDetailRatingSummary"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/blue"
+                    android:backgroundTint="@color/dark_blue_2"
                     android:text="Write A Review" />
 
                 <androidx.recyclerview.widget.RecyclerView

@@ -54,16 +54,16 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <TextView
+                <RatingBar
                     android:id="@+id/cardReviewRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/cardReviewOwner"
-                    android:drawableRight="@drawable/baseline_star_24_smaller"
-                    android:drawablePadding="4dp"
-                    android:maxLines="1"
-                    android:text="Rated 5"
-                    android:textSize="13sp" />
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:theme="@style/RatingBar"
+                    android:numStars="5"
+                    android:stepSize="0.1"
+                    android:isIndicator="true" />
             </RelativeLayout>
 
         </RelativeLayout>

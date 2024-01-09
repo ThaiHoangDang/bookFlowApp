@@ -1,12 +1,20 @@
 package com.rmit.bookflowapp.repository;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.Post;
+import com.rmit.bookflowapp.Model.Review;
+import com.rmit.bookflowapp.Model.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class PostRepository {
@@ -54,6 +62,35 @@ public class PostRepository {
 //                .orderBy("rating")
                 .get();
     }
+
+    public Task<List<Review>> getReviewObjectsOfBook(String bookId) {
+        List<Task<Review>> reviewTasks = new ArrayList<>();
+
+        return collection.whereEqualTo("bookId", bookId).get().continueWithTask(queryDocumentSnapshots -> {
+            List<Review> allBookReviews = new ArrayList<>();
+
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots.getResult()) {
+                String postBookId = document.getString("bookId");
+                String postUserId = document.getString("userId");
+
+                Task<Review> reviewTask = BookRepository.getInstance().getBookById(postBookId)
+                        .continueWithTask(bookTask -> UserRepository.getInstance().getUserById(postUserId)
+                                .continueWith(userTask -> {
+                                    Review review = document.toObject(Review.class);
+                                    review.setBook(bookTask.getResult());
+                                    review.setUser(userTask.getResult());
+
+                                    allBookReviews.add(review);
+                                    return review;
+                                }));
+
+                reviewTasks.add(reviewTask);
+            }
+
+            return Tasks.whenAll(reviewTasks).continueWith(task -> allBookReviews);
+        });
+    }
+
 
     public Task<QuerySnapshot> getAllPosts() {
         return collection.get();

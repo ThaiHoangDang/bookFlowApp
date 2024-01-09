@@ -1,5 +1,6 @@
 package com.rmit.bookflowapp.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -104,7 +105,51 @@ public class BookDetailFragment extends Fragment {
         });
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void updateRating(List<Review> reviews) {
 
+        // return early if there are no reviews
+        if (reviews.size() == 0) return;
+
+        int num1 = 0, num2 = 0, num3 = 0, num4 = 0, num5 = 0, sum = 0;
+
+        for (Review review : reviews) {
+            sum += review.getRating();
+
+            switch (review.getRating()) {
+                case 1:
+                    num1 += 1; break;
+                case 2:
+                    num2 += 1; break;
+                case 3:
+                    num3 += 1; break;
+                case 4:
+                    num4 += 1; break;
+                case 5:
+                    num5 += 1; break;
+            }
+        }
+
+        // set ratings
+        bind.bookDetailReviewCount.setText(Integer.toString(reviews.size()));
+
+        bind.bookDetailTotalScore.setText(String.format("%.1f", (float) sum / reviews.size()) + "/5.0");
+        bind.bookDetailRating.setRating((float) sum / reviews.size());
+        bind.bookDetailReviewScore.setText(String.format("%.1f", (float) sum / reviews.size()));
+
+        bind.progressBar1.setProgress(Math.round(num1 / reviews.size() * 100));
+        bind.oneStarPercen.setText(Math.round(num1 / reviews.size() * 100) + "%");
+
+        bind.progressBar2.setProgress(Math.round(num2 / reviews.size() * 100));
+        bind.twoStarPercen.setText(Math.round(num2 / reviews.size() * 100) + "%");
+
+        bind.progressBar3.setProgress(Math.round(num3 / reviews.size() * 100));
+        bind.threeStarPercen.setText(Math.round(num3 / reviews.size() * 100) + "%");
+
+        bind.progressBar4.setProgress(Math.round(num4 / reviews.size() * 100));
+        bind.fourStarPercen.setText(Math.round(num4 / reviews.size() * 100) + "%");
+
+        bind.progressBar5.setProgress(Math.round(num5 / reviews.size() * 100));
+        bind.fiveStarPercen.setText(Math.round(num5 / reviews.size() * 100) + "%");
     }
 }
