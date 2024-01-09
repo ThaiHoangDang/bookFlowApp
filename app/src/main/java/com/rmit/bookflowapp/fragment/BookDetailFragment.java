@@ -69,7 +69,21 @@ public class BookDetailFragment extends Fragment {
 
         bind.writeReviewBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.newReviewFragment));
 
+        bind.writeReviewBtn.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("BOOK_OBJECT", book);
+            Navigation.findNavController(getView()).navigate(R.id.newReviewFragment, bundle);
+        });
+
         return bind.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Refresh ViewModel data
+        viewModel.refreshBookReviews();
     }
 
     @Override

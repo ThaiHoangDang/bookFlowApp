@@ -87,6 +87,7 @@
                     android:id="@+id/cardReviewTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:maxLines="1"
                     android:text="Best book I have read so far!"
                     android:textSize="15sp"

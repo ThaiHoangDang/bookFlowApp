@@ -49,7 +49,10 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <include layout="@layout/search_book_card" />
+            <RelativeLayout
+                android:id="@+id/newReviewBookHolder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -65,7 +68,7 @@
                     android:text="Your rating" />
 
                 <RatingBar
-                    android:id="@+id/ratingBar"
+                    android:id="@+id/reviewRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/ratingTitle"
@@ -95,6 +98,7 @@
                     android:layout_marginBottom="32dp">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/reviewTitleText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Title" />
@@ -109,6 +113,7 @@
                     android:layout_marginRight="32dp">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/reviewContentText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Content"
@@ -117,7 +122,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/reviewSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
@@ -125,7 +130,7 @@
                 android:layout_marginRight="32dp"
                 android:layout_marginBottom="80dp"
                 android:backgroundTint="@color/dark_blue_2"
-                android:text="Button" />
+                android:text="Submit" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

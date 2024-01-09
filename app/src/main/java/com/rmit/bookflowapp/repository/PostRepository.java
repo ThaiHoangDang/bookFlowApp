@@ -16,6 +16,7 @@ import com.rmit.bookflowapp.Model.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class PostRepository {
     private static final String COLLECTION_NAME = "post";
@@ -81,6 +82,7 @@ public class PostRepository {
                                     Review review = document.toObject(Review.class);
                                     review.setBook(bookTask.getResult());
                                     review.setUser(userTask.getResult());
+                                    review.setId(document.getId());
 
                                     allBookReviews.add(review);
                                     return review;
@@ -91,6 +93,12 @@ public class PostRepository {
 
             return Tasks.whenAll(reviewTasks).continueWith(task -> allBookReviews);
         });
+    }
+
+    public Task<Void> addReview(Map<String, Object> review) {
+        String id = UUID.randomUUID().toString();
+
+        return collection.document(id).set(review);
     }
 
 
