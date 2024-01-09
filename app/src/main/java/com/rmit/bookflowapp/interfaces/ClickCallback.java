@@ -4,4 +4,5 @@ import android.os.Bundle;
 
 public interface ClickCallback {
     default void onChatClick(Bundle bundle) {};
+    default void onUserClick(Bundle bundle) {};
 }

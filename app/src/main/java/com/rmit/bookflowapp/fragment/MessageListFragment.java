@@ -67,6 +67,12 @@ public class MessageListFragment extends Fragment implements ClickCallback {
         adapter = new ChatAdapter(getContext(), chats, recipientList, this);
         binding.recyclerView.setAdapter(adapter);
 
+        binding.createPostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.navController.navigate(R.id.messageSearchFragment);
+            }
+        });
         loadMessages();
         return binding.getRoot();
     }

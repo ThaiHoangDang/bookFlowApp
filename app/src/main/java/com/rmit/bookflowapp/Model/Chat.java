@@ -1,12 +1,16 @@
 package com.rmit.bookflowapp.Model;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.encoders.annotations.Encodable;
+import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Chat implements Serializable {
+    @Exclude
     private String chatId;
     private List<String> userId;
     private List<Message> messages;
@@ -108,6 +112,7 @@ public class Chat implements Serializable {
     }
 
     public List<String> getUserId() {
+        Collections.sort(userId);
         return userId;
     }
 
@@ -126,7 +131,8 @@ public class Chat implements Serializable {
     @Override
     public String toString() {
         return "Chat{" +
-                "userId=" + userId +
+                "chatId='" + chatId + '\'' +
+                ", userId=" + userId +
                 ", messages=" + messages +
                 ", lastModified=" + lastModified +
                 '}';

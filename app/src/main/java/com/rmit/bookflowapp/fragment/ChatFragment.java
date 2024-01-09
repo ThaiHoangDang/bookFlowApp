@@ -123,7 +123,7 @@ public class ChatFragment extends Fragment {
     private void sendMessage(String message){
         List<Chat.Message> messages = new ArrayList<>(chat.getMessages());
         messages.add(new Chat.Message(currentUser.getUid(), message, Timestamp.now(), false));
-        messagesCollection.document(chat.getChatId()).update("messages", messages);
+        messagesCollection.document(chat.getChatId()).update("messages", messages, "lastModified", Timestamp.now());
     }
 
     private void listenToChanges(){
@@ -131,10 +131,12 @@ public class ChatFragment extends Fragment {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Chat newChat = value.toObject(Chat.class);
-                chat.setMessages(newChat.getMessages());
-                messages.add(newChat.getMessages().get(newChat.getMessages().size()-1));
-                binding.recyclerView.scrollToPosition(messages.size()-1);
-                adapter.notifyDataSetChanged();
+                if (newChat.getMessages().size()>chat.getMessages().size()) {
+                    chat.setMessages(newChat.getMessages());
+                    messages.add(newChat.getMessages().get(newChat.getMessages().size() - 1));
+                    binding.recyclerView.scrollToPosition(messages.size() - 1);
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
     }
