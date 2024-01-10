@@ -96,6 +96,7 @@ public class MessageListFragment extends Fragment implements ClickCallback {
                                     chat.setChatId(document.getId());
                                     String recipientId = chat.getUserId().get(chat.getUserId().indexOf(currentUser.getUid())==0?1:0);
                                     chats.add(chat);
+                                    Collections.sort(chats);
                                     if (recipientList.stream().noneMatch(user -> user.getId().equals(recipientId))){
                                         userRepository.getUserById(recipientId).addOnSuccessListener(new OnSuccessListener<User>() {
                                             @Override
@@ -146,6 +147,7 @@ public class MessageListFragment extends Fragment implements ClickCallback {
                             chats.removeIf(chat -> compareStringLists(removedChat.getUserId(), chat.getUserId()));
                             break;
                     }
+                    Collections.sort(chats);
                     adapter.notifyDataSetChanged();
                 }
             }

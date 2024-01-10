@@ -8,13 +8,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-public class Chat implements Serializable {
+public class Chat implements Serializable, Comparable<Chat> {
     @Exclude
     private String chatId;
     private List<String> userId;
     private List<Message> messages;
     private Timestamp lastModified;
+
+    @Override
+    public int compareTo(Chat o) {
+        return o.getLastModified().compareTo(this.getLastModified());
+    }
 
     public static class Message implements Comparable<Message> {
         private String sender;

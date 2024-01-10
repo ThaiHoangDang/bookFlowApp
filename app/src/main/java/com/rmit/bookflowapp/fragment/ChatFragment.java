@@ -142,12 +142,11 @@ public class ChatFragment extends Fragment {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Chat newChat = value.toObject(Chat.class);
-                if (newChat.getMessages().size()>chat.getMessages().size()) {
                     chat.setMessages(newChat.getMessages());
-                    messages.add(newChat.getMessages().get(newChat.getMessages().size() - 1));
+                    messages.clear();
+                    messages.addAll(newChat.getMessages());
                     adapter.notifyDataSetChanged();
                     binding.recyclerView.scrollToPosition(messages.size() - 1);
-                }
             }
         });
     }
