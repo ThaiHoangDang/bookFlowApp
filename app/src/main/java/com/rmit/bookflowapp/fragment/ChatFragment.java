@@ -78,8 +78,8 @@ public class ChatFragment extends Fragment {
     public void initChatView(){
         Bundle arguments = getArguments();
         if (arguments != null) {
-            chat = arguments.getSerializable("CHAT_OBJECT", Chat.class);
-            recipient = arguments.getSerializable("CHAT_RECIPIENT", User.class);
+            chat = (Chat) arguments.getSerializable("CHAT_OBJECT");
+            recipient = (User) arguments.getSerializable("CHAT_RECIPIENT");
             messages = chat.getMessages();
             markAsSeen();
 
