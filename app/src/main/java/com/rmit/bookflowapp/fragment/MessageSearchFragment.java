@@ -113,7 +113,7 @@ public class MessageSearchFragment extends Fragment implements ClickCallback {
             public boolean onQueryTextSubmit(String query) {
                 if (!query.isEmpty()){
                     recipientList.clear();
-                    recipientList.addAll(userList.stream().filter(user -> user.getName().toLowerCase().contains(query.toLowerCase()) || user.getEmail().toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList()));
+                    recipientList.addAll(userList.stream().filter(user -> user.getName().toLowerCase().contains(query.trim().toLowerCase()) || user.getEmail().toLowerCase().contains(query.trim().toLowerCase())).collect(Collectors.toList()));
                     adapter.notifyDataSetChanged();
                 }
                 return false;
@@ -121,6 +121,11 @@ public class MessageSearchFragment extends Fragment implements ClickCallback {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (!newText.isEmpty()){
+                    recipientList.clear();
+                    recipientList.addAll(userList.stream().filter(user -> user.getName().toLowerCase().contains(newText.trim().toLowerCase()) || user.getEmail().toLowerCase().contains(newText.trim().toLowerCase())).collect(Collectors.toList()));
+                    adapter.notifyDataSetChanged();
+                }
                 return false;
             }
         });
