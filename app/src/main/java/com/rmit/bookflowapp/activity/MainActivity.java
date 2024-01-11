@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         firebaseAuth = FirebaseAuth.getInstance();
-//        firebaseAuth.signOut();
 
         fragmentManager = getSupportFragmentManager();
         initNavigation();

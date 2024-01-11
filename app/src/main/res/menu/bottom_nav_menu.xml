@@ -9,7 +9,7 @@
         android:icon="@drawable/baseline_menu_book_24"
         android:title="Library" />
     <item
-        android:id="@+id/chatFragment"
+        android:id="@+id/messageListFragment"
         android:icon="@drawable/baseline_chat_24"
         android:title="Chat" />
     <item

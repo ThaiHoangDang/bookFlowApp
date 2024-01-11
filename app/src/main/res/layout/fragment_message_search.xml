@@ -4,14 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ChatFragment">
-
+    tools:context=".fragment.MessageSearchFragment">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:ignore="UselessParent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/homepageHeader"
             android:layout_width="match_parent"
@@ -35,6 +33,7 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/ic_avatar"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/backButton"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Username"
+                android:text="User search"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -53,52 +52,47 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/linearlayout1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/homepageHeader"
+            android:background="@color/dark_blue_2"
+            android:elevation="10dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp">
 
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@color/white"
+                android:iconifiedByDefault="false"
+                android:queryBackground="@android:color/transparent"
+                android:queryHint="Enter a username, email or name..." />
+
+            <ImageButton
+                android:id="@+id/filterBtn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#FFFFFF"
+                android:backgroundTint="@color/orange"
+                android:contentDescription="@string/filterbtn"
+                android:src="@drawable/baseline_search_24" />
+
+        </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/userPreviewRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/bottom"
-            android:layout_below="@id/homepageHeader"
+            android:layout_below="@id/linearlayout1"
             android:clipToPadding="false"
             android:divider="@android:color/darker_gray"
             android:dividerHeight="0.5dp"
             android:nestedScrollingEnabled="false"
-            android:padding="16dp"
-            app:reverseLayout="true"
-            app:stackFromEnd="true" />
-
-        <RelativeLayout
-            android:id="@+id/bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/base_blue"
-            android:padding="12dp">
-
-            <EditText
-                android:id="@+id/text_send"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="3dp"
-                android:layout_toLeftOf="@id/btn_send"
-                android:background="@android:color/transparent"
-                android:hint="Type a message..."
-                android:padding="8dp"
-                android:text="" />
-
-            <ImageButton
-                android:id="@+id/btn_send"
-                android:layout_width="25dp"
-                android:layout_height="20dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
-                android:background="@drawable/ic_send" />
-
-        </RelativeLayout>
+            android:padding="16dp" />
     </RelativeLayout>
-
 </FrameLayout>
-
