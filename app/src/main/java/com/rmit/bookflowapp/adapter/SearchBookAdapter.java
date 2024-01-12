@@ -17,11 +17,11 @@ import com.rmit.bookflowapp.R;
 
 import java.util.List;
 
-import com.rmit.bookflowapp.interfaces.ClickCallBack;
+import com.rmit.bookflowapp.interfaces.ClickCallback;
 import com.squareup.picasso.Picasso;
 
 public class SearchBookAdapter extends RecyclerView.Adapter<SearchBookAdapter.ViewHolder> {
-    private ClickCallBack click;
+    private ClickCallback click;
     private Context context;
     private List<Book> books;
 
@@ -50,7 +50,7 @@ public class SearchBookAdapter extends RecyclerView.Adapter<SearchBookAdapter.Vi
 
     }
 
-    public SearchBookAdapter(ClickCallBack click, Context context, List<Book> books) {
+    public SearchBookAdapter(ClickCallback click, Context context, List<Book> books) {
         this.click = click;
         this.context = context;
         this.books = books;

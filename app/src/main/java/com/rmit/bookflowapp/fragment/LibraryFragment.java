@@ -23,7 +23,7 @@ import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.adapter.SearchBookAdapter;
 import com.rmit.bookflowapp.databinding.FragmentLibraryBinding;
-import com.rmit.bookflowapp.interfaces.ClickCallBack;
+import com.rmit.bookflowapp.interfaces.ClickCallback;
 import com.rmit.bookflowapp.repository.BookRepository;
 import com.rmit.bookflowapp.repository.GenreRepository;
 import com.rmit.bookflowapp.util.TranslateAnimationUtil;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class LibraryFragment extends Fragment implements ClickCallBack {
+public class LibraryFragment extends Fragment implements ClickCallback {
     private static final String TAG = "LibraryFragment";
     private FragmentLibraryBinding bind;
     private MainActivity activity;
