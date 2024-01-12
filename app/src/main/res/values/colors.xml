@@ -15,5 +15,6 @@
     <color name="blue">#006da9</color>
     <color name="base_blue">#eff5fc</color>
     <color name="neutral_100">#D6D6D6</color>
-
+    <color name="lightGrey">#BDBDBD</color>
+    <color name="duskYellow">#FFD700</color>
 </resources>
