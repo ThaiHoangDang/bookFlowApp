@@ -1,5 +1,6 @@
 package com.rmit.bookflowapp.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,7 +12,9 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.rmit.bookflowapp.Model.Book;
@@ -20,6 +23,7 @@ import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.adapter.SearchBookAdapter;
 import com.rmit.bookflowapp.databinding.FragmentLibraryBinding;
+import com.rmit.bookflowapp.interfaces.ClickCallback;
 import com.rmit.bookflowapp.repository.BookRepository;
 import com.rmit.bookflowapp.repository.GenreRepository;
 import com.rmit.bookflowapp.util.TranslateAnimationUtil;
@@ -29,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class LibraryFragment extends Fragment {
+public class LibraryFragment extends Fragment implements ClickCallback {
     private static final String TAG = "LibraryFragment";
     private FragmentLibraryBinding bind;
     private MainActivity activity;
@@ -61,7 +65,6 @@ public class LibraryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -70,7 +73,7 @@ public class LibraryFragment extends Fragment {
         activity = (MainActivity) getActivity();
         bind = FragmentLibraryBinding.inflate(inflater, container, false);
         activity.setBottomNavigationBarVisibility(true);
-        searchBookAdapter = new SearchBookAdapter(activity, books);
+        searchBookAdapter = new SearchBookAdapter(LibraryFragment.this, activity, books);
 
         bind.librarySearch.setVisibility(View.GONE);
 
@@ -118,6 +121,12 @@ public class LibraryFragment extends Fragment {
                         String imageUrl = currentBook.getImageUrl();
                         Picasso.get().load(imageUrl).into(bookImage);
                         bind.bestOfAllTime.addView(bookLayout);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("BOOK_OBJECT", currentBook);
+                        bookLayout.setOnClickListener(v -> {
+                            Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment, bundle);
+                        });
                     }
 
                     for (int i = bookList.size() / 2; i < bookList.size(); i++) {
@@ -129,6 +138,12 @@ public class LibraryFragment extends Fragment {
                         String imageUrl = currentBook.getImageUrl();
                         Picasso.get().load(imageUrl).into(bookImage);
                         bind.trending.addView(bookLayout);
+                        Bundle bundle = new Bundle();
+
+                        bundle.putSerializable("BOOK_OBJECT", currentBook);
+                        bookLayout.setOnClickListener(v -> {
+                            Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment, bundle);
+                        });
                     }
                 }
             }
@@ -170,5 +185,10 @@ public class LibraryFragment extends Fragment {
                     }
                 }
         );
+    }
+
+    @Override
+    public void onSiteClick(Bundle bundle) {
+        Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment, bundle);
     }
 }

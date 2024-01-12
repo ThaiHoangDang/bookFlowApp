@@ -65,5 +65,10 @@
         android:name="com.rmit.bookflowapp.fragment.MessageSearchFragment"
         android:label="fragment_message_search"
         tools:layout="@layout/fragment_message_search" />
+    <fragment
+        android:id="@+id/newReviewFragment"
+        android:name="com.rmit.bookflowapp.fragment.NewReviewFragment"
+        android:label="fragment_new_review"
+        tools:layout="@layout/fragment_new_review" />
 
 </navigation>

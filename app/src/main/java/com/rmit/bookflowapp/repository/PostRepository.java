@@ -1,13 +1,22 @@
 package com.rmit.bookflowapp.repository;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.Post;
+import com.rmit.bookflowapp.Model.Review;
+import com.rmit.bookflowapp.Model.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class PostRepository {
     private static final String COLLECTION_NAME = "post";
@@ -46,6 +55,54 @@ public class PostRepository {
                 throw task.getException();
             }
         });
+    }
+
+    public Task<QuerySnapshot> getReviewsOfBook(String bookId) {
+        return collection
+                .whereEqualTo("bookId", bookId)
+//                .orderBy("rating")
+                .get();
+    }
+
+    public Task<List<Review>> getReviewObjectsOfBook(String bookId) {
+        List<Task<Review>> reviewTasks = new ArrayList<>();
+
+        // get post for a particular book
+        return collection.whereEqualTo("bookId", bookId).get().continueWithTask(queryDocumentSnapshots -> {
+            List<Review> allBookReviews = new ArrayList<>();
+
+            // get Book and User
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots.getResult()) {
+                String postBookId = document.getString("bookId");
+                String postUserId = document.getString("userId");
+
+                Task<Review> reviewTask = BookRepository.getInstance().getBookById(postBookId)
+                        .continueWithTask(bookTask -> UserRepository.getInstance().getUserById(postUserId)
+                                .continueWith(userTask -> {
+                                    Review review = document.toObject(Review.class);
+                                    review.setBook(bookTask.getResult());
+                                    review.setUser(userTask.getResult());
+                                    review.setId(document.getId());
+
+                                    allBookReviews.add(review);
+                                    return review;
+                                }));
+
+                reviewTasks.add(reviewTask);
+            }
+
+            return Tasks.whenAll(reviewTasks).continueWith(task -> allBookReviews);
+        });
+    }
+
+    public Task<Void> addReview(Map<String, Object> review) {
+        String id = UUID.randomUUID().toString();
+
+        return collection.document(id).set(review);
+    }
+
+    public Task<Void> updateReview(String id, Map<String, Object> review) {
+        return collection.document(id).set(review);
     }
 
     public Task<QuerySnapshot> getAllPosts() {

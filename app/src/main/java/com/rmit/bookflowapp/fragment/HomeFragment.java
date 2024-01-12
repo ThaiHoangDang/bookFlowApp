@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment {
 
         return bind.getRoot();
     }
-    
+
     @Override
     public void onPause() {
         super.onPause();

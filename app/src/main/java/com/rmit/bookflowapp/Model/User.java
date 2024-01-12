@@ -13,12 +13,20 @@ public class User implements Serializable {
         // empty constructor needed for firebase
     }
 
-    public User(String id, String email, String name, String role, String imageId) {
+    public User(String id, String email, String name, String role) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.role = role;
         this.imageId = "default.png";
+    }
+
+    public User(String id, String email, String name, String role, String imageId) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.role = role;
+        this.imageId = imageId;
     }
 
     public String getId() {

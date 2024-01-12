@@ -27,5 +27,4 @@ public class Lend extends Post implements Serializable {
     public void setLocation(LatLng location) {
         this.location = location;
     }
-
 }

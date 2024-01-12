@@ -6,22 +6,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.rpc.Help;
 import com.rmit.bookflowapp.Model.Review;
 import com.rmit.bookflowapp.R;
+import com.rmit.bookflowapp.Ultilities.Helper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
         private Context context;
         private ArrayList<Review> reviews;
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            private TextView reviewOwner, reviewRating, reviewContent, reviewTitle, reviewDate;
+            private TextView reviewOwner, reviewContent, reviewTitle, reviewDate;
+            private RatingBar reviewRating;
             private ImageView reviewOwnerAvatar;
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -53,15 +58,22 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         Review review = reviews.get(position);
 
 //        holder.reviewOwnerAvatar
-        holder.reviewOwner.setText("Owner name");
-        holder.reviewRating.setText("Rated " + review.getRating());
-        holder.reviewTitle.setText("This is review title");
+        holder.reviewOwner.setText(review.getUser().getName());
+        holder.reviewRating.setRating(review.getRating());
+        holder.reviewTitle.setText(review.getTitle());
         holder.reviewContent.setText(review.getContent());
-        holder.reviewDate.setText("05/01/2024");
+        holder.reviewDate.setText(Helper.convertTime(review.getTimestamp()));
     }
 
     @Override
     public int getItemCount() {
         return reviews.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setItems(List<Review> reviews) {
+        this.reviews.clear();
+        this.reviews.addAll(reviews);
+        notifyDataSetChanged();
     }
 }

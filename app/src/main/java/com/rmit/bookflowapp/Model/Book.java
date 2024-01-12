@@ -1,9 +1,14 @@
 package com.rmit.bookflowapp.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Book implements Serializable {
+public class Book implements Serializable, Parcelable {
     private String id;
     private String title;
     private List<String> author;
@@ -23,6 +28,27 @@ public class Book implements Serializable {
         this.description = description;
         this.imageId = imageId;
     }
+
+    protected Book(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        author = in.createStringArrayList();
+        genre = in.createStringArrayList();
+        description = in.readString();
+        imageId = in.readString();
+    }
+
+    public static final Creator<Book> CREATOR = new Creator<Book>() {
+        @Override
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        @Override
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -85,5 +111,32 @@ public class Book implements Serializable {
             }
         }
         return authorStringBuilder.toString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(title);
+        parcel.writeStringList(author);
+        parcel.writeStringList(genre);
+        parcel.writeString(description);
+        parcel.writeString(imageId);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", genre=" + genre +
+                ", description='" + description + '\'' +
+                ", imageId='" + imageId + '\'' +
+                '}';
     }
 }

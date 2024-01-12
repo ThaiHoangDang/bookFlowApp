@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.rmit.bookflowapp.Model.Book;
+import com.rmit.bookflowapp.Model.User;
 
 import java.util.ArrayList;
 import java.util.List;
