@@ -67,13 +67,6 @@ public class LibraryFragment extends Fragment implements ClickCallback {
         super.onCreate(savedInstanceState);
     }
 
-    @SuppressLint("RestrictedApi")
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

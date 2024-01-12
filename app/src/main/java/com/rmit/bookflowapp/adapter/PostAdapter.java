@@ -113,6 +113,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> im
         return postsFilter;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void setFilteredList(ArrayList<Post> filteredList) {
+        this.posts = filteredList;
+        notifyDataSetChanged();
+    }
+
     private Filter postsFilter = new Filter() {
 
         @Override

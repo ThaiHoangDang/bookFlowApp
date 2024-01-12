@@ -3,12 +3,6 @@ package com.rmit.bookflowapp.fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import android.text.Html;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -16,7 +10,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
@@ -56,13 +49,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -72,93 +58,167 @@ public class HomeFragment extends Fragment {
         bind = FragmentHomeBinding.inflate(inflater, container, false);
         activity.setBottomNavigationBarVisibility(true);
 
-        // set up action bar
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(Html.fromHtml("<font color='#ffffff'>Home</font>"));
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
-
         // set up posts list
         postAdapter = new PostAdapter(activity, posts);
         bind.postsListView.setAdapter(postAdapter);
         bind.postsListView.setLayoutManager(new LinearLayoutManager(activity));
 
         // Add scroll listener to RecyclerView
-//        bind.postsListView.setOnTouchListener(new TranslateAnimationUtil(activity, bind.linearlayout1));
+        bind.postsListView.setOnTouchListener(new TranslateAnimationUtil(activity, bind.linearlayout1));
 
         bind.pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(activity, "Refreshed", Toast.LENGTH_SHORT).show();
                 getData(query);
                 bind.pullToRefresh.setRefreshing(false);
             }
         });
 
-//        bind.createPostBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment));
-
         bind.filterAllBtn.setOnClickListener(v1 -> {
-            getData("ALL");
             query = "ALL";
-            bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
-            bind.filterReviewBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-            bind.filterLendBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+            getData(query);
+            restoreFilterButtons(query);
         });
         bind.filterReviewBtn.setOnClickListener(v1 -> {
-            getData("REVIEW");
             query = "REVIEW";
-            bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-            bind.filterReviewBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
-            bind.filterLendBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+            getData(query);
+            restoreFilterButtons(query);
         });
         bind.filterLendBtn.setOnClickListener(v1 -> {
-            getData("LEND");
             query = "LEND";
-            bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-            bind.filterReviewBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-            bind.filterLendBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
+            getData(query);
+            restoreFilterButtons(query);
         });
         bind.sortAscBtn.setOnClickListener(v1 -> {
             sort = "ASC";
-            bind.sortAscBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
-            bind.sortDescBtn.setBackgroundColor(getResources().getColor(R.color.orange));
             getData(query);
+            restoreSortButtons(sort);
         });
         bind.sortDescBtn.setOnClickListener(v1 -> {
             sort = "DESC";
-            bind.sortAscBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-            bind.sortDescBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
             getData(query);
+            restoreSortButtons(sort);
         });
 
-        query = "ALL";
-        sort = "ASC";
-        getData("ALL"); // by default, first load will query all posts, but the next pull down refresh will be based on String query
-        bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
-        bind.sortAscBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
+        bind.filterBtn.setOnClickListener(v1 -> {
+            if (bind.filterForm.getVisibility() == View.GONE) {
+                bind.filterForm.setVisibility(View.VISIBLE);
+                bind.sortForm.setVisibility(View.VISIBLE);
+                bind.pullToRefresh.setVisibility(View.GONE);
+            } else {
+                bind.filterForm.setVisibility(View.GONE);
+                bind.sortForm.setVisibility(View.GONE);
+                bind.pullToRefresh.setVisibility(View.VISIBLE);
+            }
+        });
+
+        bind.searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+            // filter when user press enter
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                postAdapter.setFilteredList(filter(posts, query));
+                return false;
+            }
+
+            // filter in real time
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                if (newText == null || newText.isEmpty() || newText.length() == 0) {
+                    return false;
+                }
+
+                postAdapter.setFilteredList(filter(posts, newText));
+                return false;
+            }
+        });
 
         return bind.getRoot();
     }
 
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        if (savedInstanceState != null) {
-//            Toast.makeText(activity, savedInstanceState.getString("query"), Toast.LENGTH_SHORT).show();
-////            bind.searchView.setQuery(savedInstanceState.getString("query"), true);
-//            bind.postsListView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable("listState"));
-//        } else {
-//            Toast.makeText(activity, "null", Toast.LENGTH_SHORT).show();
-//        }
-//        activity.setBottomNavigationBarVisibility(true);
-//    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        bind.searchView.setQuery("", false); // Clear the search query
+//        bind.searchView.setSaveEnabled(false); // disable searchView from saving query when fragment is paused
+    }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-////        save search query
-//        outState.putString("query", query);
-//        outState.putParcelable("listState", bind.postsListView.getLayoutManager().onSaveInstanceState());
-//        super.onSaveInstanceState(outState);
-//    }
+    public ArrayList<Post> filter(ArrayList<Post> posts, String query) {
+        ArrayList<Post> filteredPosts = new ArrayList<>();
+        for (Post post : posts) {
+            // searches for five fields: post title, post content, book title, book content, user name
+            if (post.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                post.getContent().toLowerCase().contains(query.toLowerCase()) ||
+                post.getBook().getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                post.getBook().getAuthorString().toLowerCase().contains(query.toLowerCase()) ||
+                post.getUser().getName().toLowerCase().contains(query.toLowerCase())
+            ) {
+                filteredPosts.add(post);
+            }
+        }
+        return filteredPosts;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null) {
+
+            sort = savedInstanceState.getString("sort");
+            query = savedInstanceState.getString("query");
+            getData(query);
+            restoreFilterButtons(query);
+            restoreSortButtons(sort);
+        } else {
+
+            query = "ALL";
+            sort = "ASC";
+            getData("ALL");
+            restoreFilterButtons(query);
+            restoreSortButtons(sort);
+        }
+        activity.setBottomNavigationBarVisibility(true);
+    }
+
+    public void restoreFilterButtons(String query) {
+        switch (query) {
+            case "ALL":
+                bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
+                bind.filterReviewBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+                bind.filterLendBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+                break;
+            case "REVIEW":
+                bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+                bind.filterReviewBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
+                bind.filterLendBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+                break;
+            case "LEND":
+                bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+                bind.filterReviewBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+                bind.filterLendBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
+                break;
+        }
+    }
+
+    public void restoreSortButtons(String sort) {
+        switch (sort) {
+            case "ASC":
+                bind.sortAscBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
+                bind.sortDescBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+                break;
+            case "DESC":
+                bind.sortAscBtn.setBackgroundColor(getResources().getColor(R.color.orange));
+                bind.sortDescBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
+                break;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("query", query);
+        outState.putString("sort", sort);
+        super.onSaveInstanceState(outState);
+    }
 
     public void getData(String query) {
         // get data from Firebase and pass to adapter
@@ -248,73 +308,5 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
 //        bind.searchView.setOnQueryTextListener(null);
         bind = null;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar_menu_for_home_fragment, menu);
-        super.onCreateOptionsMenu(menu,inflater);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-
-        searchView.setQueryHint("Search by title or content");
-
-        // add listener to search bar
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-            // filter when user press enter
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            // filter in real time
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                postAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_filter) {
-
-            // refresh the recycler view
-            int visible = bind.filterForm.getVisibility();
-            if (visible == View.GONE) {
-                bind.filterForm.setVisibility(View.VISIBLE);
-                TranslateAnimationUtil.fadeOutViewStatic(bind.pullToRefresh);
-                TranslateAnimationUtil.fadeInViewStatic(bind.filterForm);
-            } else {
-                bind.filterForm.setVisibility(View.GONE);
-                TranslateAnimationUtil.fadeOutViewStatic(bind.filterForm);
-                TranslateAnimationUtil.fadeInViewStatic(bind.pullToRefresh);
-            }
-            int visible2 = bind.sortForm.getVisibility();
-            if (visible2 == View.GONE) {
-                bind.sortForm.setVisibility(View.VISIBLE);
-                TranslateAnimationUtil.fadeOutViewStatic(bind.pullToRefresh);
-                TranslateAnimationUtil.fadeInViewStatic(bind.sortForm);
-            } else {
-                bind.sortForm.setVisibility(View.GONE);
-                TranslateAnimationUtil.fadeOutViewStatic(bind.sortForm);
-                TranslateAnimationUtil.fadeInViewStatic(bind.pullToRefresh);
-            }
-
-            return true;
-        }
-        else if (item.getItemId() == R.id.action_search) {
-
-            // copy-pasted the same code from onCreateView method
-            postAdapter = new PostAdapter(activity, posts);
-            bind.postsListView.setAdapter(postAdapter);
-            bind.postsListView.setLayoutManager(new LinearLayoutManager(activity));
-
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
     }
 }
