@@ -159,6 +159,13 @@ public class LibraryFragment extends Fragment implements ClickCallback {
                     ImageView genreImage = genreCardLayout.findViewById(R.id.imageView3);
                     Picasso.get().load(currentGenre.getImageUrl()).into(genreImage);
                     bind.genre.addView(genreCardLayout);
+
+                    Bundle bundle = new Bundle();
+
+                    bundle.putSerializable("GENRE_OBJECT", currentGenre);
+                    genreCardLayout.setOnClickListener(v -> {
+                        Navigation.findNavController(getView()).navigate(R.id.genreFragment, bundle);
+                    });
                 }
             }
         });

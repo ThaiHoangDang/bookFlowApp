@@ -57,6 +57,12 @@ public class GenreRepository {
                 .continueWith(task -> {
                     if (task.isSuccessful()) {
                         List<Genre> genres = task.getResult().toObjects(Genre.class);
+
+                        // Set the id for each genre
+                        for (int i = 0; i < genres.size(); i++) {
+                            genres.get(i).setId(task.getResult().getDocuments().get(i).getId());
+                        }
+
                         return genres;
                     } else {
                         Exception exception = task.getException();

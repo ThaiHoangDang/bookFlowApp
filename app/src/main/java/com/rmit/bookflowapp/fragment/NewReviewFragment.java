@@ -68,6 +68,8 @@ public class NewReviewFragment extends Fragment {
         Picasso.get().load(book.getImageUrl()).into((ImageView) bookToReview.findViewById(R.id.searchBookCover));
         bind.newReviewBookHolder.addView(bookToReview);
 
+        bind.back.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+
         // update form if user has written review before
         if (review != null) {
             bind.reviewTitleText.setText(review.getTitle());
