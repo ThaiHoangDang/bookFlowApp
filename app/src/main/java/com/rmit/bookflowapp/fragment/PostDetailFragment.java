@@ -4,6 +4,8 @@ import android.media.Rating;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -24,11 +26,17 @@ import com.rmit.bookflowapp.Model.Review;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.Ultilities.Helper;
 import com.rmit.bookflowapp.activity.MainActivity;
+import com.rmit.bookflowapp.adapter.CommentAdapter;
+import com.rmit.bookflowapp.adapter.ReviewAdapter;
 import com.rmit.bookflowapp.adapter.SearchBookAdapter;
 import com.rmit.bookflowapp.databinding.FragmentGenreBinding;
 import com.rmit.bookflowapp.databinding.FragmentPostDetailBinding;
 import com.rmit.bookflowapp.repository.BookRepository;
 import com.rmit.bookflowapp.repository.CommentRepository;
+import com.rmit.bookflowapp.viewmodel.BookDetailViewModel;
+import com.rmit.bookflowapp.viewmodel.PostDetailViewModel;
+import com.rmit.bookflowapp.viewmodel.factory.BookDetailViewModelFactory;
+import com.rmit.bookflowapp.viewmodel.factory.PostDetailViewModelFactory;
 import com.squareup.picasso.Picasso;
 
 import org.checkerframework.checker.units.qual.C;
@@ -46,6 +54,8 @@ public class PostDetailFragment extends Fragment {
     private FragmentPostDetailBinding bind;
     private MainActivity activity;
     private Post post;
+    private PostDetailViewModel viewModel;
+    private CommentAdapter commentAdapter;
 
     public PostDetailFragment() {
         // Required empty public constructor
@@ -61,6 +71,9 @@ public class PostDetailFragment extends Fragment {
         if (arguments == null) getParentFragmentManager().popBackStack();
         post = (Post) Objects.requireNonNull(arguments).getSerializable("POST_OBJECT");
 
+        assert post != null;
+        PostDetailViewModelFactory factory = new PostDetailViewModelFactory(post.getId());
+        viewModel = new ViewModelProvider(this, factory).get(PostDetailViewModel.class);
     }
 
     @Override
@@ -70,20 +83,11 @@ public class PostDetailFragment extends Fragment {
         activity.setBottomNavigationBarVisibility(false);
 
         // setup display
-        bind.postOwner.setText(post.getUser().getName());
-        if (post instanceof Review) bind.rating.setRating(((Review) post).getRating());
-        bind.postTitle.setText(post.getTitle());
-        bind.postContent.setText(post.getContent());
-        bind.postDate.setText(Helper.convertTime(post.getTimestamp()));
-
-        View bookLayout = LayoutInflater.from(requireContext()).inflate(R.layout.search_book_card, null);
-        ((TextView) bookLayout.findViewById(R.id.searchTitleName)).setText(post.getBook().getTitle());
-        ((TextView) bookLayout.findViewById(R.id.searchAuthorName)).setText(post.getBook().getAuthorString());
-        Picasso.get().load(post.getBook().getImageUrl()).into((ImageView) bookLayout.findViewById(R.id.searchBookCover));
-        bind.targetBook.addView(bookLayout);
+        setupView();
 
         bind.back.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
+        // add new comment
         bind.btnSend.setOnClickListener(v -> {
 
             // check for missing input
@@ -100,10 +104,38 @@ public class PostDetailFragment extends Fragment {
             commentData.put("postId", post.getId());
             commentData.put("timestamp", System.currentTimeMillis() / 1000L);
 
-            CommentRepository.getInstance().addComment(commentData);
+            CommentRepository.getInstance().addComment(commentData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    viewModel.refreshPostComments();
+                    Toast.makeText(activity, "New comment added!", Toast.LENGTH_SHORT).show();
+                    bind.textSend.clearFocus();
+                    bind.textSend.setText("");
+                }
+            });
         });
 
         return bind.getRoot();
+    }
+
+    private void setupView() {
+        // setup display
+        bind.postOwner.setText(post.getUser().getName());
+        if (post instanceof Review) bind.rating.setRating(((Review) post).getRating());
+        bind.postTitle.setText(post.getTitle());
+        bind.postContent.setText(post.getContent());
+        bind.postDate.setText(Helper.convertTime(post.getTimestamp()));
+
+        View bookLayout = LayoutInflater.from(requireContext()).inflate(R.layout.search_book_card, null);
+        ((TextView) bookLayout.findViewById(R.id.searchTitleName)).setText(post.getBook().getTitle());
+        ((TextView) bookLayout.findViewById(R.id.searchAuthorName)).setText(post.getBook().getAuthorString());
+        Picasso.get().load(post.getBook().getImageUrl()).into((ImageView) bookLayout.findViewById(R.id.searchBookCover));
+        bind.targetBook.addView(bookLayout);
+
+        commentAdapter = new CommentAdapter(activity, new ArrayList<>());
+        bind.postDetailCommentsList.setAdapter(commentAdapter);
+        bind.postDetailCommentsList.setLayoutManager(new LinearLayoutManager(activity));
+        viewModel.getPostComments().observe(getViewLifecycleOwner(), comments -> commentAdapter.setItems(comments));
     }
 
     @Override
