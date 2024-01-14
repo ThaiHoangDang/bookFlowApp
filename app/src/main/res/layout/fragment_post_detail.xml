@@ -28,7 +28,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp">
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,14 +111,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/commentInfoSection"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider" />
 
                 <RelativeLayout
                     android:id="@+id/temp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/commentInfoBookDivider">
-                    <include layout="@layout/search_book_card"/>
+
+                    <include layout="@layout/search_book_card" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -225,8 +227,48 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="?android:attr/listDivider" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/base_blue"
+        android:ignoreGravity="false"
+        android:padding="12dp">
+
+        <EditText
+            android:id="@+id/text_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:layout_toLeftOf="@id/btn_send"
+            android:background="@android:color/transparent"
+            android:hint="Add a comment.."
+            android:padding="8dp"
+            android:text="" />
+
+        <ImageButton
+            android:id="@+id/btn_send"
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_send" />
+
+    </RelativeLayout>
 </FrameLayout>
