@@ -2,12 +2,9 @@ package com.rmit.bookflowapp.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.rmit.bookflowapp.Model.Comment;
-
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.Map;
 
@@ -27,8 +24,8 @@ public class CommentRepository {
         return instance;
     }
 
-    public Task<DocumentReference> addComment(Comment comment) {
-        return collection.add(comment);
+    public Task<Void> addComment(Comment comment) {
+        return collection.document(comment.getId()).set(comment);
     }
 
     public Task<Void> updateComment(Map<String, Object> field, String commentId) {

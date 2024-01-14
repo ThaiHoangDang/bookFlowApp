@@ -30,7 +30,7 @@
                 app:cardElevation="0dp">
 
                 <ImageView
-                    android:id="@+id/postAvatarImage"
+                    android:id="@+id/commentAvatarImage"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/defaultprofileavatar" />
@@ -72,7 +72,7 @@
             android:paddingRight="16dp"
             android:paddingBottom="10dp">
             <TextView
-                android:id="@+id/postContent"
+                android:id="@+id/commentContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pulvinar mattis nunc sed blandit libero. Id porta nibh venenatis cras sed felis eget velit. Augue lacus viverra vitae congue eu."

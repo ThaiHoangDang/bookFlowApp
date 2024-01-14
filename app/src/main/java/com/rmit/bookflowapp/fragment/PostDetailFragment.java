@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.rmit.bookflowapp.Model.Book;
+import com.rmit.bookflowapp.Model.Comment;
 import com.rmit.bookflowapp.Model.Genre;
 import com.rmit.bookflowapp.Model.Post;
 import com.rmit.bookflowapp.Model.Review;
@@ -25,11 +28,15 @@ import com.rmit.bookflowapp.adapter.SearchBookAdapter;
 import com.rmit.bookflowapp.databinding.FragmentGenreBinding;
 import com.rmit.bookflowapp.databinding.FragmentPostDetailBinding;
 import com.rmit.bookflowapp.repository.BookRepository;
+import com.rmit.bookflowapp.repository.CommentRepository;
 import com.squareup.picasso.Picasso;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 
 public class PostDetailFragment extends Fragment {
@@ -74,6 +81,26 @@ public class PostDetailFragment extends Fragment {
         bind.targetBook.addView(bookLayout);
 
         bind.back.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+
+        bind.btnSend.setOnClickListener(v -> {
+
+            // check for missing input
+            if (bind.textSend.getText().length() == 0) {
+                Toast.makeText(activity, "Missing input!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // setup comment for pushing
+            Comment comment = new Comment();
+            comment.setId(UUID.randomUUID().toString());
+            comment.setUserId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+            comment.setPostId(post.getId());
+            comment.setContent(bind.textSend.getText().toString());
+            comment.setTimestamp(System.currentTimeMillis() / 1000L);
+
+            CommentRepository.getInstance().addComment(comment);
+        });
+
 
         return bind.getRoot();
     }

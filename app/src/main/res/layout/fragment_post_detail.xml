@@ -250,19 +250,19 @@
         android:padding="12dp">
 
         <EditText
-            android:id="@+id/text_send"
+            android:id="@+id/textSend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="3dp"
-            android:layout_toLeftOf="@id/btn_send"
+            android:layout_toLeftOf="@id/btnSend"
             android:background="@android:color/transparent"
             android:hint="Add a comment.."
             android:padding="8dp"
             android:text="" />
 
         <ImageButton
-            android:id="@+id/btn_send"
+            android:id="@+id/btnSend"
             android:layout_width="25dp"
             android:layout_height="20dp"
             android:layout_alignParentEnd="true"

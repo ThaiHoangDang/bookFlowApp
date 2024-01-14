@@ -9,13 +9,13 @@ public class Comment implements Comparable<Comment>, Serializable {
     private String userId;
     private String postId;
     private String content;
-    private Timestamp timestamp;
+    private Long timestamp;
 
     public Comment() {
         // empty constructor needed for firebase
     }
 
-    public Comment(String id, String userId, String postId, String content, Timestamp timestamp) {
+    public Comment(String id, String userId, String postId, String content, Long timestamp) {
         this.id = id;
         this.userId = userId;
         this.postId = postId;
@@ -55,11 +55,11 @@ public class Comment implements Comparable<Comment>, Serializable {
         this.content = content;
     }
 
-    public Timestamp getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
