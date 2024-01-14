@@ -33,6 +33,7 @@
                     android:id="@+id/commentAvatarImage"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_marginTop="3dp"
                     android:src="@drawable/defaultprofileavatar" />
 
             </androidx.cardview.widget.CardView>

@@ -23,14 +23,6 @@ public class Comment implements Comparable<Comment>, Serializable {
         this.timestamp = timestamp;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getId() {
         return id;
     }
@@ -39,11 +31,13 @@ public class Comment implements Comparable<Comment>, Serializable {
         this.id = id;
     }
 
-    public User getUserId() {
+    public User getUser() {
         return user;
     }
 
-    public void setUserId(User user) { this.user = user; }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getPostId() {
         return postId;

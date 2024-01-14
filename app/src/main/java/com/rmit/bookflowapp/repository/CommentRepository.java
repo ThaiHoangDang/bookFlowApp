@@ -74,12 +74,9 @@ public class CommentRepository {
 
                 Task<Comment> commentTask = UserRepository.getInstance().getUserById(commentUserId)
                                 .continueWith(userTask -> {
-                                    Log.w(TAG, "DMNCN!");
                                     Comment comment = document.toObject(Comment.class);
-                                    Log.w(TAG, "DMHCH!");
                                     comment.setUser(userTask.getResult());
                                     comment.setId(document.getId());
-                                    Log.w(TAG, "DMQCQ!");
                                     allPostComments.add(comment);
                                     return comment;
                                 });

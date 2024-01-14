@@ -18,6 +18,8 @@ import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.Ultilities.Helper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
@@ -46,7 +48,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @Override
     public CommentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View itemView = inflater.inflate(R.layout.review_card, parent, false);
+        View itemView = inflater.inflate(R.layout.comment_card, parent, false);
         return new CommentAdapter.ViewHolder(itemView);
     }
 
@@ -55,7 +57,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment comment = comments.get(position);
 
-//        holder.commentOwner.setText(comment.getUser().getName());
+        holder.commentOwner.setText(comment.getUser().getName());
         holder.commentContent.setText(comment.getContent());
         holder.commentTime.setText(Helper.convertTime(comment.getTimestamp()));
     }
@@ -67,6 +69,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @SuppressLint("NotifyDataSetChanged")
     public void setItems(List<Comment> comments) {
+
+        // Sort the comments based on timestamp
+        Collections.sort(comments, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment comment1, Comment comment2) {
+                // Sorting in descending order, change to ascending order if needed
+                return comment2.getTimestamp().compareTo(comment1.getTimestamp());
+            }
+        });
+
         this.comments.clear();
         this.comments.addAll(comments);
         notifyDataSetChanged();
