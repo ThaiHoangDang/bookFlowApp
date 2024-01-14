@@ -2,6 +2,7 @@ package com.rmit.bookflowapp.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmit.bookflowapp.Model.Lend;
@@ -82,6 +84,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> im
             // image
             ImageView postImage = holder.itemView.findViewById(R.id.imageView4);
             Picasso.get().load(post.getBook().getImageUrl()).into(postImage);
+
+            // click listener
+            holder.itemView.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("POST_OBJECT", post);
+                Navigation.findNavController(v).navigate(R.id.postDetailFragment, bundle);
+            });
         } else if (posts.get(position) instanceof Lend) {
             Lend post = (Lend) posts.get(position);
 

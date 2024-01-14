@@ -29,7 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
-        android:layout_marginBottom="60dp">
+        android:layout_marginBottom="60dp"
+        android:background="@color/neutral_100">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +40,8 @@
             <RelativeLayout
                 android:id="@+id/postHolder"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF">
 
                 <RelativeLayout
                     android:id="@+id/commentInfoSection"
@@ -93,15 +95,15 @@
                             android:stepSize="0.1"
                             android:theme="@style/RatingBar" />
 
-                        <TextView
-                            android:id="@+id/postInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/postOwner"
-                            android:maxLines="1"
-                            android:text="Location"
-                            android:textSize="12sp"
-                            android:visibility="gone" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/postInfo"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_below="@id/postOwner"-->
+<!--                            android:maxLines="1"-->
+<!--                            android:text="Location"-->
+<!--                            android:textSize="12sp"-->
+<!--                            android:visibility="gone" />-->
                     </RelativeLayout>
 
                 </RelativeLayout>
@@ -114,19 +116,18 @@
                     android:background="?android:attr/listDivider" />
 
                 <RelativeLayout
-                    android:id="@+id/temp"
+                    android:id="@+id/targetBook"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/commentInfoBookDivider">
 
-                    <include layout="@layout/search_book_card" />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/postBodySection"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/temp"
+                    android:layout_below="@id/targetBook"
                     android:background="@color/white"
                     android:paddingLeft="16dp"
                     android:paddingTop="10dp"
@@ -138,7 +139,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/cardCommentTitle"
+                            android:id="@+id/postTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Best book I have read so far!"
@@ -149,7 +150,7 @@
                             android:id="@+id/postContent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/cardCommentTitle"
+                            android:layout_below="@id/postTitle"
                             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pulvinar mattis nunc sed blandit libero. Id porta nibh venenatis cras sed felis eget velit. Augue lacus viverra vitae congue eu. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pulvinar mattis nunc sed blandit libero. Id porta nibh venenatis cras sed felis eget velit. Augue lacus viverra vitae congue eu."
                             android:textColor="#656565"
                             android:textSize="12sp" />
@@ -246,7 +247,6 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:background="@color/base_blue"
-        android:ignoreGravity="false"
         android:padding="12dp">
 
         <EditText
