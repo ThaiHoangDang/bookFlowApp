@@ -34,7 +34,9 @@ import com.squareup.picasso.Picasso;
 import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -90,17 +92,16 @@ public class PostDetailFragment extends Fragment {
                 return;
             }
 
-            // setup comment for pushing
-            Comment comment = new Comment();
-            comment.setId(UUID.randomUUID().toString());
-            comment.setUserId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-            comment.setPostId(post.getId());
-            comment.setContent(bind.textSend.getText().toString());
-            comment.setTimestamp(System.currentTimeMillis() / 1000L);
+            // data holder
+            Map<String, Object> commentData = new HashMap<>();
+            commentData.put("id", UUID.randomUUID().toString());
+            commentData.put("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            commentData.put("content", bind.textSend.getText().toString());
+            commentData.put("postId", post.getId());
+            commentData.put("timestamp", System.currentTimeMillis() / 1000L);
 
-            CommentRepository.getInstance().addComment(comment);
+            CommentRepository.getInstance().addComment(commentData);
         });
-
 
         return bind.getRoot();
     }

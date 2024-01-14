@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Comment implements Comparable<Comment>, Serializable {
     private String id;
-    private String userId;
+    private User user;
     private String postId;
     private String content;
     private Long timestamp;
@@ -15,9 +15,9 @@ public class Comment implements Comparable<Comment>, Serializable {
         // empty constructor needed for firebase
     }
 
-    public Comment(String id, String userId, String postId, String content, Long timestamp) {
+    public Comment(String id, User user, String postId, String content, Long timestamp) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.postId = postId;
         this.content = content;
         this.timestamp = timestamp;
@@ -31,13 +31,11 @@ public class Comment implements Comparable<Comment>, Serializable {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getUserId() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    public void setUserId(User user) { this.user = user; }
 
     public String getPostId() {
         return postId;

@@ -7,6 +7,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.rmit.bookflowapp.Model.Comment;
 
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class CommentRepository {
     private static final String COLLECTION_NAME = "comment";
@@ -26,6 +28,10 @@ public class CommentRepository {
 
     public Task<Void> addComment(Comment comment) {
         return collection.document(comment.getId()).set(comment);
+    }
+
+    public Task<Void> addComment(Map<String, Object> comment) {
+        return collection.document(Objects.requireNonNull(comment.get("id")).toString()).set(comment);
     }
 
     public Task<Void> updateComment(Map<String, Object> field, String commentId) {
