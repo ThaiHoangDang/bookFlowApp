@@ -66,6 +66,11 @@
         android:label="fragment_message_search"
         tools:layout="@layout/fragment_message_search" />
     <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.rmit.bookflowapp.fragment.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
+    <fragment
         android:id="@+id/newReviewFragment"
         android:name="com.rmit.bookflowapp.fragment.NewReviewFragment"
         android:label="fragment_new_review"
