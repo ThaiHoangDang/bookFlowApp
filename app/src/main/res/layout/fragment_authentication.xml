@@ -2,38 +2,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/logo" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email: "
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:textSize="16sp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/passwordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password: "
-        android:inputType="textPassword" />
-
-    <TextView
-        android:id="@+id/toSignUp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Do not have an account ? Sign up"
-        android:textColor="@color/black" />
+        android:inputType="textPassword"
+        android:textSize="16sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signInButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="Sign in" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/googleSignInButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Google" />
+        android:text="SIGN IN WITH GOOGLE" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/toSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="SIGN UP"
+        android:textColor="@color/dark_blue"
+        app:backgroundTint="@color/base_blue" />
+
 </LinearLayout>

@@ -57,6 +57,8 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
+//                activity.navController.navigate(R.id.authenticationFragment);
+                activity.navController.navigate(R.id.action_moreFragment_to_authenticationFragment);
             }
         });
         return binding.getRoot();
