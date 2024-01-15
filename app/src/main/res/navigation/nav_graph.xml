@@ -75,5 +75,10 @@
         android:name="com.rmit.bookflowapp.fragment.GenreFragment"
         android:label="fragment_genre"
         tools:layout="@layout/fragment_genre" />
+    <fragment
+        android:id="@+id/postDetailFragment"
+        android:name="com.rmit.bookflowapp.fragment.PostDetailFragment"
+        android:label="fragment_post_detail"
+        tools:layout="@layout/fragment_post_detail" />
 
 </navigation>

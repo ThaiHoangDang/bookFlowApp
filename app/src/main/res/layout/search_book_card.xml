@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#FAFAFA">
 
     <RelativeLayout
         android:id="@+id/searchBookCardHolder"
@@ -38,19 +39,19 @@
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@id/searchBookCoverHolder">
 
-            <RatingBar
-                android:id="@+id/cardBookRating"
-                style="@android:style/Widget.DeviceDefault.RatingBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/searchAuthorName"
-                android:layout_marginTop="5dp"
-                android:elevation="4dp"
-                android:numStars="5"
-                android:rating="4.5"
-                android:scaleX="1"
-                android:scaleY="1"
-                android:stepSize="0.1" />
+            <!--            <RatingBar-->
+            <!--                android:id="@+id/cardBookRating"-->
+            <!--                style="@android:style/Widget.DeviceDefault.RatingBar.Small"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_below="@id/searchAuthorName"-->
+            <!--                android:layout_marginTop="5dp"-->
+            <!--                android:elevation="4dp"-->
+            <!--                android:numStars="5"-->
+            <!--                android:rating="4.5"-->
+            <!--                android:scaleX="1"-->
+            <!--                android:scaleY="1"-->
+            <!--                android:stepSize="0.1" />-->
 
             <TextView
                 android:id="@+id/searchTitleName"
