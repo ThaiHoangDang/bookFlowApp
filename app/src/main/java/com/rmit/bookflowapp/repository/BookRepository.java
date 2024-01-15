@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.User;
 
@@ -67,6 +68,11 @@ public class BookRepository {
                         return null;
                     }
                 });
+    }
+
+    public Task<List<Book>> getBookByGenreId(String id) {
+        return bookCollection.whereArrayContains("genreId", id).get()
+                .continueWith(task -> task.getResult().toObjects(Book.class));
     }
 
     public Task<Book> getBookById(String bid) {

@@ -1,5 +1,6 @@
 package com.rmit.bookflowapp.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.rmit.bookflowapp.interfaces.ClickCallback;
@@ -70,6 +72,12 @@ public class SearchBookAdapter extends RecyclerView.Adapter<SearchBookAdapter.Vi
         holder.searchTitleName.setText(book.getTitle());
         holder.searchAuthorName.setText(book.getAuthorString());
         Picasso.get().load(book.getImageUrl()).into(holder.searchBookCover);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setBooks(ArrayList<Book> books) {
+        this.books = books;
+        notifyDataSetChanged();
     }
 
     @Override
