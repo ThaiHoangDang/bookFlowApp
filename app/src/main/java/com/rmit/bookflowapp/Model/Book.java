@@ -15,18 +15,22 @@ public class Book implements Serializable, Parcelable {
     private List<String> genre;
     private String description;
     private String imageId;
+    private int totalRating;
+    private int totalRatingCount;
 
     public Book() {
         // empty constructor needed for firebase
     }
 
-    public Book(String id, String title, List<String> author, List<String> genre, String description, String imageId) {
+    public Book(String id, String title, List<String> author, List<String> genre, String description, String imageId, int totalRating, int totalRatingCount) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.genre = genre;
         this.description = description;
         this.imageId = imageId;
+        this.totalRating = totalRating;
+        this.totalRatingCount = totalRatingCount;
     }
 
     protected Book(Parcel in) {
@@ -98,6 +102,26 @@ public class Book implements Serializable, Parcelable {
         this.imageId = imageId;
     }
 
+    public int getTotalRating() {
+        return totalRating;
+    }
+
+    public void setTotalRating(int totalRating) {
+        this.totalRating = totalRating;
+    }
+
+    public int getTotalRatingCount() {
+        return totalRatingCount;
+    }
+
+    public void setTotalRatingCount(int totalRatingCount) {
+        this.totalRatingCount = totalRatingCount;
+    }
+
+    public float getRating() {
+        return (float) getTotalRating() / getTotalRatingCount();
+    }
+
     public String getImageUrl() {
         return "https://firebasestorage.googleapis.com/v0/b/striking-water-408603.appspot.com/o/" + getImageId() + "?alt=media";
     }
@@ -112,6 +136,7 @@ public class Book implements Serializable, Parcelable {
         }
         return authorStringBuilder.toString();
     }
+
 
     @Override
     public int describeContents() {
