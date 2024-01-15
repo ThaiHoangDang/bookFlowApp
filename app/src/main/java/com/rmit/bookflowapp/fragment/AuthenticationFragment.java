@@ -105,6 +105,7 @@ public class AuthenticationFragment extends Fragment {
     }
 
     private void signInWithGoogle() {
+        activity.setProgressVisibility(true);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -121,7 +122,9 @@ public class AuthenticationFragment extends Fragment {
                     firebaseAuthWithGoogle(account);
                 }
             } catch (Exception e) {
-                Log.d("AUTHENTICATION", "BUON");
+                Log.d("AUTHENTICATION", e.toString());
+            } finally {
+
             }
         }
     }
@@ -161,6 +164,8 @@ public class AuthenticationFragment extends Fragment {
                     } catch (Exception e) {
                         Toast.makeText(requireActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         Log.e("AUTHENTICATION", "BUON", e);
+                    } finally {
+                        activity.setProgressVisibility(false);
                     }
                 });
     }

@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "73120140335-erslfk5a8mfpq4pjrfqv3rrfscr898nv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rmit.bookflowapp",
+            "certificate_hash": "511d774d96d8bd59f55199abbdda78a37bb5ce97"
+          }
+        },
+        {
           "client_id": "73120140335-gnlfqrfef8aut8ndp9v7pgc3493l26bk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

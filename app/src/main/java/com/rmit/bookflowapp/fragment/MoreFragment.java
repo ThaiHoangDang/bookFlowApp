@@ -7,21 +7,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.rmit.bookflowapp.R;
+import com.rmit.bookflowapp.activity.MainActivity;
+import com.rmit.bookflowapp.databinding.FragmentMessageListBinding;
+import com.rmit.bookflowapp.databinding.FragmentMoreBinding;
 
 public class MoreFragment extends Fragment {
-
-    public MoreFragment() {
-        // Required empty public constructor
-    }
-
-    public static MoreFragment newInstance(String param1, String param2) {
-        MoreFragment fragment = new MoreFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private String TAG = "MoreFragment";
+    private FragmentMoreBinding binding;
+    private MainActivity activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +31,36 @@ public class MoreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_more, container, false);
+        binding = FragmentMoreBinding.inflate(inflater, container, false);
+        activity = (MainActivity) getActivity();
+        activity.setBottomNavigationBarVisibility(true);
+
+        binding.userProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.navController.navigate(R.id.userProfileFragment);
+            }
+        });
+        binding.followBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "follow", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.aboutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "about", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+//                activity.navController.navigate(R.id.authenticationFragment);
+                activity.navController.navigate(R.id.action_moreFragment_to_authenticationFragment);
+            }
+        });
+        return binding.getRoot();
     }
 }

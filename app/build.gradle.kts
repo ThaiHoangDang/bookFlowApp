@@ -51,6 +51,10 @@ dependencies {
     // Firebase storage image load
     implementation ("com.squareup.picasso:picasso:2.8")
 
+    // Firebase storage image load
+    implementation ("com.squareup.picasso:picasso:2.8")
+    //Firebase Messaging
+    implementation("com.google.firebase:firebase-messaging:23.4.0")
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth:22.3.0")
     // Firebase Cloud Firestore
