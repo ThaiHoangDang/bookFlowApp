@@ -23,6 +23,19 @@
             android:paddingLeft="20dp"
             android:src="@drawable/baseline_arrow_back_ios_24" />
 
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Review Detail"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -37,12 +50,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/targetBook"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </RelativeLayout>
-
 <!--            <View-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="1dp"-->
@@ -52,7 +59,7 @@
                 android:id="@+id/postHolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#F8F8F8">
+                android:background="#FFFFFF">
 
                 <RelativeLayout
                     android:id="@+id/commentInfoSection"
@@ -153,11 +160,25 @@
 
                 </RelativeLayout>
 
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/postBodySection"
+                    android:background="?android:attr/listDivider" />
+
+                <RelativeLayout
+                    android:id="@+id/targetBook"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider2">
+                </RelativeLayout>
+
                 <RelativeLayout
                     android:id="@+id/postFooterSection"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_below="@id/postBodySection">
+                    android:layout_below="@id/targetBook">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -217,9 +238,10 @@
                 <View
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="8dp"
                     android:layout_below="@id/postFooterSection"
-                    android:background="?android:attr/listDivider" />
+                    android:background="@color/neutral_100" />
+
 
             </RelativeLayout>
 

@@ -132,6 +132,13 @@ public class PostDetailFragment extends Fragment {
         Picasso.get().load(post.getBook().getImageUrl()).into((ImageView) bookLayout.findViewById(R.id.searchBookCover));
         bind.targetBook.addView(bookLayout);
 
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable("BOOK_OBJECT", post.getBook());
+        bookLayout.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.bookDetailFragment, bundle);
+        });
+
         commentAdapter = new CommentAdapter(activity, new ArrayList<>());
         bind.postDetailCommentsList.setAdapter(commentAdapter);
         bind.postDetailCommentsList.setLayoutManager(new LinearLayoutManager(activity));
