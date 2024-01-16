@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -122,6 +123,12 @@ public class LibraryFragment extends Fragment implements ClickCallback {
                         Picasso.get().load(imageUrl).into(bookImage);
                         bind.bestOfAllTime.addView(bookLayout);
 
+                        if (!Float.isNaN(currentBook.getRating())) {
+                            ((RatingBar) bookLayout.findViewById(R.id.cardBookRating)).setRating(currentBook.getRating());
+                        } else {
+                            ((RatingBar) bookLayout.findViewById(R.id.cardBookRating)).setRating(0);
+                        }
+
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("BOOK_OBJECT", currentBook);
                         bookLayout.setOnClickListener(v -> {
@@ -139,6 +146,12 @@ public class LibraryFragment extends Fragment implements ClickCallback {
                         Picasso.get().load(imageUrl).into(bookImage);
                         bind.trending.addView(bookLayout);
                         Bundle bundle = new Bundle();
+
+                        if (!Float.isNaN(currentBook.getRating())) {
+                            ((RatingBar) bookLayout.findViewById(R.id.cardBookRating)).setRating(currentBook.getRating());
+                        } else {
+                            ((RatingBar) bookLayout.findViewById(R.id.cardBookRating)).setRating(0);
+                        }
 
                         bundle.putSerializable("BOOK_OBJECT", currentBook);
                         bookLayout.setOnClickListener(v -> {
