@@ -2,8 +2,12 @@ package com.rmit.bookflowapp.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +29,10 @@ import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.databinding.FragmentUserProfileBinding;
 import com.rmit.bookflowapp.repository.UserRepository;
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class UserProfileFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -99,22 +107,50 @@ public class UserProfileFragment extends Fragment {
     }
 
     private void uploadImage(Uri imageUri) {
-        StorageReference fileReference = storageReference.child(Long.toString(System.currentTimeMillis()));
+        try {
+            InputStream inputStream = getActivity().getContentResolver().openInputStream(imageUri);
+            ExifInterface exif = new ExifInterface(inputStream);
 
-        fileReference.putFile(imageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri downloadUri) {
-                                user.setImageId(downloadUri.toString());
-                                UserRepository.getInstance().updateUser(user);
-                                Picasso.get().load(downloadUri.toString()).into(binding.imageView);
-                            }
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+            Bitmap rotatedBitmap = rotateBitmap(bitmap, orientation);
+
+            StorageReference fileReference = storageReference.child(Long.toString(System.currentTimeMillis()));
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            fileReference.putBytes(data)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        fileReference.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                            user.setImageId(downloadUri.toString());
+                            UserRepository.getInstance().updateUser(user);
+                            Picasso.get().load(downloadUri.toString()).into(binding.imageView);
                         });
-                    }
-                });
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+        Matrix matrix = new Matrix();
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(270);
+                break;
+            default:
+                return bitmap;
+        }
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
 }
