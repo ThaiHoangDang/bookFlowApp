@@ -92,5 +92,10 @@
         android:name="com.rmit.bookflowapp.fragment.PostDetailFragment"
         android:label="fragment_post_detail"
         tools:layout="@layout/fragment_post_detail" />
+    <fragment
+        android:id="@+id/readingTimerFragment"
+        android:name="com.rmit.bookflowapp.fragment.ReadingTimerFragment"
+        android:label="fragment_reading_timer"
+        tools:layout="@layout/fragment_reading_timer" />
 
 </navigation>
