@@ -80,6 +80,7 @@ public class SignUpFragment extends Fragment {
                                 newUser.setId(userId);
                                 newUser.setName(name);
                                 newUser.setEmail(email);
+                                newUser.setImageId("https://firebasestorage.googleapis.com/v0/b/striking-water-408603.appspot.com/o/default.png?alt=media");
                                 newUser.setRole("USER");
 
                                 UserRepository.getInstance().addUser(userId, newUser)

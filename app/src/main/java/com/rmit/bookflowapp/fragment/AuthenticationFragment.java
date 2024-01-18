@@ -89,6 +89,11 @@ public class AuthenticationFragment extends Fragment {
                         UserRepository.getInstance().getUserById(Objects.requireNonNull(firebaseUser).getUid())
                                 .addOnCompleteListener(getUserTask -> {
                                     User currentUser = getUserTask.getResult();
+                                    if (currentUser.getRole().equals("ADMIN")) {
+                                        activity.navController.popBackStack();
+                                        activity.navController.navigate(R.id.adminHomeFragment);
+                                        return;
+                                    }
                                     if (currentUser != null) {
                                         activity.navController.popBackStack();
                                         activity.navController.navigate(R.id.homeFragment);
@@ -146,6 +151,7 @@ public class AuthenticationFragment extends Fragment {
                                                     newUser.setName(firebaseUser.getDisplayName());
                                                     newUser.setEmail(firebaseUser.getEmail());
                                                     newUser.setRole("USER");
+                                                    newUser.setImageId(String.valueOf(firebaseUser.getPhotoUrl()));
                                                     UserRepository.getInstance().addUser(firebaseUser.getUid(), newUser);
                                                 }
                                                 activity.navController.popBackStack();

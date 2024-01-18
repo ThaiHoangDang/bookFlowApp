@@ -58,13 +58,10 @@ public class UserProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public void initView(){
-        if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()) {
-            Picasso.get().load(user.getImageUrl()).into(binding.imageView);
-            Log.d(TAG, user.getImageUrl());
-        } else {
-            Picasso.get().load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString()).into(binding.imageView);
-            Log.d(TAG, FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
+    public void initView() {
+        if (user.getImageId() != null && !user.getImageId().isEmpty()) {
+            Picasso.get().load(user.getImageId()).into(binding.imageView);
+            Log.d(TAG, user.getImageId());
         }
         binding.textViewDisplayName.setText(user.getName());
         binding.textViewEmail.setText(user.getEmail());
