@@ -50,7 +50,7 @@ public class MoreFragment extends Fragment {
         binding.aboutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "about", Toast.LENGTH_SHORT).show();
+                activity.navController.navigate(R.id.aboutFragment);
             }
         });
         binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
