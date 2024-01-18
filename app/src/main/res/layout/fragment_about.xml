@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.AboutFragment">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -76,14 +75,14 @@
 
                     <ImageView
                         android:id="@+id/imageView2"
-                        android:layout_width="102dp"
-                        android:layout_height="94dp"
+                        android:layout_width="114dp"
+                        android:layout_height="107dp"
                         android:layout_marginTop="24dp"
+                        android:contentDescription="@string/logo"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/logo"
-                        android:contentDescription="@string/logo" />
+                        app:srcCompat="@drawable/logo" />
 
                     <RelativeLayout
                         android:layout_width="284dp"

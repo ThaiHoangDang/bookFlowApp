@@ -121,6 +121,7 @@ public class PostDetailFragment extends Fragment {
     private void setupView() {
         // setup display
         bind.postOwner.setText(post.getUser().getName());
+        Picasso.get().load(post.getUser().getImageId()).into((ImageView) bind.postAvatarImage);
         if (post instanceof Review) bind.rating.setRating(((Review) post).getRating());
         bind.postTitle.setText(post.getTitle());
         bind.postContent.setText(post.getContent());

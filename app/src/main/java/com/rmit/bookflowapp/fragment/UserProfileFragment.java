@@ -69,11 +69,17 @@ public class UserProfileFragment extends Fragment {
 
         storageReference = FirebaseStorage.getInstance().getReference("profile_pictures");
 
+
         Bundle arguments = getArguments();
 
         // end fragment if no data found
         if (arguments == null) getParentFragmentManager().popBackStack();
         String uid = arguments.getString("USER_ID");
+
+        // hide some components if not user's profile
+        if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(uid)) {
+            binding.changeProfilePicture.setVisibility(View.GONE);
+        }
 
         UserRepository.getInstance().getUserById(uid).addOnCompleteListener(new OnCompleteListener<User>() {
             @Override
@@ -120,8 +126,15 @@ public class UserProfileFragment extends Fragment {
 
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
 
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-            Bitmap rotatedBitmap = rotateBitmap(bitmap, orientation);
+            // Load the original bitmap
+            Bitmap originalBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+
+            // Resize the bitmap
+            int maxWidth = 800; // Set your desired maximum width
+            Bitmap resizedBitmap = resizeBitmap(originalBitmap, maxWidth);
+
+            // Rotate the resized bitmap if needed
+            Bitmap rotatedBitmap = rotateBitmap(resizedBitmap, orientation);
 
             StorageReference fileReference = storageReference.child(Long.toString(System.currentTimeMillis()));
 
@@ -140,6 +153,18 @@ public class UserProfileFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Bitmap resizeBitmap(Bitmap originalBitmap, int maxWidth) {
+        int width = originalBitmap.getWidth();
+        int height = originalBitmap.getHeight();
+
+        float aspectRatio = (float) width / height;
+
+        int newWidth = maxWidth;
+        int newHeight = (int) (maxWidth / aspectRatio);
+
+        return Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
     }
 
     private Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
