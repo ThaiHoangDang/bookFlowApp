@@ -30,11 +30,14 @@ import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.adapter.ChatAdapter;
 import com.rmit.bookflowapp.databinding.FragmentMessageListBinding;
 import com.rmit.bookflowapp.interfaces.ClickCallback;
+import com.rmit.bookflowapp.repository.MessageRepository;
 import com.rmit.bookflowapp.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class MessageListFragment extends Fragment implements ClickCallback {
 
@@ -73,6 +76,43 @@ public class MessageListFragment extends Fragment implements ClickCallback {
                 activity.navController.navigate(R.id.messageSearchFragment);
             }
         });
+
+        // hide support button if admin
+        if (Objects.equals(currentUser.getEmail(), "admin@admin.com")) binding.supportBtn.setVisibility(View.GONE);
+
+        binding.supportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                UserRepository.getInstance().getUserById("1JRBTnFxv8T08S5xpeHEodWFICI3").addOnCompleteListener(new OnCompleteListener<User>() {
+                    @Override
+                    public void onComplete(@NonNull Task<User> task) {
+                        User user = task.getResult();
+                        List<String> userId = new ArrayList<>();
+                        userId.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        userId.add(user.getId());
+                        MessageRepository.getInstance().getChatByUserIds(FirebaseAuth.getInstance().getCurrentUser().getUid(), user.getId()).addOnCompleteListener(new OnCompleteListener<Chat>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Chat> task) {
+                                if (task.getResult()!= null) {
+                                    bundle.putSerializable("CHAT_OBJECT", task.getResult());
+                                    bundle.putSerializable("CHAT_RECIPIENT", user);
+                                    activity.navController.navigate(R.id.chatFragment, bundle);
+                                    return;
+                                }
+                                MessageRepository.getInstance().createNewChat(userId).addOnCompleteListener(new OnCompleteListener<Chat>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Chat> task) {
+                                        bundle.putSerializable("CHAT_OBJECT", task.getResult());
+                                        bundle.putSerializable("CHAT_RECIPIENT", user);
+                                        activity.navController.navigate(R.id.chatFragment, bundle);                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
         loadMessages();
         return binding.getRoot();
     }
@@ -95,8 +135,9 @@ public class MessageListFragment extends Fragment implements ClickCallback {
                                     Chat chat = document.toObject(Chat.class);
                                     chat.setChatId(document.getId());
                                     String recipientId = chat.getUserId().get(chat.getUserId().indexOf(currentUser.getUid())==0?1:0);
-                                    chats.add(chat);
-                                    Collections.sort(chats);
+                                        chats.add(chat);
+                                        Collections.sort(chats);
+
                                     if (recipientList.stream().noneMatch(user -> user.getId().equals(recipientId))){
                                         userRepository.getUserById(recipientId).addOnSuccessListener(new OnSuccessListener<User>() {
                                             @Override
