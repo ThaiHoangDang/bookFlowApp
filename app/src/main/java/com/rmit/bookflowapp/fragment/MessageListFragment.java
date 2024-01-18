@@ -36,6 +36,7 @@ import com.rmit.bookflowapp.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class MessageListFragment extends Fragment implements ClickCallback {
@@ -75,6 +76,9 @@ public class MessageListFragment extends Fragment implements ClickCallback {
                 activity.navController.navigate(R.id.messageSearchFragment);
             }
         });
+
+        // hide support button if admin
+        if (Objects.equals(currentUser.getEmail(), "admin@admin.com")) binding.supportBtn.setVisibility(View.GONE);
 
         binding.supportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
