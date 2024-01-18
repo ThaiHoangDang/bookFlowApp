@@ -92,5 +92,10 @@
         android:name="com.rmit.bookflowapp.fragment.PostDetailFragment"
         android:label="fragment_post_detail"
         tools:layout="@layout/fragment_post_detail" />
+    <fragment
+        android:id="@+id/adminHomeFragment"
+        android:name="com.rmit.bookflowapp.fragment.AdminHomeFragment"
+        android:label="fragment_admin_home"
+        tools:layout="@layout/fragment_admin_home" />
 
 </navigation>

@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
         navController = Objects.requireNonNull(navHostFragment).getNavController();
 
+        bottomNavigationView.inflateMenu(R.menu.admin_bottom_nav_menu);
+
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 
