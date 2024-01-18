@@ -17,6 +17,7 @@ import com.rmit.bookflowapp.Model.User;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.databinding.ItemMessageLeftBinding;
 import com.rmit.bookflowapp.databinding.ItemMessageRightBinding;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Chat.Message message = messages.get(position);
         holder.show_message.setText(message.getMessage());
+
         if (position == messages.size()-1 && (getItemViewType(position) == MSG_TYPE_RIGHT)){
             holder.txt_seen.setVisibility(View.VISIBLE);
             if (message.isRead()){

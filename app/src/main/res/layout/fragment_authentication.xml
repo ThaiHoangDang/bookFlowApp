@@ -17,7 +17,9 @@
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email: "
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:hint="Email"
         android:inputType="textEmailAddress"
         android:textSize="16sp" />
 
@@ -25,7 +27,9 @@
         android:id="@+id/passwordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password: "
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:hint="Password"
         android:inputType="textPassword"
         android:textSize="16sp" />
 
@@ -34,12 +38,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:text="Sign in" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/googleSignInButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:text="SIGN IN WITH GOOGLE" />
 
     <com.google.android.material.button.MaterialButton
@@ -47,6 +55,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:text="SIGN UP"
         android:textColor="@color/dark_blue"
         app:backgroundTint="@color/base_blue" />
