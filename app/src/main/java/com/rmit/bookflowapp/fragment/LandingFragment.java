@@ -31,8 +31,7 @@ public class LandingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
-        System.out.println(mAuth.getCurrentUser().getEmail());
-        if (mAuth.getCurrentUser().getEmail().equals("admin@admin.com")) {
+        if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getEmail().equals("admin@admin.com")) {
             activity.navController.navigate(R.id.adminHomeFragment);
         } else if (mAuth.getCurrentUser() == null) {
             activity.navController.navigate(R.id.authenticationFragment);
