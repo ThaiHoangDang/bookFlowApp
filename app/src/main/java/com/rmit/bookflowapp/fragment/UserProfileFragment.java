@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.User;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.databinding.FragmentUserProfileBinding;
@@ -33,6 +34,7 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 public class UserProfileFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -67,8 +69,13 @@ public class UserProfileFragment extends Fragment {
 
         storageReference = FirebaseStorage.getInstance().getReference("profile_pictures");
 
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        UserRepository.getInstance().getUserById(firebaseUser.getUid()).addOnCompleteListener(new OnCompleteListener<User>() {
+        Bundle arguments = getArguments();
+
+        // end fragment if no data found
+        if (arguments == null) getParentFragmentManager().popBackStack();
+        String uid = arguments.getString("USER_ID");
+
+        UserRepository.getInstance().getUserById(uid).addOnCompleteListener(new OnCompleteListener<User>() {
             @Override
             public void onComplete(@NonNull Task<User> task) {
                 user = task.getResult();

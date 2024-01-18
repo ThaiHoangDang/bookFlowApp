@@ -3,6 +3,7 @@ package com.rmit.bookflowapp.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.databinding.FragmentMessageListBinding;
 import com.rmit.bookflowapp.databinding.FragmentMoreBinding;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MoreFragment extends Fragment {
     private String TAG = "MoreFragment";
@@ -38,7 +41,9 @@ public class MoreFragment extends Fragment {
         binding.userProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.navController.navigate(R.id.userProfileFragment);
+                Bundle bundle = new Bundle();
+                bundle.putString("USER_ID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                Navigation.findNavController(getView()).navigate(R.id.userProfileFragment, bundle);
             }
         });
         binding.followBtn.setOnClickListener(new View.OnClickListener() {
