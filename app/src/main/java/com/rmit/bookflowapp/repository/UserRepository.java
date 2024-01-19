@@ -3,6 +3,7 @@ package com.rmit.bookflowapp.repository;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.rmit.bookflowapp.Model.User;
@@ -50,4 +51,16 @@ public class UserRepository {
                     }
                 });
     }
+
+    public void addToFavorites(String userId, String bookId) {
+        // Use FieldValue.arrayUnion to add the bookId to the favorites list without duplicates
+        userCollection.document(userId).update("favoriteBooks", FieldValue.arrayUnion(bookId));
+    }
+
+    public void
+    removeFromFavorites(String userId, String bookId) {
+        // Use FieldValue.arrayRemove to remove the bookId from the favorites list
+        userCollection.document(userId).update("favoriteBooks", FieldValue.arrayRemove(bookId));
+    }
+
 }

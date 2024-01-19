@@ -3,6 +3,8 @@ package com.rmit.bookflowapp.Model;
 import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Serializable {
     private String id;
@@ -10,6 +12,8 @@ public class User implements Serializable {
     private String name;
     private String role; // ADMIN or USER
     private String imageId;
+
+    private List<String> favoriteBooks = new ArrayList<>();
 
     public User() {
         // empty constructor needed for firebase
@@ -21,6 +25,15 @@ public class User implements Serializable {
         this.name = name;
         this.role = role;
         this.imageId = imageId;
+    }
+
+    public User(String id, String email, String name, String role, String imageId, List<String> favoriteBooks) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.role = role;
+        this.imageId = imageId;
+        this.favoriteBooks = favoriteBooks;
     }
 
     public String getId() {
@@ -61,5 +74,13 @@ public class User implements Serializable {
 
     public void setImageId(String imageId) {
         this.imageId = imageId;
+    }
+
+    public List<String> getFavoriteBooks() {
+        return favoriteBooks;
+    }
+
+    public void setFavoriteBooks(List<String> favoriteBooks) {
+        this.favoriteBooks = favoriteBooks;
     }
 }
