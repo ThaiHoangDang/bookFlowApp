@@ -74,7 +74,7 @@ public class GenreFragment extends Fragment implements ClickCallback {
         bind.genreGenreDescription.setText(genre.getDescription());
         Picasso.get().load(genre.getImageUrl()).into(bind.genreBackground);
 
-        // set up posts list
+        // set up books list
         bookAdapter = new SearchBookAdapter(GenreFragment.this, activity, books);
         bind.genreBooksList.setAdapter(bookAdapter);
         bind.genreBooksList.setLayoutManager(new LinearLayoutManager(activity));

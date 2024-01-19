@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,49 +28,44 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.User;
+import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
+import com.rmit.bookflowapp.adapter.SearchBookAdapter;
 import com.rmit.bookflowapp.databinding.FragmentUserProfileBinding;
+import com.rmit.bookflowapp.interfaces.ClickCallback;
+import com.rmit.bookflowapp.repository.BookRepository;
 import com.rmit.bookflowapp.repository.UserRepository;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class UserProfileFragment extends Fragment {
+public class UserProfileFragment extends Fragment implements ClickCallback {
     private static final int PICK_IMAGE_REQUEST = 1;
     private StorageReference storageReference;
     private static final String TAG = "UserProfileFragment";
     private FragmentUserProfileBinding binding;
     private MainActivity activity;
+    private SearchBookAdapter bookAdapter;
     private User user;
+    private ArrayList<Book> books = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentUserProfileBinding.inflate(inflater, container, false);
         activity = (MainActivity) getActivity();
         activity.setBottomNavigationBarVisibility(true);
-
-        binding.backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.navController.navigateUp();
-            }
-        });
-
-        binding.changeProfilePicture.setOnClickListener(v -> {
-            openFileChooser();
-        });
-
-        storageReference = FirebaseStorage.getInstance().getReference("profile_pictures");
-
 
         Bundle arguments = getArguments();
 
@@ -86,8 +83,39 @@ public class UserProfileFragment extends Fragment {
             public void onComplete(@NonNull Task<User> task) {
                 user = task.getResult();
                 initView();
+
+                BookRepository.getInstance().getBooksByIds(user.getFavoriteBooks()).addOnSuccessListener(new OnSuccessListener<List<Book>>() {
+                    @Override
+                    public void onSuccess(List<Book> books) {
+                        UserProfileFragment.this.books = new ArrayList<>(books);
+
+                        // Notify the adapter about the data change
+                        if (bookAdapter != null) bookAdapter.setBooks(UserProfileFragment.this.books);
+                    }
+                });
             }
         });
+
+//        if (user != null) initView();
+
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.navController.navigateUp();
+            }
+        });
+
+        binding.changeProfilePicture.setOnClickListener(v -> {
+            openFileChooser();
+        });
+
+        storageReference = FirebaseStorage.getInstance().getReference("profile_pictures");
+
+        // set up books list
+        bookAdapter = new SearchBookAdapter(UserProfileFragment.this, activity, books);
+        binding.userBooksList.setAdapter(bookAdapter);
+        binding.userBooksList.setLayoutManager(new LinearLayoutManager(activity));
+
         return binding.getRoot();
     }
 
@@ -185,4 +213,8 @@ public class UserProfileFragment extends Fragment {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
+    @Override
+    public void onSiteClick(Bundle bundle) {
+        Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment, bundle);
+    }
 }
