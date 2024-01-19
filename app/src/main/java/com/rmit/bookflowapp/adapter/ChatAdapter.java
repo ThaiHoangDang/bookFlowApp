@@ -51,7 +51,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         Optional<User> user = userList.stream().filter(u -> chat.getUserId().contains(u.getId())).findFirst();
         if (user.isPresent()) {
             holder.item.usernameTextView.setText(user.get().getName());
-            Picasso.get().load(user.get().getImageId()).into((ImageView) holder.item.userImageView);
+            if (!user.get().getImageId().isEmpty()) {
+                Picasso.get().load(user.get().getImageId()).into((ImageView) holder.item.userImageView);
+            }
             // Display the first message in the messages list (customize as needed)
             if (chat.getMessages() != null && !chat.getMessages().isEmpty()) {
                 Chat.Message firstMessage = chat.getMessages().get(chat.getMessages().size()-1);

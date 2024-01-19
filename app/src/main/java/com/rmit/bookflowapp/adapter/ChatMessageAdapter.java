@@ -64,7 +64,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         }
         if ((getItemViewType(position) == MSG_TYPE_RIGHT)) {
             holder.profile_image.setVisibility(View.GONE);
-        } else {
+        } else if (getItemViewType(position) != MSG_TYPE_RIGHT && !recipient.getImageId().isEmpty()){
             Picasso.get().load(recipient.getImageId()).into((ImageView) holder.profile_image);
         }
         if (position > 0){

@@ -85,7 +85,9 @@ public class ChatFragment extends Fragment {
             messages = chat.getMessages();
             markAsSeen();
 
-            Picasso.get().load(recipient.getImageId()).into((ImageView) binding.avatarView);
+            if (!recipient.getImageId().isEmpty()) {
+                Picasso.get().load(recipient.getImageId()).into((ImageView) binding.avatarView);
+            }
 
             binding.title.setText(recipient.getName());
             adapter = new ChatMessageAdapter(getContext(), messages, recipient);

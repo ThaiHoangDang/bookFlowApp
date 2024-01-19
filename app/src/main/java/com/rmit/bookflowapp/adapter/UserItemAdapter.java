@@ -46,7 +46,9 @@ public class UserItemAdapter  extends RecyclerView.Adapter<UserItemAdapter.ViewH
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User user = userList.get(position);
-        Picasso.get().load(user.getImageId()).into((ImageView) holder.item.userImageView);
+        if (!user.getImageId().isEmpty()) {
+            Picasso.get().load(user.getImageId()).into((ImageView) holder.item.userImageView);
+        }
         holder.item.usernameTextView.setVisibility(View.VISIBLE);
         holder.item.usernameTextView.setText(user.getName());
         holder.item.messageTextView.setVisibility(View.GONE);
