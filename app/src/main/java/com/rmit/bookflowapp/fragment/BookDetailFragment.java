@@ -63,7 +63,7 @@ public class BookDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
         bind = FragmentBookDetailBinding.inflate(inflater, container, false);
-        activity.setBottomNavigationBarVisibility(true);
+        activity.setBottomNavigationBarVisibility(false);
 
         setupView(book);
 

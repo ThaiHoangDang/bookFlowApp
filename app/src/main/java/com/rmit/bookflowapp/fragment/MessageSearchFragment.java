@@ -59,7 +59,7 @@ public class MessageSearchFragment extends Fragment implements ClickCallback {
                              Bundle savedInstanceState) {
         binding = FragmentMessageSearchBinding.inflate(inflater, container, false);
         activity = (MainActivity) getActivity();
-        activity.setBottomNavigationBarVisibility(true);
+        activity.setBottomNavigationBarVisibility(false);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userRepository = UserRepository.getInstance();

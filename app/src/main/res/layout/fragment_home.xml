@@ -142,13 +142,15 @@
             android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/homepageHeader">
+            android:layout_below="@id/homepageHeader"
+            android:layout_marginBottom="62dp">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/postsListView"
-                android:paddingTop="60dp"
-                android:clipToPadding="false"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="60dp" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </RelativeLayout>
 

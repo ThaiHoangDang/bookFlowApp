@@ -65,7 +65,7 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentUserProfileBinding.inflate(inflater, container, false);
         activity = (MainActivity) getActivity();
-        activity.setBottomNavigationBarVisibility(true);
+        activity.setBottomNavigationBarVisibility(false);
 
         Bundle arguments = getArguments();
 

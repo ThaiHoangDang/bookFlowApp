@@ -67,7 +67,7 @@ public class GenreFragment extends Fragment implements ClickCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
         bind = FragmentGenreBinding.inflate(inflater, container, false);
-        activity.setBottomNavigationBarVisibility(true);
+        activity.setBottomNavigationBarVisibility(false);
 
         // display genre information
         bind.genreName.setText(genre.getName());
