@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -226,8 +227,10 @@ public class BookDetailFragment extends Fragment {
         String firebaseUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (isFavorite) {
             UserRepository.getInstance().addToFavorites(firebaseUserId, book.getId());
+            Toast.makeText(activity, "Book added to Favorite list!", Toast.LENGTH_SHORT).show();
         } else {
             UserRepository.getInstance().removeFromFavorites(firebaseUserId, book.getId());
+            Toast.makeText(activity, "Book removed from Favorite list!", Toast.LENGTH_SHORT).show();
         }
     }
 

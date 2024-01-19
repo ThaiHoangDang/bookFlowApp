@@ -1,5 +1,7 @@
 package com.rmit.bookflowapp.fragment;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.media.Rating;
 import android.os.Bundle;
 
@@ -33,6 +35,7 @@ import com.rmit.bookflowapp.databinding.FragmentGenreBinding;
 import com.rmit.bookflowapp.databinding.FragmentPostDetailBinding;
 import com.rmit.bookflowapp.repository.BookRepository;
 import com.rmit.bookflowapp.repository.CommentRepository;
+import com.rmit.bookflowapp.repository.PostRepository;
 import com.rmit.bookflowapp.viewmodel.BookDetailViewModel;
 import com.rmit.bookflowapp.viewmodel.PostDetailViewModel;
 import com.rmit.bookflowapp.viewmodel.factory.BookDetailViewModelFactory;
@@ -56,6 +59,7 @@ public class PostDetailFragment extends Fragment {
     private Post post;
     private PostDetailViewModel viewModel;
     private CommentAdapter commentAdapter;
+    private boolean hasLiked = false;
 
     public PostDetailFragment() {
         // Required empty public constructor
@@ -74,6 +78,7 @@ public class PostDetailFragment extends Fragment {
         assert post != null;
         PostDetailViewModelFactory factory = new PostDetailViewModelFactory(post.getId());
         viewModel = new ViewModelProvider(this, factory).get(PostDetailViewModel.class);
+
     }
 
     @Override
@@ -82,8 +87,16 @@ public class PostDetailFragment extends Fragment {
         bind = FragmentPostDetailBinding.inflate(inflater, container, false);
         activity.setBottomNavigationBarVisibility(false);
 
-        // setup display
-        setupView();
+        PostRepository.getInstance().getPost(post.getId())
+                .addOnSuccessListener(new OnSuccessListener<Post>() {
+                    @Override
+                    public void onSuccess(Post post) {
+                        PostDetailFragment.this.post = post;
+
+                        // setup display
+                        setupView();
+                    }
+                });
 
         bind.back.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
@@ -115,9 +128,18 @@ public class PostDetailFragment extends Fragment {
             });
         });
 
+        bind.postDetailLikeStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleLikeStatus();
+                updateLikeButtonState();
+            }
+        });
+
         return bind.getRoot();
     }
 
+    @SuppressLint("SetTextI18n")
     private void setupView() {
         // setup display
         bind.postOwner.setText(post.getUser().getName());
@@ -127,6 +149,15 @@ public class PostDetailFragment extends Fragment {
         bind.postContent.setText(post.getContent());
         bind.postDate.setText(Helper.convertTime(post.getTimestamp()));
 
+        // setup like
+        if (post.getLikedUsers().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            hasLiked = true;
+            bind.postDetailLikeStatus.setText("Liked");
+            bind.postDetailLikeStatus.setTextColor(Color.parseColor("#006da9"));
+            bind.postDetailLikeCount.setText(Integer.toString(post.getLikedUsers().size()));
+        }
+
+        // set up book card
         View bookLayout = LayoutInflater.from(requireContext()).inflate(R.layout.search_book_card, null);
         ((TextView) bookLayout.findViewById(R.id.searchTitleName)).setText(post.getBook().getTitle());
         ((TextView) bookLayout.findViewById(R.id.searchAuthorName)).setText(post.getBook().getAuthorString());
@@ -152,4 +183,29 @@ public class PostDetailFragment extends Fragment {
         bind = null;
     }
 
+    private void toggleLikeStatus() {
+        hasLiked = !hasLiked;
+        String firebaseUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (hasLiked) {
+            PostRepository.getInstance().addLikedUser(post.getId(), firebaseUserId);
+        } else {
+            PostRepository.getInstance().removeLikedUser(post.getId(), firebaseUserId);
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateLikeButtonState() {
+
+        if (hasLiked) {
+            bind.postDetailLikeStatus.setText("Liked");
+            bind.postDetailLikeStatus.setTextColor(Color.parseColor("#006da9"));
+            bind.postDetailLikeCount.setText(Integer.toString(post.getLikedUsers().
+                    contains(FirebaseAuth.getInstance().getCurrentUser().getUid()) ? post.getLikedUsers().size() : post.getLikedUsers().size() + 1));
+        } else {
+            bind.postDetailLikeStatus.setText("Like");
+            bind.postDetailLikeStatus.setTextColor(Color.parseColor("#8C8C8C"));
+            bind.postDetailLikeCount.setText(Integer.toString(post.getLikedUsers().
+                    contains(FirebaseAuth.getInstance().getCurrentUser().getUid()) ? post.getLikedUsers().size() - 1 : post.getLikedUsers().size()));
+        }
+    }
 }
