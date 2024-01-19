@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.rmit.bookflowapp.Model.User;
 import com.rmit.bookflowapp.databinding.ItemChatBinding;
 import com.rmit.bookflowapp.interfaces.ClickCallback;
 import com.rmit.bookflowapp.repository.MessageRepository;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ public class UserItemAdapter  extends RecyclerView.Adapter<UserItemAdapter.ViewH
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User user = userList.get(position);
+        Picasso.get().load(user.getImageId()).into((ImageView) holder.item.userImageView);
         holder.item.usernameTextView.setVisibility(View.VISIBLE);
         holder.item.usernameTextView.setText(user.getName());
         holder.item.messageTextView.setVisibility(View.GONE);
