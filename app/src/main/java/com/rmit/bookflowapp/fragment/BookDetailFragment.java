@@ -15,12 +15,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.Review;
+import com.rmit.bookflowapp.Model.User;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.adapter.ReviewAdapter;
 import com.rmit.bookflowapp.databinding.FragmentBookDetailBinding;
+import com.rmit.bookflowapp.repository.UserRepository;
 import com.rmit.bookflowapp.viewmodel.BookDetailViewModel;
 import com.rmit.bookflowapp.viewmodel.factory.BookDetailViewModelFactory;
 import com.squareup.picasso.Picasso;
@@ -35,6 +38,7 @@ public class BookDetailFragment extends Fragment {
     private MainActivity activity;
     private ReviewAdapter reviewAdapter;
     private BookDetailViewModel viewModel;
+    private boolean isFavorite = false;
     private Book book;
 
     public BookDetailFragment() {
@@ -50,7 +54,6 @@ public class BookDetailFragment extends Fragment {
         // end fragment if no data found
         if (arguments == null) getParentFragmentManager().popBackStack();
         book = (Book) Objects.requireNonNull(arguments).getSerializable("BOOK_OBJECT");
-
         assert book != null;
         BookDetailViewModelFactory factory = new BookDetailViewModelFactory(book.getId());
         viewModel = new ViewModelProvider(this, factory).get(BookDetailViewModel.class);
@@ -60,12 +63,27 @@ public class BookDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
         bind = FragmentBookDetailBinding.inflate(inflater, container, false);
-        activity.setBottomNavigationBarVisibility(true);
+        activity.setBottomNavigationBarVisibility(false);
 
         setupView(book);
 
         bind.back.setOnClickListener(v -> {
-            getParentFragmentManager().popBackStack();  // Navigate back to the previous fragment
+            getParentFragmentManager().popBackStack();
+        });
+
+
+        String firebaseUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        UserRepository.getInstance().getUserById(firebaseUserId).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                User currentUser = task.getResult();
+                isFavorite = currentUser.getFavoriteBooks().contains(book.getId());
+                updateLikeButtonState();
+
+                bind.like.setOnClickListener(v -> {
+                    toggleFavoriteStatus();
+                    updateLikeButtonState();
+                });
+            }
         });
 
         return bind.getRoot();
@@ -126,15 +144,20 @@ public class BookDetailFragment extends Fragment {
 
             switch (review.getRating()) {
                 case 1:
-                    num1 += 1; break;
+                    num1 += 1;
+                    break;
                 case 2:
-                    num2 += 1; break;
+                    num2 += 1;
+                    break;
                 case 3:
-                    num3 += 1; break;
+                    num3 += 1;
+                    break;
                 case 4:
-                    num4 += 1; break;
+                    num4 += 1;
+                    break;
                 case 5:
-                    num5 += 1; break;
+                    num5 += 1;
+                    break;
             }
         }
 
@@ -176,7 +199,7 @@ public class BookDetailFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(R.id.newReviewFragment, bundle);
             });
 
-        // create new review
+            // create new review
         } else {
             bind.writeReviewBtn.setText("Write A Review");
             bind.writeReviewBtn.setOnClickListener(v -> {
@@ -184,6 +207,25 @@ public class BookDetailFragment extends Fragment {
                 bundle.putSerializable("BOOK_OBJECT", book);
                 Navigation.findNavController(getView()).navigate(R.id.newReviewFragment, bundle);
             });
+        }
+    }
+
+    private void toggleFavoriteStatus() {
+        isFavorite = !isFavorite;
+
+        String firebaseUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (isFavorite) {
+            UserRepository.getInstance().addToFavorites(firebaseUserId, book.getId());
+        } else {
+            UserRepository.getInstance().removeFromFavorites(firebaseUserId, book.getId());
+        }
+    }
+
+    private void updateLikeButtonState() {
+        if (isFavorite) {
+            bind.like.setImageResource(R.drawable.red_favorite_24);
+        } else {
+            bind.like.setImageResource(R.drawable.baseline_favorite_24);
         }
     }
 }

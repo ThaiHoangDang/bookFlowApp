@@ -8,36 +8,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
+import com.rmit.bookflowapp.databinding.FragmentAdminHomeBinding;
 import com.rmit.bookflowapp.databinding.FragmentAuthenticationBinding;
 
-public class LandingFragment extends Fragment {
-    private FirebaseAuth mAuth;
+public class AdminHomeFragment extends Fragment {
     private MainActivity activity;
-    private LandingFragment bind;
+    private FragmentAdminHomeBinding bind;
 
-    public LandingFragment() {
+    public AdminHomeFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
-        if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getEmail().equals("admin@admin.com")) {
-            activity.navController.navigate(R.id.adminHomeFragment);
-        } else if (mAuth.getCurrentUser() == null) {
-            activity.navController.navigate(R.id.authenticationFragment);
-        } else {
-            activity.navController.navigate(R.id.homeFragment);
-        }
-        return inflater.inflate(R.layout.fragment_landing, container, false);
+        bind = FragmentAdminHomeBinding.inflate(inflater, container, false);
+        View view = bind.getRoot();
+
+        activity.setBottomNavigationBarVisibility(true);
+        return inflater.inflate(R.layout.fragment_admin_home, container, false);
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.databinding.ItemChatBinding;
 import com.rmit.bookflowapp.interfaces.ClickCallback;
 import com.rmit.bookflowapp.util.TimeFormatter;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +51,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         Optional<User> user = userList.stream().filter(u -> chat.getUserId().contains(u.getId())).findFirst();
         if (user.isPresent()) {
             holder.item.usernameTextView.setText(user.get().getName());
+            if (!user.get().getImageId().isEmpty()) {
+                Picasso.get().load(user.get().getImageId()).into((ImageView) holder.item.userImageView);
+            }
             // Display the first message in the messages list (customize as needed)
             if (chat.getMessages() != null && !chat.getMessages().isEmpty()) {
                 Chat.Message firstMessage = chat.getMessages().get(chat.getMessages().size()-1);

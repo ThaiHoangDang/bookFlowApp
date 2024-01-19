@@ -9,14 +9,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="62dp"
         android:orientation="vertical"
         tools:ignore="UselessParent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/homepageHeader"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/dark_blue"
             android:elevation="10dp">
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
@@ -52,13 +55,31 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <include layout="@layout/quote_card" />
+
+            <View
+                android:id="@+id/divide0"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/postFooterSection"
+                android:background="?android:attr/listDivider" />
+
             <TextView
                 android:id="@+id/userProfileBtn"
                 style="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/baseline_person_outline_24"
+                android:drawablePadding="8dp"
                 android:padding="16dp"
                 android:text="User Profile" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/postFooterSection"
+                android:background="?android:attr/listDivider" />
 
             <TextView
                 android:id="@+id/followBtn"
@@ -74,15 +95,34 @@
                 style="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/baseline_error_outline_24"
+                android:drawablePadding="8dp"
                 android:padding="16dp"
                 android:text="About" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/postFooterSection"
+                android:background="?android:attr/listDivider" />
+
             <TextView
                 android:id="@+id/logoutBtn"
                 style="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
                 android:padding="16dp"
-                android:text="Log Out" />
+                android:text="Log Out"
+                app:drawableLeftCompat="@drawable/baseline_logout_24" />
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/postFooterSection"
+                android:background="?android:attr/listDivider" />
         </LinearLayout>
 
     </LinearLayout>
