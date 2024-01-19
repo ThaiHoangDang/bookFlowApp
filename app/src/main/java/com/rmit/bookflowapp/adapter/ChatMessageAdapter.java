@@ -62,11 +62,15 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         } else {
             holder.txt_seen.setVisibility(View.GONE);
         }
+        if ((getItemViewType(position) == MSG_TYPE_RIGHT)) {
+            holder.profile_image.setVisibility(View.GONE);
+        } else {
+            Picasso.get().load(recipient.getImageId()).into((ImageView) holder.profile_image);
+        }
         if (position > 0){
             if ((getItemViewType(position) == MSG_TYPE_LEFT) && (getItemViewType(position-1) == MSG_TYPE_LEFT)){
                 holder.profile_image.setVisibility(View.INVISIBLE);
             } else {
-                Picasso.get().load(recipient.getImageId()).into((ImageView) holder.profile_image);
                 holder.profile_image.setVisibility(View.VISIBLE);
             }
         }
