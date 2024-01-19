@@ -77,8 +77,9 @@
                             android:id="@+id/triggerButton"
                             android:layout_width="match_parent"
                             android:layout_height="70dp"
+                            android:backgroundTint="@color/orange"
                             android:text="Start"
-                            android:textSize="24sp"
+                            android:textSize="18sp"
                             app:cornerRadius="16dp"
                             app:layout_constraintStart_toStartOf="parent" />
                     </LinearLayout>
@@ -105,7 +106,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
                                 android:layout_weight="1"
-                                android:backgroundTint="@color/blue"
+                                android:backgroundTint="#656565"
                                 android:text="00"
                                 android:textSize="32sp"
                                 app:cornerRadius="16dp" />
@@ -132,7 +133,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
                                 android:layout_weight="1"
-                                android:backgroundTint="@color/blue"
+                                android:backgroundTint="#656565"
                                 android:text="00"
                                 android:textSize="32sp"
                                 app:cornerRadius="16dp" />
@@ -158,7 +159,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
                                 android:layout_weight="1"
-                                android:backgroundTint="@color/blue"
+                                android:backgroundTint="#656565"
                                 android:text="00"
                                 android:textSize="32sp"
                                 app:cornerRadius="16dp" />
@@ -231,7 +232,7 @@
                 <Button
                     android:id="@+id/readTimerSubmit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="52dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="48dp"
                     android:layout_marginRight="32dp"
