@@ -120,6 +120,16 @@ public class BookDetailFragment extends Fragment {
         reviewAdapter = new ReviewAdapter(activity, new ArrayList<>());
         bind.bookDetailReviewList.setAdapter(reviewAdapter);
         bind.bookDetailReviewList.setLayoutManager(new LinearLayoutManager(activity));
+
+        bind.startReadingTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("BOOK_OBJECT", book);
+                Navigation.findNavController(getView()).navigate(R.id.readingTimerFragment, bundle);
+            }
+        });
+
         viewModel.getBookReviews().observe(getViewLifecycleOwner(), new Observer<List<Review>>() {
             @Override
             public void onChanged(List<Review> reviews) {
