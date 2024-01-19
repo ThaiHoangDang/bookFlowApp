@@ -279,7 +279,7 @@ public class HomeFragment extends Fragment {
                             tempuser.getResult(),
                             tempbook.getResult(),
                             (Long) task1.get("timestamp"),
-                            (List<String>) task1.get("likedUsers"),
+                            task1.get("likedUsers") != null ? (List<String>) task1.get("likedUsers") : new ArrayList<>(),
                             ((Long) task1.get("rating")).intValue()
 
                     );
@@ -292,7 +292,7 @@ public class HomeFragment extends Fragment {
                             tempuser.getResult(),
                             tempbook.getResult(),
                             (Long) task1.get("timestamp"),
-                            (List<String>) task1.get("likedUsers"),
+                            task1.get("likedUsers") != null ? (List<String>) task1.get("likedUsers") : new ArrayList<>(),
                             new LatLng(
                                     (Double) ((List<?>) task1.get("location")).get(0),
                                     (Double) ((List<?>) task1.get("location")).get(1)
