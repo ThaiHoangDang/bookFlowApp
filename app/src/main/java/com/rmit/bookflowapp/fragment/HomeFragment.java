@@ -279,7 +279,9 @@ public class HomeFragment extends Fragment {
                             tempuser.getResult(),
                             tempbook.getResult(),
                             (Long) task1.get("timestamp"),
+                            (List<String>) task1.get("likedUsers"),
                             ((Long) task1.get("rating")).intValue()
+
                     );
                     posts.add(post);
                 } else if (task1.getData().get("location") != null) {
@@ -290,6 +292,7 @@ public class HomeFragment extends Fragment {
                             tempuser.getResult(),
                             tempbook.getResult(),
                             (Long) task1.get("timestamp"),
+                            (List<String>) task1.get("likedUsers"),
                             new LatLng(
                                     (Double) ((List<?>) task1.get("location")).get(0),
                                     (Double) ((List<?>) task1.get("location")).get(1)

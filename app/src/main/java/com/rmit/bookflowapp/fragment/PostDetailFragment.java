@@ -87,16 +87,21 @@ public class PostDetailFragment extends Fragment {
         bind = FragmentPostDetailBinding.inflate(inflater, container, false);
         activity.setBottomNavigationBarVisibility(false);
 
-        PostRepository.getInstance().getPost(post.getId())
-                .addOnSuccessListener(new OnSuccessListener<Post>() {
-                    @Override
-                    public void onSuccess(Post post) {
-                        PostDetailFragment.this.post = post;
+        // update this initialy :)
+        if (post instanceof Review) bind.rating.setRating(((Review) post).getRating());
 
-                        // setup display
-                        setupView();
-                    }
-                });
+        setupView();
+
+//        PostRepository.getInstance().getPost(post.getId())
+//                .addOnSuccessListener(new OnSuccessListener<Post>() {
+//                    @Override
+//                    public void onSuccess(Post post) {
+//                        PostDetailFragment.this.post = post;
+//
+//                        // setup display
+//
+//                    }
+//                });
 
         bind.back.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
@@ -144,7 +149,7 @@ public class PostDetailFragment extends Fragment {
         // setup display
         bind.postOwner.setText(post.getUser().getName());
         Picasso.get().load(post.getUser().getImageId()).into((ImageView) bind.postAvatarImage);
-        if (post instanceof Review) bind.rating.setRating(((Review) post).getRating());
+
         bind.postTitle.setText(post.getTitle());
         bind.postContent.setText(post.getContent());
         bind.postDate.setText(Helper.convertTime(post.getTimestamp()));

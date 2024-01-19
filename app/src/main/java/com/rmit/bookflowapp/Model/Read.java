@@ -1,6 +1,7 @@
 package com.rmit.bookflowapp.Model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Read extends Post implements Serializable {
     private long readingTime;
@@ -13,8 +14,8 @@ public class Read extends Post implements Serializable {
         this.readingTime = readingTime;
     }
 
-    public Read(String id, String title, String content, User user, Book book, Long timestamp, Long readingTime) {
-        super(id, title, content, user, book, timestamp);
+    public Read(String id, String title, String content, User user, Book book, Long timestamp, List<String> likedUsers, Long readingTime) {
+        super(id, title, content, user, book, timestamp, likedUsers);
         this.readingTime = readingTime;
     }
 
