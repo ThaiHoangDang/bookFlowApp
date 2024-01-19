@@ -16,6 +16,7 @@ import com.rmit.bookflowapp.Model.Comment;
 import com.rmit.bookflowapp.Model.Review;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.Ultilities.Helper;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,6 +61,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.commentOwner.setText(comment.getUser().getName());
         holder.commentContent.setText(comment.getContent());
         holder.commentTime.setText(Helper.convertTime(comment.getTimestamp()));
+        Picasso.get().load(comment.getUser().getImageId()).into((ImageView) holder.itemView.findViewById(R.id.commentAvatarImage));
     }
 
     @Override

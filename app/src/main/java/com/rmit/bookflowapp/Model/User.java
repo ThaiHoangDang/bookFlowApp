@@ -1,6 +1,10 @@
 package com.rmit.bookflowapp.Model;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Serializable {
     private String id;
@@ -9,16 +13,10 @@ public class User implements Serializable {
     private String role; // ADMIN or USER
     private String imageId;
 
+    private List<String> favoriteBooks = new ArrayList<>();
+
     public User() {
         // empty constructor needed for firebase
-    }
-
-    public User(String id, String email, String name, String role) {
-        this.id = id;
-        this.email = email;
-        this.name = name;
-        this.role = role;
-        this.imageId = "default.png";
     }
 
     public User(String id, String email, String name, String role, String imageId) {
@@ -27,6 +25,15 @@ public class User implements Serializable {
         this.name = name;
         this.role = role;
         this.imageId = imageId;
+    }
+
+    public User(String id, String email, String name, String role, String imageId, List<String> favoriteBooks) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.role = role;
+        this.imageId = imageId;
+        this.favoriteBooks = favoriteBooks;
     }
 
     public String getId() {
@@ -69,7 +76,11 @@ public class User implements Serializable {
         this.imageId = imageId;
     }
 
-    public String getImageUrl() {
-        return "https://firebasestorage.googleapis.com/v0/b/striking-water-408603.appspot.com/o/" + getImageId() + "?alt=media";
+    public List<String> getFavoriteBooks() {
+        return favoriteBooks;
+    }
+
+    public void setFavoriteBooks(List<String> favoriteBooks) {
+        this.favoriteBooks = favoriteBooks;
     }
 }
