@@ -79,4 +79,12 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics")
 
+    // Google AI client SDK for Android
+    implementation("com.google.ai.client.generativeai:generativeai:0.1.2")
+
+    // Required for one-shot operations (to use `ListenableFuture` from Reactive Streams)
+    implementation("com.google.guava:guava:31.0.1-android")
+
+    // Required for streaming operations (to use `Publisher` from Guava Android)
+    implementation("org.reactivestreams:reactive-streams:1.0.4")
 }

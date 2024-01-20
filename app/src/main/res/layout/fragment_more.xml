@@ -82,6 +82,40 @@
                 android:background="?android:attr/listDivider" />
 
             <TextView
+                android:id="@+id/suggestionBtn"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:drawableLeft="@drawable/baseline_photo_camera_24"
+                android:drawablePadding="8dp"
+                android:padding="16dp"
+                android:text="Book suggestion 🤯" />
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/postFooterSection"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/identificationBtn"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/round_image_search_24"
+                android:drawablePadding="8dp"
+                android:padding="16dp"
+                android:text="Book identification ⚡" />
+
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/postFooterSection"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
                 android:id="@+id/followBtn"
                 style="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_width="match_parent"
@@ -123,6 +157,13 @@
                 android:layout_height="1dp"
                 android:layout_below="@id/postFooterSection"
                 android:background="?android:attr/listDivider" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
