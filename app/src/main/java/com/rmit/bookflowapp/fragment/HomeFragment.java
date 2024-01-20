@@ -60,23 +60,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestPermission();
-        initCallService();
-    }
-
-    public void initCallService() {
-        Application application = getActivity().getApplication();
-        long appID = 832849511;
-        String appSign = "85d7f6dbb1ca537b623ae1c4014e46c692862eb528408647054a6d98e09e42e2";
-        UserRepository.getInstance().getUserById(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        User user = task.getResult();
-                        ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
-                        ZegoUIKitPrebuiltCallInvitationService.init(application, appID, appSign, user.getId(), user.getName(), callInvitationConfig);
-                    }
-
-                });
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -339,22 +322,6 @@ public class HomeFragment extends Fragment {
             });
         }
 //        postAdapter.notifyDataSetChanged();
-    }
-
-    public void requestPermission() {
-        PermissionX.init(requireActivity()).permissions(Manifest.permission.SYSTEM_ALERT_WINDOW)
-                .onExplainRequestReason(new ExplainReasonCallback() {
-                    @Override
-                    public void onExplainReason(@NonNull ExplainScope scope, @NonNull List<String> deniedList) {
-                        String message = "We need your consent for the following permissions in order to use the offline call function properly";
-                        scope.showRequestReasonDialog(deniedList, message, "Allow", "Deny");
-                    }
-                }).request(new RequestCallback() {
-                    @Override
-                    public void onResult(boolean allGranted, @NonNull List<String> grantedList,
-                                         @NonNull List<String> deniedList) {
-                    }
-                });
     }
 
     @Override
