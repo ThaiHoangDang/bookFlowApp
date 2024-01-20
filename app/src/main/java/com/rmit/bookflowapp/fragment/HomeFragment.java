@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -65,6 +66,13 @@ public class HomeFragment extends Fragment {
 
         // Add scroll listener to RecyclerView
         bind.postsListView.setOnTouchListener(new TranslateAnimationUtil(activity, bind.linearlayout1));
+
+//        bind.createPostBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Navigation.findNavController(getView()).navigate(R.id.readingTimerFragment);
+//            }
+//        });
 
         bind.pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -271,7 +279,9 @@ public class HomeFragment extends Fragment {
                             tempuser.getResult(),
                             tempbook.getResult(),
                             (Long) task1.get("timestamp"),
+                            task1.get("likedUsers") != null ? (List<String>) task1.get("likedUsers") : new ArrayList<>(),
                             ((Long) task1.get("rating")).intValue()
+
                     );
                     posts.add(post);
                 } else if (task1.getData().get("location") != null) {
@@ -282,6 +292,7 @@ public class HomeFragment extends Fragment {
                             tempuser.getResult(),
                             tempbook.getResult(),
                             (Long) task1.get("timestamp"),
+                            task1.get("likedUsers") != null ? (List<String>) task1.get("likedUsers") : new ArrayList<>(),
                             new LatLng(
                                     (Double) ((List<?>) task1.get("location")).get(0),
                                     (Double) ((List<?>) task1.get("location")).get(1)

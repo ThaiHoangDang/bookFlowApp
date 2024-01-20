@@ -116,7 +116,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/postDetailLikeStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -125,6 +125,7 @@
                     android:textColor="#8C8C8C"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -137,17 +138,19 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="10dp"
                     android:background="#8C8C8C"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView15"
+                    app:layout_constraintStart_toEndOf="@+id/postDetailLikeStatus"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView21"
+                    android:id="@+id/postDetailLikeCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="42"
                     android:textSize="12sp"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/view2"
                     app:layout_constraintTop_toTopOf="parent" />

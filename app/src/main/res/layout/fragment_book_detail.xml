@@ -71,6 +71,17 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/startReadingTimer"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_weight="1"
+                                android:backgroundTint="#00002C43"
+                                android:src="@drawable/baseline_timer_24"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/like"
+                                app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.cardview.widget.CardView
@@ -97,10 +108,10 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/bookDetailBookCover"
                             android:layout_marginTop="24dp"
+                            android:ellipsize="end"
+                            android:maxLines="3"
                             android:paddingLeft="32dp"
                             android:paddingRight="32dp"
-                            android:maxLines="3"
-                            android:ellipsize="end"
                             android:text="De Men Phieu Luu Ky"
                             android:textAlignment="center"
                             android:textColor="#FFFFFF"
@@ -113,11 +124,11 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/bookDetailBookName"
                             android:layout_marginTop="4dp"
+                            android:ellipsize="end"
                             android:fontFamily="sans-serif-light"
+                            android:maxLines="2"
                             android:paddingLeft="32dp"
                             android:paddingRight="32dp"
-                            android:maxLines="2"
-                            android:ellipsize="end"
                             android:text="by To Hoai"
                             android:textAlignment="center"
                             android:textColor="#FFFFFF"
@@ -125,11 +136,13 @@
 
 
                         <LinearLayout
+                            android:id="@+id/bookStat"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:layout_below="@+id/bookDetailBookAuthor"
                             android:layout_marginHorizontal="32dp"
                             android:layout_marginTop="32dp"
+                            android:layout_marginBottom="32dp"
                             android:weightSum="3">
 
                             <LinearLayout
