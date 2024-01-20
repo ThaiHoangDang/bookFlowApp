@@ -25,8 +25,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.rmit.bookflowapp.Model.User;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.databinding.ActivityMainBinding;
+import com.rmit.bookflowapp.repository.UserRepository;
 import com.stripe.android.PaymentConfiguration;
 
 import java.util.Objects;
@@ -122,6 +124,16 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("MainActivity", token);
                         try {
                             FirebaseMessaging.getInstance().subscribeToTopic(firebaseAuth.getCurrentUser().getUid());
+                            UserRepository.getInstance().getUserById(firebaseAuth.getCurrentUser().getUid()).addOnCompleteListener(new OnCompleteListener<User>() {
+                                @Override
+                                public void onComplete(@NonNull Task<User> task) {
+                                    Log.d("Main", task.getResult().getFollowing().toString());
+                                    for (String s: task.getResult().getFollowing()) {
+                                        FirebaseMessaging.getInstance().subscribeToTopic("user_" + s + "_posts");
+                                        Log.d("Main", "user_" + s + "_posts");
+                                    }
+                                }
+                            });
                         }catch (Exception e) {
                             Log.e("MainActivity", e.getMessage());
                         }

@@ -1,12 +1,17 @@
 package com.rmit.bookflowapp.repository;
 
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepository {
     private static final String COLLECTION_NAME = "user";
@@ -63,4 +68,43 @@ public class UserRepository {
         userCollection.document(userId).update("favoriteBooks", FieldValue.arrayRemove(bookId));
     }
 
+    public void addToFollow(String userId, String target) {
+        userCollection.document(userId).update("following", FieldValue.arrayUnion(target));
+    }
+
+    public void
+    removeFromFollow(String userId, String target) {
+        userCollection.document(userId).update("following", FieldValue.arrayRemove(target));
+    }
+
+    public Task<List<User>> getUsersByIds(List<String> userIds) {
+        // Fetch documents for the specified bookIds
+        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+        for (String uid : userIds) {
+            tasks.add(userCollection.document(uid).get());
+        }
+
+        // Combine tasks to get a single task for all documents
+        Task<List<DocumentSnapshot>> combinedTask = Tasks.whenAllSuccess(tasks);
+
+        return combinedTask.continueWith(task -> {
+            if (task.isSuccessful()) {
+                List<DocumentSnapshot> snapshots = task.getResult();
+                List<User> users = new ArrayList<>();
+
+                for (DocumentSnapshot snapshot : snapshots) {
+                    if (snapshot.exists()) {
+                        User u = snapshot.toObject(User.class);
+                        u.setId(snapshot.getId());
+                        users.add(u);
+                    }
+                }
+
+                return users;
+            } else {
+                Exception exception = task.getException();
+                return null;
+            }
+        });
+    }
 }
