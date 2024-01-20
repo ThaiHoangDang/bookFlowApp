@@ -1,8 +1,11 @@
 package com.rmit.bookflowapp.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,8 +18,13 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.permissionx.guolindev.PermissionX;
+import com.permissionx.guolindev.callback.ExplainReasonCallback;
+import com.permissionx.guolindev.callback.RequestCallback;
+import com.permissionx.guolindev.request.ExplainScope;
 import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.Lend;
 import com.rmit.bookflowapp.Model.Post;
@@ -30,6 +38,8 @@ import com.rmit.bookflowapp.repository.BookRepository;
 import com.rmit.bookflowapp.repository.PostRepository;
 import com.rmit.bookflowapp.repository.UserRepository;
 import com.rmit.bookflowapp.util.TranslateAnimationUtil;
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig;
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +60,23 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestPermission();
+        initCallService();
+    }
+
+    public void initCallService() {
+        Application application = getActivity().getApplication();
+        long appID = 832849511;
+        String appSign = "85d7f6dbb1ca537b623ae1c4014e46c692862eb528408647054a6d98e09e42e2";
+        UserRepository.getInstance().getUserById(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        User user = task.getResult();
+                        ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
+                        ZegoUIKitPrebuiltCallInvitationService.init(application, appID, appSign, user.getId(), user.getName(), callInvitationConfig);
+                    }
+
+                });
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -156,10 +183,10 @@ public class HomeFragment extends Fragment {
         for (Post post : posts) {
             // searches for five fields: post title, post content, book title, book content, user name
             if (post.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                post.getContent().toLowerCase().contains(query.toLowerCase()) ||
-                post.getBook().getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                post.getBook().getAuthorString().toLowerCase().contains(query.toLowerCase()) ||
-                post.getUser().getName().toLowerCase().contains(query.toLowerCase())
+                    post.getContent().toLowerCase().contains(query.toLowerCase()) ||
+                    post.getBook().getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                    post.getBook().getAuthorString().toLowerCase().contains(query.toLowerCase()) ||
+                    post.getUser().getName().toLowerCase().contains(query.toLowerCase())
             ) {
                 filteredPosts.add(post);
             }
@@ -312,6 +339,22 @@ public class HomeFragment extends Fragment {
             });
         }
 //        postAdapter.notifyDataSetChanged();
+    }
+
+    public void requestPermission() {
+        PermissionX.init(requireActivity()).permissions(Manifest.permission.SYSTEM_ALERT_WINDOW)
+                .onExplainRequestReason(new ExplainReasonCallback() {
+                    @Override
+                    public void onExplainReason(@NonNull ExplainScope scope, @NonNull List<String> deniedList) {
+                        String message = "We need your consent for the following permissions in order to use the offline call function properly";
+                        scope.showRequestReasonDialog(deniedList, message, "Allow", "Deny");
+                    }
+                }).request(new RequestCallback() {
+                    @Override
+                    public void onResult(boolean allGranted, @NonNull List<String> grantedList,
+                                         @NonNull List<String> deniedList) {
+                    }
+                });
     }
 
     @Override
