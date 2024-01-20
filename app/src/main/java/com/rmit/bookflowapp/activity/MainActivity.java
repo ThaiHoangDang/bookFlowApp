@@ -71,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
         navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
         navController = Objects.requireNonNull(navHostFragment).getNavController();
 
+        if (firebaseAuth.getCurrentUser() == null) bottomNavigationView.inflateMenu(R.menu.empty_menu);
+        else if (firebaseAuth.getCurrentUser().getEmail().equals("admin@admin.com")) bottomNavigationView.inflateMenu(R.menu.admin_bottom_nav_menu);
+        else bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
+
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 

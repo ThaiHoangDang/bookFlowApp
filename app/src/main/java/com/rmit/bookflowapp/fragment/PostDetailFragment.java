@@ -1,6 +1,8 @@
 package com.rmit.bookflowapp.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.media.Rating;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import com.rmit.bookflowapp.Model.Comment;
 import com.rmit.bookflowapp.Model.Genre;
 import com.rmit.bookflowapp.Model.Post;
 import com.rmit.bookflowapp.Model.Review;
+import com.rmit.bookflowapp.Model.User;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.Ultilities.Helper;
 import com.rmit.bookflowapp.activity.MainActivity;
@@ -141,6 +144,31 @@ public class PostDetailFragment extends Fragment {
             }
         });
 
+        bind.removePostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an AlertDialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setTitle("Warning");
+                builder.setMessage("Do you want to delete this post?");
+
+                builder.setPositiveButton("Delete", (dialog, id) -> {
+                    PostRepository.getInstance().deletePost(post.getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(activity, "Post deleted!", Toast.LENGTH_SHORT).show();
+                            getParentFragmentManager().popBackStack();
+                            dialog.dismiss();
+                        }
+                    });
+                });
+                builder.setNegativeButton("Close", (dialog, id) -> dialog.dismiss());
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
         return bind.getRoot();
     }
 
@@ -164,6 +192,11 @@ public class PostDetailFragment extends Fragment {
             bind.postDetailLikeStatus.setText("Liked");
             bind.postDetailLikeStatus.setTextColor(Color.parseColor("#006da9"));
             bind.postDetailLikeCount.setText(Integer.toString(post.getLikedUsers().size()));
+        }
+
+        if (Objects.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail(), "admin@admin.com") ||
+                (Objects.equals(post.getUser().getId(), FirebaseAuth.getInstance().getCurrentUser().getUid()))) {
+            bind.removePostBtn.setVisibility(View.VISIBLE);
         }
 
         // set up book card

@@ -115,7 +115,7 @@ public class LibraryFragment extends Fragment implements ClickCallback {
                 if (bookList != null) {
                     for (int i = 0; i < bookList.size() / 2; i++) {
                         Book currentBook = bookList.get(i);
-                        View bookLayout = LayoutInflater.from(requireContext()).inflate(R.layout.book_card, null);
+                        View bookLayout = LayoutInflater.from(activity).inflate(R.layout.book_card, null);
                         ((TextView) bookLayout.findViewById(R.id.cardBookName)).setText(currentBook.getTitle());
                         ((TextView) bookLayout.findViewById(R.id.cardBookAuthor)).setText(currentBook.getAuthorString());
                         ImageView bookImage = bookLayout.findViewById(R.id.cardBookImage);

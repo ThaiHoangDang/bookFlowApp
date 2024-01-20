@@ -31,13 +31,17 @@ public class LandingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
-        if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getEmail().equals("admin@admin.com")) {
-            activity.navController.navigate(R.id.adminHomeFragment);
-        } else if (mAuth.getCurrentUser() == null) {
+
+        if (mAuth.getCurrentUser() == null) {
             activity.navController.navigate(R.id.authenticationFragment);
+
+        } else if (mAuth.getCurrentUser().getEmail().equals("admin@admin.com")) {
+            activity.navController.navigate(R.id.homeFragment);
+
         } else {
             activity.navController.navigate(R.id.homeFragment);
         }
+
         return inflater.inflate(R.layout.fragment_landing, container, false);
     }
 }
