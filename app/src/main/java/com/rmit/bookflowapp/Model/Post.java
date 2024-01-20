@@ -3,6 +3,8 @@ package com.rmit.bookflowapp.Model;
 import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Post implements Comparable<Post>, Serializable {
     private String id;
@@ -11,6 +13,7 @@ public class Post implements Comparable<Post>, Serializable {
     private User user;
     private Book book;
     private Long timestamp;
+    private List<String> likedUsers = new ArrayList<>();
 
     public Post() {
         // empty constructor needed for firebase
@@ -23,6 +26,16 @@ public class Post implements Comparable<Post>, Serializable {
         this.user = user;
         this.book = book;
         this.timestamp = timestamp;
+    }
+
+    public Post(String id, String title, String content, User user, Book book, Long timestamp, List<String> likedUsers) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.user = user;
+        this.book = book;
+        this.timestamp = timestamp;
+        this.likedUsers = likedUsers;
     }
 
     public String getId() {
@@ -71,6 +84,14 @@ public class Post implements Comparable<Post>, Serializable {
 
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public List<String> getLikedUsers() {
+        return likedUsers;
+    }
+
+    public void setLikedUsers(List<String> likedUsers) {
+        this.likedUsers = likedUsers;
     }
 
     @Override

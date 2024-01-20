@@ -31,9 +31,9 @@
 
                 <ImageView
                     android:id="@+id/commentAvatarImage"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/defaultprofileavatar" />
 
             </androidx.cardview.widget.CardView>
@@ -48,17 +48,18 @@
                     android:id="@+id/commentOwner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Username"
                     android:maxLines="1"
-                    android:textSize="13sp"
+                    android:text="Username"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/commentTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="11sp"
+                    android:layout_below="@id/commentOwner"
                     android:text="14/01/2024"
-                    android:layout_below="@id/commentOwner"/>
+                    android:textSize="10sp" />
             </RelativeLayout>
 
         </RelativeLayout>

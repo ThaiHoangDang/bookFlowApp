@@ -8,7 +8,8 @@
         android:id="@+id/profile_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_avatar" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/defaultprofileavatar" />
 
     <TextView
         android:id="@+id/show_message"

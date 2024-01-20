@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.Timestamp;
@@ -30,6 +31,7 @@ import com.rmit.bookflowapp.adapter.ChatMessageAdapter;
 import com.rmit.bookflowapp.databinding.FragmentChatBinding;
 import com.rmit.bookflowapp.databinding.FragmentMessageListBinding;
 import com.rmit.bookflowapp.repository.UserRepository;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,6 +84,10 @@ public class ChatFragment extends Fragment {
             recipient = (User) arguments.getSerializable("CHAT_RECIPIENT");
             messages = chat.getMessages();
             markAsSeen();
+
+            if (!recipient.getImageId().isEmpty()) {
+                Picasso.get().load(recipient.getImageId()).into((ImageView) binding.avatarView);
+            }
 
             binding.title.setText(recipient.getName());
             adapter = new ChatMessageAdapter(getContext(), messages, recipient);

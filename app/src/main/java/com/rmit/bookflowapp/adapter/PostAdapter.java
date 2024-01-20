@@ -75,6 +75,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> im
             holder.cardPostTitle.setText(post.getTitle());
             holder.postContent.setText(post.getContent());
             holder.postDate.setText(Helper.convertTime(post.getTimestamp()));
+            Picasso.get().load(post.getUser().getImageId()).into((ImageView) holder.itemView.findViewById(R.id.postAvatarImage));
 
             // stars
             holder.rating.setVisibility(View.VISIBLE);

@@ -59,7 +59,7 @@ public class NewReviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
         bind = FragmentNewReviewBinding.inflate(inflater, container, false);
-        activity.setBottomNavigationBarVisibility(true);
+        activity.setBottomNavigationBarVisibility(false);
 
         // setup display of reviewed book
         View bookToReview = LayoutInflater.from(requireContext()).inflate(R.layout.search_book_card, null);

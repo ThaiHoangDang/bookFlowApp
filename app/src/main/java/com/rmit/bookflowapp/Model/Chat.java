@@ -1,5 +1,10 @@
 package com.rmit.bookflowapp.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.encoders.annotations.Encodable;
 import com.google.firebase.firestore.Exclude;
@@ -10,16 +15,46 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Chat implements Serializable, Comparable<Chat> {
+public class Chat implements Serializable, Comparable<Chat>, Parcelable {
     @Exclude
     private String chatId;
     private List<String> userId;
     private List<Message> messages;
     private Timestamp lastModified;
 
+    protected Chat(Parcel in) {
+        chatId = in.readString();
+        userId = in.createStringArrayList();
+        lastModified = in.readParcelable(Timestamp.class.getClassLoader());
+    }
+
+    public static final Creator<Chat> CREATOR = new Creator<Chat>() {
+        @Override
+        public Chat createFromParcel(Parcel in) {
+            return new Chat(in);
+        }
+
+        @Override
+        public Chat[] newArray(int size) {
+            return new Chat[size];
+        }
+    };
+
     @Override
     public int compareTo(Chat o) {
         return o.getLastModified().compareTo(this.getLastModified());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(chatId);
+        dest.writeStringList(userId);
+        dest.writeParcelable(lastModified, flags);
     }
 
     public static class Message implements Comparable<Message> {

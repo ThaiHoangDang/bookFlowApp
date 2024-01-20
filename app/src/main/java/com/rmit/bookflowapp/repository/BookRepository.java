@@ -1,6 +1,7 @@
 package com.rmit.bookflowapp.repository;
 
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -54,6 +55,36 @@ public class BookRepository {
                     }
                 });
     }
+
+    public Task<List<Book>> getBooksByIds(List<String> bookIds) {
+        // Fetch documents for the specified bookIds
+        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+        for (String bookId : bookIds) {
+            tasks.add(bookCollection.document(bookId).get());
+        }
+
+        // Combine tasks to get a single task for all documents
+        Task<List<DocumentSnapshot>> combinedTask = Tasks.whenAllSuccess(tasks);
+
+        return combinedTask.continueWith(task -> {
+            if (task.isSuccessful()) {
+                List<DocumentSnapshot> snapshots = task.getResult();
+                List<Book> books = new ArrayList<>();
+
+                for (DocumentSnapshot snapshot : snapshots) {
+                    if (snapshot.exists()) {
+                        books.add(snapshot.toObject(Book.class));
+                    }
+                }
+
+                return books;
+            } else {
+                Exception exception = task.getException();
+                return null;
+            }
+        });
+    }
+
 
     public Task<List<Book>> getBookForLibraryFragment() {
         Query query = bookCollection.limit(10);
