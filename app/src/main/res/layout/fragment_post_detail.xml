@@ -44,6 +44,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:src="@drawable/baseline_delete_outline_24"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
