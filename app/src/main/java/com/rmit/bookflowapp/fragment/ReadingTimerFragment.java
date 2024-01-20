@@ -138,7 +138,9 @@ public class ReadingTimerFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         // Unregister the receiver when the fragment is destroyed
+
         activity.unregisterReceiver(timerUpdateReceiver);
+        activity.stopService(new Intent(getActivity(), ReadingTimerService.class));
         bind = null;
     }
 

@@ -67,12 +67,12 @@ public class HomeFragment extends Fragment {
         // Add scroll listener to RecyclerView
         bind.postsListView.setOnTouchListener(new TranslateAnimationUtil(activity, bind.linearlayout1));
 
-        bind.createPostBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(getView()).navigate(R.id.readingTimerFragment);
-            }
-        });
+//        bind.createPostBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Navigation.findNavController(getView()).navigate(R.id.readingTimerFragment);
+//            }
+//        });
 
         bind.pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
