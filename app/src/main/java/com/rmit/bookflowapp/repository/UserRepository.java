@@ -63,4 +63,12 @@ public class UserRepository {
         userCollection.document(userId).update("favoriteBooks", FieldValue.arrayRemove(bookId));
     }
 
+    public void addToFollow(String userId, String target) {
+        userCollection.document(userId).update("following", FieldValue.arrayUnion(target));
+    }
+
+    public void
+    removeFromFollow(String userId, String target) {
+        userCollection.document(userId).update("following", FieldValue.arrayRemove(target));
+    }
 }

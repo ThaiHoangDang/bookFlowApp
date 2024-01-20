@@ -1,5 +1,6 @@
 package com.rmit.bookflowapp.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -53,8 +54,9 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
     private FragmentUserProfileBinding binding;
     private MainActivity activity;
     private SearchBookAdapter bookAdapter;
-    private User user;
+    private User user, currentUser;
     private ArrayList<Book> books = new ArrayList<>();
+    private boolean followed = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,19 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
             }
         });
 
+        UserRepository.getInstance().getUserById(FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<User>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onComplete(@NonNull Task<User> task) {
+                currentUser = task.getResult();
+
+                if (currentUser.getFollowing().contains(uid)) {
+                    followed = true;
+                    binding.profileFollowBtn.setText("Followed");
+                }
+            }
+        });
+
 //        if (user != null) initView();
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +155,14 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
             });
         });
 
+        binding.profileFollowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFollowStatus();
+                updateFollowButtonState();
+            }
+        });
+
         storageReference = FirebaseStorage.getInstance().getReference("profile_pictures");
 
         // set up books list
@@ -148,6 +171,24 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
         binding.userBooksList.setLayoutManager(new LinearLayoutManager(activity));
 
         return binding.getRoot();
+    }
+
+    private void toggleFollowStatus() {
+        followed = ! followed;
+
+        if (followed) {
+            UserRepository.getInstance().addToFollow(currentUser.getId(), user.getId());
+        } else {
+            UserRepository.getInstance().removeFromFollow(currentUser.getId(), user.getId());
+        }
+    }
+    @SuppressLint("SetTextI18n")
+    private void updateFollowButtonState() {
+        if (followed) {
+            binding.profileFollowBtn.setText("Followed");
+        } else {
+            binding.profileFollowBtn.setText("Follow");
+        }
     }
 
     public void initView() {
