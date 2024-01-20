@@ -68,27 +68,11 @@ public class MainActivity extends AppCompatActivity {
         navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
         navController = Objects.requireNonNull(navHostFragment).getNavController();
 
-        String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        if (firebaseAuth.getCurrentUser() == null) bottomNavigationView.inflateMenu(R.menu.empty_menu);
+        else if (firebaseAuth.getCurrentUser().getEmail().equals("admin@admin.com")) bottomNavigationView.inflateMenu(R.menu.admin_bottom_nav_menu);
+        else bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
 
-        // setup bottom nav based on current user
-        if (userEmail != null) {
-
-            // admin
-            if (userEmail.equals("admin@admin.com")) {
-                bottomNavigationView.inflateMenu(R.menu.admin_bottom_nav_menu);
-                NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-            // normal users
-            } else {
-                bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
-                NavigationUI.setupWithNavController(bottomNavigationView, navController);
-            }
-
-        // unauthenticated
-        } else {
-            bottomNavigationView.inflateMenu(R.menu.empty_menu);
-            NavigationUI.setupWithNavController(bottomNavigationView, navController);
-        }
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 
     public void setBottomNavigationBarVisibility(boolean visibility) {

@@ -36,7 +36,7 @@ public class LandingFragment extends Fragment {
             activity.navController.navigate(R.id.authenticationFragment);
 
         } else if (mAuth.getCurrentUser().getEmail().equals("admin@admin.com")) {
-            activity.navController.navigate(R.id.adminHomeFragment);
+            activity.navController.navigate(R.id.homeFragment);
 
         } else {
             activity.navController.navigate(R.id.homeFragment);

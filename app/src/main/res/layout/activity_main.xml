@@ -37,8 +37,7 @@
             app:itemIconTint="?attr/colorOnSecondary"
             app:itemPaddingTop="12dp"
             app:itemTextColor="?attr/colorOnSecondary"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_nav_menu" />
+            app:labelVisibilityMode="labeled" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

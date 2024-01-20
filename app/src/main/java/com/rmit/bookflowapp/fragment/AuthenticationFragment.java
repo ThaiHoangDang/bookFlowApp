@@ -91,12 +91,15 @@ public class AuthenticationFragment extends Fragment {
                                     User currentUser = getUserTask.getResult();
                                     if (currentUser.getRole().equals("ADMIN")) {
                                         activity.navController.popBackStack();
-                                        activity.navController.navigate(R.id.adminHomeFragment);
+                                        activity.navController.navigate(R.id.homeFragment);
+                                        activity.recreate();
                                         return;
                                     }
                                     if (currentUser != null) {
                                         activity.navController.popBackStack();
                                         activity.navController.navigate(R.id.homeFragment);
+                                        activity.recreate();
+                                        return;
                                     } else {
                                         Toast.makeText(requireActivity(), "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
