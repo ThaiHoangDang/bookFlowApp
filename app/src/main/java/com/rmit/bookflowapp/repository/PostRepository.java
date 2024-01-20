@@ -5,6 +5,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,15 +49,45 @@ public class PostRepository {
         return collection.document(postId).delete();
     }
 
+//    public Task<Post> getPost(String postId) {
+//        return collection.document(postId).get().continueWith(task -> {
+//            if (task.isSuccessful()) {
+//                Post post = task.getResult().toObject(Post.class);
+//                // Assuming setId() is a method in your Post class
+//                post.setId(postId);
+//                return post;
+//            } else {
+//                throw task.getException();
+//            }
+//        });
+//    }
+
     public Task<Post> getPost(String postId) {
-        return collection.document(postId).get().continueWith(task -> {
+        return collection.document(postId).get().continueWithTask(task -> {
             if (task.isSuccessful()) {
-                return task.getResult().toObject(Post.class);
+                DocumentSnapshot document = task.getResult();
+
+                String postBookId = document.getString("bookId");
+                String postUserId = document.getString("userId");
+
+                Task<Book> bookTask = BookRepository.getInstance().getBookById(postBookId);
+                Task<User> userTask = UserRepository.getInstance().getUserById(postUserId);
+
+                return Tasks.whenAll(bookTask, userTask).continueWithTask(task1 -> {
+                    Post post = document.toObject(Post.class);
+                    // Assuming setId() is a method in your Post class
+                    post.setId(postId);
+                    post.setBook(bookTask.getResult());
+                    post.setUser(userTask.getResult());
+                    return Tasks.forResult(post);
+                });
             } else {
                 throw task.getException();
             }
         });
     }
+
+
 
     public Task<QuerySnapshot> getReviewsOfBook(String bookId) {
         return collection
@@ -122,5 +154,16 @@ public class PostRepository {
     // get posts limited by number
     public Task<QuerySnapshot> getPosts(int limit) {
         return collection.limit(limit).get();
+    }
+
+    public void addLikedUser(String postId, String userId) {
+        // Use FieldValue.arrayUnion to add the bookId to the favorites list without duplicates
+        collection.document(postId).update("likedUsers", FieldValue.arrayUnion(userId));
+    }
+
+    public void
+    removeLikedUser(String postId, String userId) {
+        // Use FieldValue.arrayRemove to remove the bookId from the favorites list
+        collection.document(postId).update("likedUsers", FieldValue.arrayRemove(userId));
     }
 }

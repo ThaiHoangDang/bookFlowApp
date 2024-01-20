@@ -1,6 +1,7 @@
 package com.rmit.bookflowapp.Model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Review extends Post implements Serializable {
 
@@ -14,8 +15,9 @@ public class Review extends Post implements Serializable {
         this.rating = rating;
     }
 
-    public Review(String id, String title, String content, User user, Book book, Long timestamp, int rating) {
-        super(id, title, content, user, book, timestamp);
+
+    public Review(String id, String title, String content, User user, Book book, Long timestamp, List<String> likedUsers, int rating) {
+        super(id, title, content, user, book, timestamp, likedUsers);
         this.rating = rating;
     }
 
