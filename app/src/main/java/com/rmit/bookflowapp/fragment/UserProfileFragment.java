@@ -27,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rmit.bookflowapp.Model.Book;
+import com.rmit.bookflowapp.Model.Chat;
 import com.rmit.bookflowapp.Model.User;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
@@ -34,6 +35,7 @@ import com.rmit.bookflowapp.adapter.SearchBookAdapter;
 import com.rmit.bookflowapp.databinding.FragmentUserProfileBinding;
 import com.rmit.bookflowapp.interfaces.ClickCallback;
 import com.rmit.bookflowapp.repository.BookRepository;
+import com.rmit.bookflowapp.repository.MessageRepository;
 import com.rmit.bookflowapp.repository.UserRepository;
 import com.squareup.picasso.Picasso;
 
@@ -73,9 +75,11 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
         if (arguments == null) getParentFragmentManager().popBackStack();
         String uid = arguments.getString("USER_ID");
 
-        // hide some components if not user's profile
+        // hide some components
         if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(uid)) {
             binding.changeProfilePicture.setVisibility(View.GONE);
+        } else {
+            binding.profileFollowChat.setVisibility(View.GONE);
         }
 
         UserRepository.getInstance().getUserById(uid).addOnCompleteListener(new OnCompleteListener<User>() {
@@ -107,6 +111,33 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
 
         binding.changeProfilePicture.setOnClickListener(v -> {
             openFileChooser();
+        });
+
+        binding.profileChatBtn.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+
+            List<String> userId = new ArrayList<>();
+            userId.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            userId.add(user.getId());
+
+            MessageRepository.getInstance().getChatByUserIds(FirebaseAuth.getInstance().getCurrentUser().getUid(), user.getId()).addOnCompleteListener(task -> {
+                if (task.getResult()!= null) {
+                    bundle.putSerializable("CHAT_OBJECT", task.getResult());
+                    Log.d("Adapter", task.getResult().toString());
+                    bundle.putSerializable("CHAT_RECIPIENT", user);
+                    activity.navController.navigate(R.id.chatFragment, bundle);
+                    return;
+                }
+                MessageRepository.getInstance().createNewChat(userId).addOnCompleteListener(new OnCompleteListener<Chat>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Chat> task) {
+                        bundle.putSerializable("CHAT_OBJECT", task.getResult());
+                        Log.d("AdapterFOund", task.getResult().toString());
+                        bundle.putSerializable("CHAT_RECIPIENT", user);
+                        activity.navController.navigate(R.id.chatFragment, bundle);
+                    }
+                });
+            });
         });
 
         storageReference = FirebaseStorage.getInstance().getReference("profile_pictures");

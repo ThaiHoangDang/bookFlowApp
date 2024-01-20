@@ -84,8 +84,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="16dp"
                     android:text="Change Avatar" />
+
+                <LinearLayout
+                    android:id="@+id/profileFollowChat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="32dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/profileFollowBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="16dp"
+                        android:text="Follow" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/profileChatBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Chat" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textViewDisplayName"
