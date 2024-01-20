@@ -22,6 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
@@ -34,6 +37,7 @@ import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.adapter.SearchBookAdapter;
 import com.rmit.bookflowapp.databinding.FragmentUserProfileBinding;
+import com.rmit.bookflowapp.fragment.pager.SitePager;
 import com.rmit.bookflowapp.interfaces.ClickCallback;
 import com.rmit.bookflowapp.repository.BookRepository;
 import com.rmit.bookflowapp.repository.MessageRepository;
@@ -47,16 +51,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class UserProfileFragment extends Fragment implements ClickCallback {
+public class UserProfileFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private StorageReference storageReference;
     private static final String TAG = "UserProfileFragment";
     private FragmentUserProfileBinding binding;
     private MainActivity activity;
-    private SearchBookAdapter bookAdapter;
     private User user, currentUser;
-    private ArrayList<Book> books = new ArrayList<>();
     private boolean followed = false;
+    private TabLayout tabLayout;
+    private AppBarLayout appBarLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,12 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
         activity.setBottomNavigationBarVisibility(false);
 
         Bundle arguments = getArguments();
+
+        appBarLayout = binding.getRoot().findViewById(R.id.toolbar_fragment);
+        tabLayout = new TabLayout(requireContext());
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        appBarLayout.addView(tabLayout);
 
         // end fragment if no data found
         if (arguments == null) getParentFragmentManager().popBackStack();
@@ -89,16 +99,7 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
             public void onComplete(@NonNull Task<User> task) {
                 user = task.getResult();
                 initView();
-
-                BookRepository.getInstance().getBooksByIds(user.getFavoriteBooks()).addOnSuccessListener(new OnSuccessListener<List<Book>>() {
-                    @Override
-                    public void onSuccess(List<Book> books) {
-                        UserProfileFragment.this.books = new ArrayList<>(books);
-
-                        // Notify the adapter about the data change
-                        if (bookAdapter != null) bookAdapter.setBooks(UserProfileFragment.this.books);
-                    }
-                });
+                initHomePager();
             }
         });
 
@@ -114,8 +115,6 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
                 }
             }
         });
-
-//        if (user != null) initView();
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,11 +164,6 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
 
         storageReference = FirebaseStorage.getInstance().getReference("profile_pictures");
 
-        // set up books list
-        bookAdapter = new SearchBookAdapter(UserProfileFragment.this, activity, books);
-        binding.userBooksList.setAdapter(bookAdapter);
-        binding.userBooksList.setLayoutManager(new LinearLayoutManager(activity));
-
         return binding.getRoot();
     }
 
@@ -199,6 +193,13 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
         binding.textViewDisplayName.setText(user.getName());
         binding.textViewEmail.setText(user.getEmail());
         binding.textViewRole.setText(user.getRole());
+        if (user.isVerified()){
+            binding.textViewDisplayName.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.baseline_verified_24,0);
+            binding.textViewDisplayName.setCompoundDrawablePadding(40);
+        } else {
+            binding.textViewDisplayName.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
+            binding.textViewDisplayName.setCompoundDrawablePadding(0);
+        }
     }
 
     private void openFileChooser() {
@@ -285,8 +286,20 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
-    @Override
-    public void onSiteClick(Bundle bundle) {
-        Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment, bundle);
+    private void initHomePager() {
+        SitePager pager = new SitePager(this);
+
+        pager.addFragment(new LikedBooksFragment(user.getId()), "Liked Books", R.drawable.baseline_favorite_24);
+        pager.addFragment(new FollowingFragment(user.getId()), "Following", R.drawable.baseline_favorite_24);
+
+        binding.homeViewPager.setAdapter(pager);
+        binding.homeViewPager.setOffscreenPageLimit(3);
+        binding.homeViewPager.setUserInputEnabled(false);
+
+        new TabLayoutMediator(tabLayout, binding.homeViewPager,
+                (tab, position) -> {
+                    tab.setText(pager.getPageTitle(position));
+                }
+        ).attach();
     }
 }
