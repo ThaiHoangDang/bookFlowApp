@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.rmit.bookflowapp.Model.Chat;
 import com.rmit.bookflowapp.Model.User;
+import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.databinding.ItemChatBinding;
 import com.rmit.bookflowapp.interfaces.ClickCallback;
 import com.rmit.bookflowapp.repository.MessageRepository;
@@ -48,6 +49,14 @@ public class UserItemAdapter  extends RecyclerView.Adapter<UserItemAdapter.ViewH
         User user = userList.get(position);
         if (!user.getImageId().isEmpty()) {
             Picasso.get().load(user.getImageId()).into((ImageView) holder.item.userImageView);
+        }
+        //verified
+        if (user.isVerified()) {
+            holder.item.usernameTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_verified_24, 0);
+            holder.item.usernameTextView.setCompoundDrawablePadding(20);
+        } else {
+            holder.item.usernameTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            holder.item.usernameTextView.setCompoundDrawablePadding(0);
         }
         holder.item.usernameTextView.setVisibility(View.VISIBLE);
         holder.item.usernameTextView.setText(user.getName());

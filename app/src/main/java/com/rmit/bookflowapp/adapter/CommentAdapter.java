@@ -57,7 +57,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment comment = comments.get(position);
-
+        //verified
+        if (comment.getUser().isVerified()) {
+            holder.commentOwner.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_verified_24, 0);
+            holder.commentOwner.setCompoundDrawablePadding(20);
+        } else {
+            holder.commentOwner.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            holder.commentOwner.setCompoundDrawablePadding(0);
+        }
         holder.commentOwner.setText(comment.getUser().getName());
         holder.commentContent.setText(comment.getContent());
         holder.commentTime.setText(Helper.convertTime(comment.getTimestamp()));

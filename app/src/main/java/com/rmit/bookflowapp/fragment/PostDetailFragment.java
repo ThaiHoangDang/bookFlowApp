@@ -149,7 +149,11 @@ public class PostDetailFragment extends Fragment {
         // setup display
         bind.postOwner.setText(post.getUser().getName());
         Picasso.get().load(post.getUser().getImageId()).into((ImageView) bind.postAvatarImage);
-
+        //verified
+        if (post.getUser().isVerified()) {
+            bind.postOwner.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_verified_24, 0);
+            bind.postOwner.setCompoundDrawablePadding(20);
+        }
         bind.postTitle.setText(post.getTitle());
         bind.postContent.setText(post.getContent());
         bind.postDate.setText(Helper.convertTime(post.getTimestamp()));

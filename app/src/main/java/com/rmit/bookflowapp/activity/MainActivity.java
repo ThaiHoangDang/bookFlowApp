@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.databinding.ActivityMainBinding;
+import com.stripe.android.PaymentConfiguration;
 
 import java.util.Objects;
 
@@ -71,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 
+    private void setUpStripe(){
+        PaymentConfiguration.init(
+                getApplicationContext(),
+                "pk_test_51OacRkBAoDiFLBXw3m5QAZhwJwX3kqnYqNBMxa9ZPqkCbGWumFwlsysuvCXCeBMgoDFkrdbHMIeYI4Vx3sPk0m9T00VkLoUMAP"
+        );
+    }
     public void setBottomNavigationBarVisibility(boolean visibility) {
         if (visibility) {
             bottomNavigationView.setVisibility(View.VISIBLE);

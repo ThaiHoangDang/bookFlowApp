@@ -129,9 +129,9 @@ public class AuthenticationFragment extends Fragment {
             } catch (Exception e) {
                 Log.d("AUTHENTICATION", e.toString());
             } finally {
-
             }
         }
+        activity.setProgressVisibility(false);
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -170,8 +170,6 @@ public class AuthenticationFragment extends Fragment {
                     } catch (Exception e) {
                         Toast.makeText(requireActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         Log.e("AUTHENTICATION", "BUON", e);
-                    } finally {
-                        activity.setProgressVisibility(false);
                     }
                 });
     }

@@ -12,6 +12,7 @@ public class User implements Serializable {
     private String name;
     private String role; // ADMIN or USER
     private String imageId;
+    private boolean verified = false;
 
     private List<String> favoriteBooks = new ArrayList<>();
 
@@ -19,21 +20,24 @@ public class User implements Serializable {
         // empty constructor needed for firebase
     }
 
-    public User(String id, String email, String name, String role, String imageId) {
+    public User(String id, String email, String name, String role, String imageId, boolean verified) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.role = role;
         this.imageId = imageId;
+        this.verified = verified;
     }
 
-    public User(String id, String email, String name, String role, String imageId, List<String> favoriteBooks) {
+    public User(String id, String email, String name, String role, String imageId, List<String> favoriteBooks, boolean verified) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.role = role;
         this.imageId = imageId;
         this.favoriteBooks = favoriteBooks;
+        this.verified = verified;
+
     }
 
     public String getId() {
@@ -82,5 +86,13 @@ public class User implements Serializable {
 
     public void setFavoriteBooks(List<String> favoriteBooks) {
         this.favoriteBooks = favoriteBooks;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }
