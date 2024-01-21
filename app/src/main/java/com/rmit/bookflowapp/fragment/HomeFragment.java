@@ -11,10 +11,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.rmit.bookflowapp.Model.Book;
@@ -40,8 +42,9 @@ public class HomeFragment extends Fragment {
     private MainActivity activity;
     private PostAdapter postAdapter;
     private ArrayList<Post> posts = new ArrayList<>();
-    private String query = "ALL"; // "ALL", "REVIEW", "LEND"
     private String sort = "ASC"; // "ASC" or "DESC"
+    private boolean hasFavoriteBooks = false;
+    private List<String> favoriteBooks = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -77,44 +80,27 @@ public class HomeFragment extends Fragment {
         bind.pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getData(query);
+                getData();
                 bind.pullToRefresh.setRefreshing(false);
             }
         });
 
-        bind.filterAllBtn.setOnClickListener(v1 -> {
-            query = "ALL";
-            getData(query);
-            restoreFilterButtons(query);
-        });
-        bind.filterReviewBtn.setOnClickListener(v1 -> {
-            query = "REVIEW";
-            getData(query);
-            restoreFilterButtons(query);
-        });
-        bind.filterLendBtn.setOnClickListener(v1 -> {
-            query = "LEND";
-            getData(query);
-            restoreFilterButtons(query);
-        });
         bind.sortAscBtn.setOnClickListener(v1 -> {
             sort = "ASC";
-            getData(query);
+            getData();
             restoreSortButtons(sort);
         });
         bind.sortDescBtn.setOnClickListener(v1 -> {
             sort = "DESC";
-            getData(query);
+            getData();
             restoreSortButtons(sort);
         });
 
         bind.filterBtn.setOnClickListener(v1 -> {
-            if (bind.filterForm.getVisibility() == View.GONE) {
-                bind.filterForm.setVisibility(View.VISIBLE);
+            if (bind.sortForm.getVisibility() == View.GONE) {
                 bind.sortForm.setVisibility(View.VISIBLE);
                 bind.pullToRefresh.setVisibility(View.GONE);
             } else {
-                bind.filterForm.setVisibility(View.GONE);
                 bind.sortForm.setVisibility(View.GONE);
                 bind.pullToRefresh.setVisibility(View.VISIBLE);
             }
@@ -171,41 +157,16 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState != null) {
-
             sort = savedInstanceState.getString("sort");
-            query = savedInstanceState.getString("query");
-            getData(query);
-            restoreFilterButtons(query);
+            getData();
             restoreSortButtons(sort);
         } else {
-
-            query = "ALL";
             sort = "ASC";
-            getData("ALL");
-            restoreFilterButtons(query);
+            getData();
             restoreSortButtons(sort);
         }
+        getFavoriteBooks();
         activity.setBottomNavigationBarVisibility(true);
-    }
-
-    public void restoreFilterButtons(String query) {
-        switch (query) {
-            case "ALL":
-                bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
-                bind.filterReviewBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-                bind.filterLendBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-                break;
-            case "REVIEW":
-                bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-                bind.filterReviewBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
-                bind.filterLendBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-                break;
-            case "LEND":
-                bind.filterAllBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-                bind.filterReviewBtn.setBackgroundColor(getResources().getColor(R.color.orange));
-                bind.filterLendBtn.setBackgroundColor(getResources().getColor(R.color.neutral_100));
-                break;
-        }
     }
 
     public void restoreSortButtons(String sort) {
@@ -223,36 +184,17 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("query", query);
         outState.putString("sort", sort);
         super.onSaveInstanceState(outState);
     }
 
-    public void getData(String query) {
+    public void getData() {
         // get data from Firebase and pass to adapter
-        switch (query) {
-            case "ALL":
-                PostRepository.getInstance().getAllPosts().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        getDataSuccess(task);
-                    }
-                });
-                break;
-            case "REVIEW":
-                PostRepository.getInstance().getAllReviewPosts().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        getDataSuccess(task);
-                    }
-                });
-                break;
-            case "LEND":
-                PostRepository.getInstance().getAllLendPosts().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        getDataSuccess(task);
-                    }
-                });
-                break;
-        }
+        PostRepository.getInstance().getAllPosts().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                getDataSuccess(task);
+            }
+        });
     }
 
     public void getDataSuccess(Task<QuerySnapshot> task) {
@@ -305,7 +247,24 @@ public class HomeFragment extends Fragment {
                 if (sort.equals("ASC")) {
                     posts.sort((o1, o2) -> (int) (o1.getTimestamp() - o2.getTimestamp()));
                 } else if (sort.equals("DESC")) {
-                    posts.sort((o1, o2) -> (int) (o2.getTimestamp() - o1.getTimestamp()));
+                    // posts.sort((o1, o2) -> (int) (o2.getTimestamp() - o1.getTimestamp()));
+
+                    // sort by personalized newsfeed
+                    posts.sort((o1, o2) -> (int) (o1.getTimestamp() - o2.getTimestamp()));
+                    // if found fav books, move it to top
+                    if (hasFavoriteBooks) {
+                        for (String bookId : favoriteBooks) {
+                            for (int i = 0; i < posts.size(); i++) {
+                                if (posts.get(i).getBook().getId().equals(bookId)) {
+                                    Post temp = posts.get(i);
+                                    posts.remove(i);
+                                    posts.add(0, temp);
+                                }
+                            }
+                        }
+                    }
+
+
                 }
                 // notify adapter when done
                 postAdapter.notifyDataSetChanged();
@@ -319,5 +278,23 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
 //        bind.searchView.setOnQueryTextListener(null);
         bind = null;
+    }
+
+    public void getFavoriteBooks() {
+        String firebaseUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        UserRepository.getInstance().getUserById(firebaseUserId).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                User currentUser = task.getResult();
+                if (currentUser.getFavoriteBooks() != null && currentUser.getFavoriteBooks().size() > 0) {
+                    hasFavoriteBooks = true;
+                    favoriteBooks = currentUser.getFavoriteBooks();
+//                    for (String book : favoriteBooks) {
+//                        Toast.makeText(activity, book, Toast.LENGTH_SHORT).show();
+//                    }
+                } else {
+                    hasFavoriteBooks = false;
+                }
+            }
+        });
     }
 }
