@@ -8,10 +8,9 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.rmit.bookflowapp.R;
+import com.rmit.bookflowapp.util.LeaveCall;
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallConfig;
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallFragment;
-import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton;
-import com.zegocloud.uikit.service.defines.ZegoUIKitUser;
 
 import java.util.Collections;
 
@@ -24,15 +23,6 @@ public class CallActivity extends AppCompatActivity {
         addCallFragment();
     }
 
-    public void sendInvitation() {
-        String targetUserID = getIntent().getStringExtra("targetID");
-        String targetUserName = getIntent().getStringExtra("targetName");
-        Context context = getApplicationContext();
-
-        ZegoSendCallInvitationButton button = new ZegoSendCallInvitationButton(context);
-        button.setIsVideoCall(true);
-        button.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID, targetUserName)));
-    }
 
     public void addCallFragment() {
         long appID = 832849511;
@@ -40,19 +30,18 @@ public class CallActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String callID = intent.getStringExtra("callID");
         String userID = intent.getStringExtra("userID");
-//        String userName = intent.getStringExtra("username");
+        String userName = intent.getStringExtra("username");
 //        String callID = "123";
 //        String userID = "123";
-        String userName = "USER";
+//        String userName = "USER";
         Log.d("INFO", callID);
         Log.d("INFO", userID);
         Log.d("INFO", userName);
         // You can also use GroupVideo/GroupVoice/OneOnOneVoice to make more types of calls.
         ZegoUIKitPrebuiltCallConfig config = ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall();
-
+        config.leaveCallListener = new LeaveCall(this);
         ZegoUIKitPrebuiltCallFragment fragment = ZegoUIKitPrebuiltCallFragment.newInstance(
-                appID, appSign, callID, userID, userName, config);
-
+                appID, appSign, userID, userName, callID, config);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commitNow();
