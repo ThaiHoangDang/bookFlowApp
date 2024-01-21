@@ -82,7 +82,7 @@
         <!--        filter form -->
         <LinearLayout
             android:visibility="gone"
-            android:id="@+id/filterForm"
+            android:id="@+id/sortForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/linearlayout1"
@@ -91,50 +91,18 @@
             android:gravity="center">
             <!--            button -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/filterAllBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="All" />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/filterReviewBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="Review" />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/filterLendBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Lend" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/sortForm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_below="@id/filterForm">
-            <!--            button -->
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/sortAscBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Ascending" />
+                android:text="Chronological" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sortDescBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Descending" />
+                android:text="Personalized" />
 
         </LinearLayout>
 
