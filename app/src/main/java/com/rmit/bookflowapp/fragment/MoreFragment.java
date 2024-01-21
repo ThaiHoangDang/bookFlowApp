@@ -215,7 +215,7 @@ public class MoreFragment extends Fragment {
                 for (Book book : allBooks.getResult()) {
                     allBooksTitle += book.getTitle() + "; ";
                 }
-                Log.d(TAG, "onActivityResult: " + allBooksTitle);
+//                Log.d(TAG, "onActivityResult: " + allBooksTitle);
                 // step 4: call
                 if (requestCode == 9999) {
                     suggestion(photo, allBooksTitle, requestCode);
@@ -238,7 +238,7 @@ public class MoreFragment extends Fragment {
 //            query = "Based on the photo, pick me a book from this given list or outside it that I would enjoy reading and state why you thought that way: " + booksInput;
             query = "Based on the photo which could be anything, from a photo of scenery to photo of a book or a human face showing their mood, suggest me JUST ONE BOOK from our database: " + allBooksTitle + "or books outside our database that I would enjoy reading and state why you thought that way.";
         } else if (requestCode == 8888) {
-            query = "You are representing BookFlow, do not say \"I\". If the photo contains a book, identify the book such as its title (like Harry Potter) and author (like J.K. Rowling) and any possible metadata (like genre, year of publication, etc.) so that the reader can search for them on the Internet. If you cannot identify the field, don't include that in the answer prompt. If the photo does not contain a book, tell the reader that the photo does not contain a book.";
+            query = "If the photo contains a book, identify the book such as its title (like Harry Potter) and author (like J.K. Rowling) and any possible metadata (like genre, year of publication, etc.) so that the reader can search for them on the Internet. If you cannot identify the field, don't include that in the answer prompt. If the photo does not contain a book, tell the reader that the photo does not contain a book.";
         }
 
         GenerativeModel gm = new GenerativeModel(
@@ -259,7 +259,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onSuccess(GenerateContentResponse result) {
                 String resultText = result.getText();
-                Log.d(TAG, "onSuccess: " + resultText); // RESULT TEXT
+//                Log.d(TAG, "onSuccess: " + resultText); // RESULT TEXT
 
                 // step 5: show result in dialog. Code must on UI thread
                 activity.runOnUiThread(new Runnable() {
@@ -297,12 +297,12 @@ public class MoreFragment extends Fragment {
     }
 
     public void enableTouch() {
-        binding.progressBar.setVisibility(View.GONE);
+        activity.setProgressVisibility(false);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     public void disableTouch() {
-        binding.progressBar.setVisibility(View.VISIBLE);
+        activity.setProgressVisibility(true);
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
