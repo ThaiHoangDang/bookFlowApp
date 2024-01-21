@@ -1,18 +1,16 @@
 package com.rmit.bookflowapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,17 +22,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.rmit.bookflowapp.Model.Chat;
 import com.rmit.bookflowapp.Model.User;
-import com.rmit.bookflowapp.R;
+import com.rmit.bookflowapp.activity.CallActivity;
 import com.rmit.bookflowapp.activity.MainActivity;
-import com.rmit.bookflowapp.adapter.ChatAdapter;
 import com.rmit.bookflowapp.adapter.ChatMessageAdapter;
 import com.rmit.bookflowapp.databinding.FragmentChatBinding;
-import com.rmit.bookflowapp.databinding.FragmentMessageListBinding;
 import com.rmit.bookflowapp.repository.UserRepository;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ChatFragment extends Fragment {
@@ -49,6 +44,7 @@ public class ChatFragment extends Fragment {
     private FirebaseUser currentUser;
     private UserRepository userRepository;
     private User recipient;
+
     public ChatFragment() {
         // Required empty public constructor
     }
@@ -77,7 +73,7 @@ public class ChatFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public void initChatView(){
+    public void initChatView() {
         Bundle arguments = getArguments();
         if (arguments != null) {
             chat = (Chat) arguments.getSerializable("CHAT_OBJECT");
@@ -112,7 +108,7 @@ public class ChatFragment extends Fragment {
             binding.btnSend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (binding.textSend.getText().toString().isEmpty()){
+                    if (binding.textSend.getText().toString().isEmpty()) {
                         Toast.makeText(getContext(), "Cannot send empty message", Toast.LENGTH_SHORT);
                     } else {
                         String msg = binding.textSend.getText().toString();
@@ -121,6 +117,24 @@ public class ChatFragment extends Fragment {
                     }
                 }
             });
+
+            binding.video.setOnClickListener(v -> {
+                UserRepository.getInstance()
+                        .getUserById(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                User user = task.getResult();
+                                Intent intent = new Intent(requireActivity(), CallActivity.class);
+                                intent.putExtra("userID", chat.getUserId().get(0));
+                                intent.putExtra("username", user.getName());
+                                intent.putExtra("callID", chat.getChatId());
+                                intent.putExtra("targetID", chat.getUserId().get(1));
+                                intent.putExtra("targetName", "USER2");
+                                startActivity(intent);
+                            }
+                        });
+
+            });
             listenToChanges();
         } else {
             activity.navController.navigateUp();
@@ -128,31 +142,31 @@ public class ChatFragment extends Fragment {
         }
     }
 
-    private void markAsSeen(){
+    private void markAsSeen() {
         if (!messages.isEmpty()) {
-            if (messages.get(messages.size()-1).getSender().equals(recipient.getId()) && !messages.get(messages.size()-1).isRead()) {
-                messages.get(messages.size()-1).setRead(true);
+            if (messages.get(messages.size() - 1).getSender().equals(recipient.getId()) && !messages.get(messages.size() - 1).isRead()) {
+                messages.get(messages.size() - 1).setRead(true);
                 messagesCollection.document(chat.getChatId()).update("messages", messages);
             }
         }
     }
 
-    private void sendMessage(String message){
+    private void sendMessage(String message) {
         List<Chat.Message> messages = new ArrayList<>(chat.getMessages());
         messages.add(new Chat.Message(currentUser.getUid(), message, Timestamp.now(), false));
         messagesCollection.document(chat.getChatId()).update("messages", messages, "lastModified", Timestamp.now());
     }
 
-    private void listenToChanges(){
+    private void listenToChanges() {
         messagesCollection.document(chat.getChatId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Chat newChat = value.toObject(Chat.class);
-                    chat.setMessages(newChat.getMessages());
-                    messages.clear();
-                    messages.addAll(newChat.getMessages());
-                    adapter.notifyDataSetChanged();
-                    binding.recyclerView.scrollToPosition(messages.size() - 1);
+                chat.setMessages(newChat.getMessages());
+                messages.clear();
+                messages.addAll(newChat.getMessages());
+                adapter.notifyDataSetChanged();
+                binding.recyclerView.scrollToPosition(messages.size() - 1);
             }
         });
     }
