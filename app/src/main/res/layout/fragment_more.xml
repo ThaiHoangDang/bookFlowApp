@@ -88,9 +88,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="57dp"
                 android:drawableLeft="@drawable/baseline_photo_camera_24"
+                android:drawableRight="@drawable/ic_sparkling"
                 android:drawablePadding="8dp"
                 android:padding="16dp"
-                android:text="Book suggestion 🤯" />
+                android:text="Book suggestion" />
 
             <View
                 android:id="@+id/divider9"
@@ -105,9 +106,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/round_image_search_24"
+                android:drawableRight="@drawable/ic_sparkling"
                 android:drawablePadding="8dp"
                 android:padding="16dp"
-                android:text="Book identification ⚡" />
+                android:text="Book identification" />
 
             <View
                 android:id="@+id/divider5"
