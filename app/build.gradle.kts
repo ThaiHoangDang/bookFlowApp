@@ -78,6 +78,17 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics")
+    // Google AI client SDK for Android
+    implementation("com.google.ai.client.generativeai:generativeai:0.1.2")
 
     implementation("com.github.ZEGOCLOUD:zego_uikit_prebuilt_call_android:+")
+    
+    // Required for one-shot operations (to use `ListenableFuture` from Reactive Streams)
+    implementation("com.google.guava:guava:31.0.1-android")
+
+    // Required for streaming operations (to use `Publisher` from Guava Android)
+    implementation("org.reactivestreams:reactive-streams:1.0.4")
+    
+    implementation ("com.stripe:stripe-android:20.11.0")
+    implementation ("com.github.kittinunf.fuel:fuel:2.3.1")
 }

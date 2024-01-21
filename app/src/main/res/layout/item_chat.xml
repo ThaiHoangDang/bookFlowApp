@@ -24,14 +24,13 @@
     <TextView
         android:id="@+id/usernameTextView"
         style="@style/TextAppearance.Material3.LabelLarge"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
         android:paddingHorizontal="12dp"
         android:singleLine="true"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/messageTextView"
-        app:layout_constraintEnd_toStartOf="@+id/timestampTextView"
         app:layout_constraintStart_toEndOf="@+id/userImageView"
         app:layout_constraintTop_toTopOf="@+id/userImageView"
         app:layout_constraintVertical_chainStyle="packed" />

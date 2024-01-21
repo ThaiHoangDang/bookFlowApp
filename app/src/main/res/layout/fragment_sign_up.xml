@@ -11,39 +11,51 @@
         android:layout_height="250dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/logo" />
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/nameInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:hint="Name: " />
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:hint="Name"
+        android:textSize="16sp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:hint="Email: "
-        android:inputType="textEmailAddress" />
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textSize="16sp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/passwordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:hint="Password: "
-        android:inputType="textPassword" />
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textSize="16sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signUpButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:text="Sign up" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/toAuthentication"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:text="BACK TO SIGNIN"
         android:textColor="@color/dark_blue"
         app:backgroundTint="@color/base_blue" />
