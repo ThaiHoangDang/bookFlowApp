@@ -34,8 +34,8 @@
                 android:id="@+id/avatarView"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:src="@drawable/ic_avatar"
                 android:scaleType="centerCrop"
+                android:src="@drawable/ic_avatar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/backButton"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,6 +55,18 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/avatarView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/video"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:backgroundTint="@color/dark_blue"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:src="@drawable/baseline_video_chat_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

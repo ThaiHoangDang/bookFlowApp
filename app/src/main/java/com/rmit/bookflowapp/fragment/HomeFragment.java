@@ -1,8 +1,11 @@
 package com.rmit.bookflowapp.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +22,10 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.permissionx.guolindev.PermissionX;
+import com.permissionx.guolindev.callback.ExplainReasonCallback;
+import com.permissionx.guolindev.callback.RequestCallback;
+import com.permissionx.guolindev.request.ExplainScope;
 import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.Lend;
 import com.rmit.bookflowapp.Model.Post;
@@ -32,6 +39,8 @@ import com.rmit.bookflowapp.repository.BookRepository;
 import com.rmit.bookflowapp.repository.PostRepository;
 import com.rmit.bookflowapp.repository.UserRepository;
 import com.rmit.bookflowapp.util.TranslateAnimationUtil;
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig;
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,10 +153,10 @@ public class HomeFragment extends Fragment {
         for (Post post : posts) {
             // searches for five fields: post title, post content, book title, book content, user name
             if (post.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                post.getContent().toLowerCase().contains(query.toLowerCase()) ||
-                post.getBook().getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                post.getBook().getAuthorString().toLowerCase().contains(query.toLowerCase()) ||
-                post.getUser().getName().toLowerCase().contains(query.toLowerCase())
+                    post.getContent().toLowerCase().contains(query.toLowerCase()) ||
+                    post.getBook().getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                    post.getBook().getAuthorString().toLowerCase().contains(query.toLowerCase()) ||
+                    post.getUser().getName().toLowerCase().contains(query.toLowerCase())
             ) {
                 filteredPosts.add(post);
             }

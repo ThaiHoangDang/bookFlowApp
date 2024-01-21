@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BookFlowApp"
         tools:targetApi="33">
+        <activity
+            android:name=".activity.CallActivity"
+            android:exported="false" />
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
@@ -27,6 +30,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
@@ -36,11 +40,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".service.ReadingTimerService"
             android:enabled="true"
             android:exported="false" />
-
     </application>
 
 </manifest>
