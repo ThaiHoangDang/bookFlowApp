@@ -77,6 +77,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> im
             holder.postDate.setText(Helper.convertTime(post.getTimestamp()));
             Picasso.get().load(post.getUser().getImageId()).into((ImageView) holder.itemView.findViewById(R.id.postAvatarImage));
 
+            //verified
+            if (post.getUser().isVerified()) {
+                holder.postOwner.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_verified_24, 0);
+                holder.postOwner.setCompoundDrawablePadding(20);
+            } else {
+                holder.postOwner.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                holder.postOwner.setCompoundDrawablePadding(0);
+            }
             // stars
             holder.rating.setVisibility(View.VISIBLE);
             holder.postInfo.setVisibility(View.GONE);

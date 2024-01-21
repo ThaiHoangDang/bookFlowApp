@@ -67,6 +67,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                     holder.item.messageTextView.setText("You: " + firstMessage.getMessage());
                 }
             }
+            if (user.get().isVerified()) {
+                holder.item.usernameTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_verified_24, 0);
+                holder.item.usernameTextView.setCompoundDrawablePadding(20);
+            } else {
+                holder.item.usernameTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                holder.item.usernameTextView.setCompoundDrawablePadding(0);
+            }
         }
     }
 

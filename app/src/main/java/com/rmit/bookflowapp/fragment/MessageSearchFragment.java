@@ -134,6 +134,7 @@ public class MessageSearchFragment extends Fragment implements ClickCallback {
     @Override
     public void onUserClick(Bundle bundle) {
         activity.navController.popBackStack();
-        activity.navController.navigate(R.id.chatFragment, bundle);
+//        activity.navController.navigate(R.id.chatFragment, bundle);
+        activity.navController.navigate(R.id.userProfileFragment, bundle);
     }
 }

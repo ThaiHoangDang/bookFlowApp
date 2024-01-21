@@ -1,5 +1,6 @@
 package com.rmit.bookflowapp.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,19 +22,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rmit.bookflowapp.Model.Book;
+import com.rmit.bookflowapp.Model.Chat;
 import com.rmit.bookflowapp.Model.User;
 import com.rmit.bookflowapp.R;
 import com.rmit.bookflowapp.activity.MainActivity;
 import com.rmit.bookflowapp.adapter.SearchBookAdapter;
 import com.rmit.bookflowapp.databinding.FragmentUserProfileBinding;
+import com.rmit.bookflowapp.fragment.pager.SitePager;
 import com.rmit.bookflowapp.interfaces.ClickCallback;
 import com.rmit.bookflowapp.repository.BookRepository;
+import com.rmit.bookflowapp.repository.MessageRepository;
 import com.rmit.bookflowapp.repository.UserRepository;
 import com.squareup.picasso.Picasso;
 
@@ -44,15 +51,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class UserProfileFragment extends Fragment implements ClickCallback {
+public class UserProfileFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private StorageReference storageReference;
     private static final String TAG = "UserProfileFragment";
     private FragmentUserProfileBinding binding;
     private MainActivity activity;
-    private SearchBookAdapter bookAdapter;
-    private User user;
-    private ArrayList<Book> books = new ArrayList<>();
+    private User user, currentUser;
+    private boolean followed = false;
+    private TabLayout tabLayout;
+    private AppBarLayout appBarLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,13 +77,21 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
 
         Bundle arguments = getArguments();
 
+        appBarLayout = binding.getRoot().findViewById(R.id.toolbar_fragment);
+        tabLayout = new TabLayout(requireContext());
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        appBarLayout.addView(tabLayout);
+
         // end fragment if no data found
         if (arguments == null) getParentFragmentManager().popBackStack();
         String uid = arguments.getString("USER_ID");
 
-        // hide some components if not user's profile
+        // hide some components
         if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(uid)) {
             binding.changeProfilePicture.setVisibility(View.GONE);
+        } else {
+            binding.profileFollowChat.setVisibility(View.GONE);
         }
 
         UserRepository.getInstance().getUserById(uid).addOnCompleteListener(new OnCompleteListener<User>() {
@@ -83,20 +99,22 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
             public void onComplete(@NonNull Task<User> task) {
                 user = task.getResult();
                 initView();
-
-                BookRepository.getInstance().getBooksByIds(user.getFavoriteBooks()).addOnSuccessListener(new OnSuccessListener<List<Book>>() {
-                    @Override
-                    public void onSuccess(List<Book> books) {
-                        UserProfileFragment.this.books = new ArrayList<>(books);
-
-                        // Notify the adapter about the data change
-                        if (bookAdapter != null) bookAdapter.setBooks(UserProfileFragment.this.books);
-                    }
-                });
+                initHomePager();
             }
         });
 
-//        if (user != null) initView();
+        UserRepository.getInstance().getUserById(FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<User>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onComplete(@NonNull Task<User> task) {
+                currentUser = task.getResult();
+
+                if (currentUser.getFollowing().contains(uid)) {
+                    followed = true;
+                    binding.profileFollowBtn.setText("Followed");
+                }
+            }
+        });
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,14 +127,62 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
             openFileChooser();
         });
 
+        binding.profileChatBtn.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+
+            List<String> userId = new ArrayList<>();
+            userId.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            userId.add(user.getId());
+
+            MessageRepository.getInstance().getChatByUserIds(FirebaseAuth.getInstance().getCurrentUser().getUid(), user.getId()).addOnCompleteListener(task -> {
+                if (task.getResult()!= null) {
+                    bundle.putSerializable("CHAT_OBJECT", task.getResult());
+                    Log.d("Adapter", task.getResult().toString());
+                    bundle.putSerializable("CHAT_RECIPIENT", user);
+                    activity.navController.navigate(R.id.chatFragment, bundle);
+                    return;
+                }
+                MessageRepository.getInstance().createNewChat(userId).addOnCompleteListener(new OnCompleteListener<Chat>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Chat> task) {
+                        bundle.putSerializable("CHAT_OBJECT", task.getResult());
+                        Log.d("AdapterFOund", task.getResult().toString());
+                        bundle.putSerializable("CHAT_RECIPIENT", user);
+                        activity.navController.navigate(R.id.chatFragment, bundle);
+                    }
+                });
+            });
+        });
+
+        binding.profileFollowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFollowStatus();
+                updateFollowButtonState();
+            }
+        });
+
         storageReference = FirebaseStorage.getInstance().getReference("profile_pictures");
 
-        // set up books list
-        bookAdapter = new SearchBookAdapter(UserProfileFragment.this, activity, books);
-        binding.userBooksList.setAdapter(bookAdapter);
-        binding.userBooksList.setLayoutManager(new LinearLayoutManager(activity));
-
         return binding.getRoot();
+    }
+
+    private void toggleFollowStatus() {
+        followed = ! followed;
+
+        if (followed) {
+            UserRepository.getInstance().addToFollow(currentUser.getId(), user.getId());
+        } else {
+            UserRepository.getInstance().removeFromFollow(currentUser.getId(), user.getId());
+        }
+    }
+    @SuppressLint("SetTextI18n")
+    private void updateFollowButtonState() {
+        if (followed) {
+            binding.profileFollowBtn.setText("Followed");
+        } else {
+            binding.profileFollowBtn.setText("Follow");
+        }
     }
 
     public void initView() {
@@ -127,6 +193,13 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
         binding.textViewDisplayName.setText(user.getName());
         binding.textViewEmail.setText(user.getEmail());
         binding.textViewRole.setText(user.getRole());
+        if (user.isVerified()){
+            binding.textViewDisplayName.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.baseline_verified_24,0);
+            binding.textViewDisplayName.setCompoundDrawablePadding(40);
+        } else {
+            binding.textViewDisplayName.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
+            binding.textViewDisplayName.setCompoundDrawablePadding(0);
+        }
     }
 
     private void openFileChooser() {
@@ -213,8 +286,20 @@ public class UserProfileFragment extends Fragment implements ClickCallback {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
-    @Override
-    public void onSiteClick(Bundle bundle) {
-        Navigation.findNavController(getView()).navigate(R.id.bookDetailFragment, bundle);
+    private void initHomePager() {
+        SitePager pager = new SitePager(this);
+
+        pager.addFragment(new LikedBooksFragment(user.getId()), "Liked Books", R.drawable.baseline_favorite_24);
+        pager.addFragment(new FollowingFragment(user.getId()), "Following", R.drawable.baseline_favorite_24);
+
+        binding.homeViewPager.setAdapter(pager);
+        binding.homeViewPager.setOffscreenPageLimit(3);
+        binding.homeViewPager.setUserInputEnabled(false);
+
+        new TabLayoutMediator(tabLayout, binding.homeViewPager,
+                (tab, position) -> {
+                    tab.setText(pager.getPageTitle(position));
+                }
+        ).attach();
     }
 }

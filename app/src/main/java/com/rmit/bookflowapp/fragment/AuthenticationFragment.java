@@ -91,12 +91,15 @@ public class AuthenticationFragment extends Fragment {
                                     User currentUser = getUserTask.getResult();
                                     if (currentUser.getRole().equals("ADMIN")) {
                                         activity.navController.popBackStack();
-                                        activity.navController.navigate(R.id.adminHomeFragment);
+                                        activity.navController.navigate(R.id.homeFragment);
+                                        activity.recreate();
                                         return;
                                     }
                                     if (currentUser != null) {
                                         activity.navController.popBackStack();
                                         activity.navController.navigate(R.id.homeFragment);
+                                        activity.recreate();
+                                        return;
                                     } else {
                                         Toast.makeText(requireActivity(), "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
@@ -129,9 +132,9 @@ public class AuthenticationFragment extends Fragment {
             } catch (Exception e) {
                 Log.d("AUTHENTICATION", e.toString());
             } finally {
-
             }
         }
+        activity.setProgressVisibility(false);
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -170,8 +173,6 @@ public class AuthenticationFragment extends Fragment {
                     } catch (Exception e) {
                         Toast.makeText(requireActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         Log.e("AUTHENTICATION", "BUON", e);
-                    } finally {
-                        activity.setProgressVisibility(false);
                     }
                 });
     }

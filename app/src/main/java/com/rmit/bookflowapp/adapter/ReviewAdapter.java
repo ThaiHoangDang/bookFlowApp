@@ -56,8 +56,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Review review = reviews.get(position);
-
-//        holder.reviewOwnerAvatar
+        //verified
+        if (review.getUser().isVerified()) {
+            holder.reviewOwner.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_verified_24, 0);
+            holder.reviewOwner.setCompoundDrawablePadding(20);
+        } else {
+            holder.reviewOwner.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            holder.reviewOwner.setCompoundDrawablePadding(0);
+        }
+        //holder.reviewOwnerAvatar
         holder.reviewOwner.setText(review.getUser().getName());
         holder.reviewRating.setRating(review.getRating());
         holder.reviewTitle.setText(review.getTitle());
