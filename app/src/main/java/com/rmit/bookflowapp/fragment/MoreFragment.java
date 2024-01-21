@@ -309,7 +309,7 @@ public class MoreFragment extends Fragment {
 
     private void handlePurchaseButton(){
         if (user.isVerified()){
-            binding.purchaseBtn.setText("You've already purchased a verified account!");
+            binding.purchaseBtn.setText("Your account has been verified!");
             binding.purchaseBtn.setClickable(false);
             binding.purchaseBtn.setTextColor(Color.parseColor("#207a39"));
         } else {
@@ -376,7 +376,7 @@ public class MoreFragment extends Fragment {
         } else if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
             FirebaseFirestore.getInstance().document("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).update("verified", true);
             Toast.makeText(getContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
-            binding.purchaseBtn.setText("You've already purchased a verified account!");
+            binding.purchaseBtn.setText("Your account has been verified!");
             binding.purchaseBtn.setClickable(false);
             binding.purchaseBtn.setBackgroundColor(getResources().getColor(R.color.lightGrey));
         }
