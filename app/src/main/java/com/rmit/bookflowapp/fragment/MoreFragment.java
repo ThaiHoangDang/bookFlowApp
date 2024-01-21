@@ -306,7 +306,6 @@ public class MoreFragment extends Fragment {
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
-}
 
     private void handlePurchaseButton(){
         if (user.isVerified()){
