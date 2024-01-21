@@ -44,7 +44,9 @@ public class HomeFragment extends Fragment {
     private ArrayList<Post> posts = new ArrayList<>();
     private String sort = "ASC"; // "ASC" or "DESC"
     private boolean hasFavoriteBooks = false;
+    private boolean hasFollowing = false;
     private List<String> favoriteBooks = new ArrayList<>();
+    private List<String> following = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -245,7 +247,7 @@ public class HomeFragment extends Fragment {
             }).addOnCompleteListener(task4 -> {
                 // sort posts by timestamp
                 if (sort.equals("ASC")) {
-                    posts.sort((o1, o2) -> (int) (o1.getTimestamp() - o2.getTimestamp()));
+                    posts.sort((o1, o2) -> (int) (o2.getTimestamp() - o1.getTimestamp()));
                 } else if (sort.equals("DESC")) {
                     // posts.sort((o1, o2) -> (int) (o2.getTimestamp() - o1.getTimestamp()));
 
@@ -264,7 +266,17 @@ public class HomeFragment extends Fragment {
                         }
                     }
 
-
+                    if (hasFollowing) {
+                        for (String uid : following) {
+                            for (int i = posts.size() - 1; i >= 0; i--) {
+                                if (posts.get(i).getUser().getId().equals(uid)) {
+                                    Post temp = posts.get(i);
+                                    posts.remove(i);
+                                    posts.add(0, temp);
+                                }
+                            }
+                        }
+                    }
                 }
                 // notify adapter when done
                 postAdapter.notifyDataSetChanged();
@@ -293,6 +305,17 @@ public class HomeFragment extends Fragment {
 //                    }
                 } else {
                     hasFavoriteBooks = false;
+                }
+
+
+                if (currentUser.getFollowing() != null && currentUser.getFollowing().size() > 0) {
+                    hasFollowing = true;
+                    following = currentUser.getFollowing();
+//                    for (String book : favoriteBooks) {
+//                        Toast.makeText(activity, book, Toast.LENGTH_SHORT).show();
+//                    }
+                } else {
+                    hasFollowing = false;
                 }
             }
         });
