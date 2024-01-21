@@ -106,5 +106,10 @@
         android:name="com.rmit.bookflowapp.fragment.ReadingTimerFragment"
         android:label="fragment_reading_timer"
         tools:layout="@layout/fragment_reading_timer" />
+    <fragment
+        android:id="@+id/findBookFragment"
+        android:name="com.rmit.bookflowapp.fragment.FindBook"
+        android:label="fragment_find_book"
+        tools:layout="@layout/fragment_find_book" />
 
 </navigation>

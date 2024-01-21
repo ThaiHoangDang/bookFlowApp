@@ -58,6 +58,51 @@
             android:layout_below="@id/searchHeader" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/scanSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="62dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/scanHeader"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/dark_blue"
+            android:elevation="10dp">
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scan Result"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/hideScanResult"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:backgroundTint="@color/dark_blue"
+                android:paddingLeft="16dp"
+                android:src="@drawable/baseline_arrow_back_ios_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/scanBody"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/scanHeader" />
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/libraryMain"
         android:layout_width="match_parent"
@@ -81,6 +126,17 @@
                 android:src="@drawable/baseline_search_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/scannerBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:src="@drawable/baseline_photo_camera_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -247,4 +303,5 @@
 
 
     </LinearLayout>
+
 </FrameLayout>

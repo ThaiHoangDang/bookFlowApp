@@ -1,8 +1,13 @@
 package com.rmit.bookflowapp.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +18,22 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.Text;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import com.rmit.bookflowapp.Model.Book;
 import com.rmit.bookflowapp.Model.Genre;
 import com.rmit.bookflowapp.R;
@@ -38,11 +54,12 @@ public class LibraryFragment extends Fragment implements ClickCallback {
     private static final String TAG = "LibraryFragment";
     private FragmentLibraryBinding bind;
     private MainActivity activity;
-
-    private SearchBookAdapter searchBookAdapter;
+    private SearchBookAdapter searchBookAdapter, scanBookAdapter;
     private List<Book> books = new ArrayList<>();
-
     private final Handler debounceHandler = new Handler();
+    private TextRecognizer recognizer;
+    private int CAMERA_PERMISSION_REQUEST = 111;
+    private int REQUEST_IMAGE_CAPTURE = 112;
 
     private final Runnable debounceRunnable = new Runnable() {
         @Override
@@ -66,6 +83,8 @@ public class LibraryFragment extends Fragment implements ClickCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
     }
 
     @Override
@@ -75,8 +94,10 @@ public class LibraryFragment extends Fragment implements ClickCallback {
         bind = FragmentLibraryBinding.inflate(inflater, container, false);
         activity.setBottomNavigationBarVisibility(true);
         searchBookAdapter = new SearchBookAdapter(LibraryFragment.this, activity, books);
+        scanBookAdapter = new SearchBookAdapter(LibraryFragment.this, activity, new ArrayList<>());
 
         bind.librarySearch.setVisibility(View.GONE);
+        bind.scanSearch.setVisibility(View.GONE);
 
         bind.imageView2.setOnClickListener(v -> {
             TranslateAnimationUtil.fadeOutViewStatic(bind.libraryMain);
@@ -91,8 +112,31 @@ public class LibraryFragment extends Fragment implements ClickCallback {
             TranslateAnimationUtil.fadeInViewStatic(bind.libraryMain);
         });
 
+        bind.hideScanResult.setOnClickListener(v -> {
+            TranslateAnimationUtil.fadeOutViewStatic(bind.scanSearch);
+            scanBookAdapter.setBooks(new ArrayList<>(books));
+            TranslateAnimationUtil.fadeInViewStatic(bind.libraryMain);
+        });
+
+        bind.scannerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // Request the permission
+                    ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
+                } else {
+                    // Permission already granted, proceed with capturing the image
+                    dispatchTakePictureIntent();
+                }
+            }
+        });
+
         bind.searchBody.setAdapter(searchBookAdapter);
         bind.searchBody.setLayoutManager(new LinearLayoutManager(activity));
+
+        bind.scanBody.setAdapter(scanBookAdapter);
+        bind.scanBody.setLayoutManager(new LinearLayoutManager(activity));
 
         bind.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -184,6 +228,84 @@ public class LibraryFragment extends Fragment implements ClickCallback {
         });
 
         return bind.getRoot();
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            if (extras != null) {
+                // Get the captured image as a Bitmap directly from the extras
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                processImage(imageBitmap);
+            } else {
+                Toast.makeText(activity, "Failed to get image", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void processImage(Bitmap imageBitmap) {
+        int rotation = 0;
+        InputImage image = InputImage.fromBitmap(imageBitmap, rotation);
+
+        Task<Text> result = recognizer.process(image)
+                .addOnSuccessListener(new OnSuccessListener<Text>() {
+                    @Override
+                    public void onSuccess(Text visionText) {
+                        BookRepository.getInstance().getBookContainedInQuery(extractString(visionText))
+                                .addOnSuccessListener(new OnSuccessListener<List<Book>>() {
+                                    @Override
+                                    public void onSuccess(List<Book> books) {
+
+                                        if (books.size() == 0) {
+                                            Toast.makeText(activity, "We cannot find any matching books", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            scanBookAdapter.setBooks(new ArrayList<>(books));
+                                            TranslateAnimationUtil.fadeOutViewStatic(bind.libraryMain);
+                                            TranslateAnimationUtil.fadeInViewStatic(bind.scanSearch);
+                                        }
+                                    }
+                                });
+
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(activity, "Scan Failed!", Toast.LENGTH_SHORT).show());
+    }
+
+    private String extractString(Text result) {
+        StringBuilder allText = new StringBuilder();
+
+        for (Text.TextBlock block : result.getTextBlocks()) {
+            String blockText = block.getText();
+            allText.append(blockText).append("\n");
+
+            for (Text.Line line : block.getLines()) {
+                String lineText = line.getText();
+                allText.append(lineText).append("\n");
+
+                for (Text.Element element : line.getElements()) {
+                    String elementText = element.getText();
+                    allText.append(elementText).append(" ");
+
+                    for (Text.Symbol symbol : element.getSymbols()) {
+                        String symbolText = symbol.getText();
+                        allText.append(symbolText);
+                    }
+                    allText.append("\n");
+                }
+            }
+        }
+
+        return allText.toString();
     }
 
     @Override

@@ -82,4 +82,6 @@ dependencies {
     implementation ("com.stripe:stripe-android:20.11.0")
     implementation ("com.github.kittinunf.fuel:fuel:2.3.1")
 
+    implementation ("com.google.mlkit:text-recognition:16.0.0")
+
 }

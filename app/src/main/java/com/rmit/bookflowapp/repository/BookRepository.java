@@ -146,4 +146,33 @@ public class BookRepository {
                     }
                 });
     }
+
+    public Task<List<Book>> getBookContainedInQuery(String query) {
+        return bookCollection.get()
+                .continueWith(task -> {
+                    if (task.isSuccessful()) {
+                        List<Book> allBooks = task.getResult().toObjects(Book.class);
+                        List<Book> filteredBooks = new ArrayList<>();
+
+                        for (Book book : allBooks) {
+                            if (query.toLowerCase().contains(book.getTitle().toLowerCase())) {
+                                filteredBooks.add(book);
+                            } else {
+                                List<String> authors = book.getAuthor();
+                                for (String author : authors) {
+                                    if (query.toLowerCase().contains(author.toLowerCase())) {
+                                        filteredBooks.add(book);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        return filteredBooks;
+                    } else {
+                        Exception exception = task.getException();
+                        return null;
+                    }
+                });
+    }
 }
