@@ -1,4 +1,4 @@
->Last edited: 2024-01-21 23:32:37 +07:00
+>Last edited: 2024-01-22 16:34:37 +07:00
 
 # BookFlow
 >A social media app for book lovers
@@ -104,4 +104,7 @@ Technologies:
 
 ## VII. License
 - [MIT License](LICENSE)
-- 
+
+---
+
+Thank you for having a look at our project ❤️
