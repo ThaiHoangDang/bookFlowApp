@@ -159,6 +159,7 @@ public class AuthenticationFragment extends Fragment {
                                                 }
                                                 activity.navController.popBackStack();
                                                 activity.navController.navigate(R.id.homeFragment);
+                                                activity.recreate();
                                             } else {
                                                 Exception exception = getUserTask.getException();
                                                 if (exception != null) {

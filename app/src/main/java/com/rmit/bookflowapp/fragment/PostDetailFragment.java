@@ -194,6 +194,8 @@ public class PostDetailFragment extends Fragment {
             bind.postDetailLikeCount.setText(Integer.toString(post.getLikedUsers().size()));
         }
 
+        bind.postDetailLikeCount.setText(Integer.toString(post.getLikedUsers().size()));
+
         if (Objects.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail(), "admin@admin.com") ||
                 (Objects.equals(post.getUser().getId(), FirebaseAuth.getInstance().getCurrentUser().getUid()))) {
             bind.removePostBtn.setVisibility(View.VISIBLE);
